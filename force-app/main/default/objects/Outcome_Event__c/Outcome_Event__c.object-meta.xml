@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Captures the closing transaction for an episode.</description>
+    <enableActivities>false</enableActivities>
+    <enableReports>true</enableReports>
+    <label>Outcome Event</label>
+    <nameField>
+        <label>Outcome Event Number</label>
+        <displayFormat>OUT-{00000}</displayFormat>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Outcome Events</pluralLabel>
+    <sharingModel>ControlledByParent</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>

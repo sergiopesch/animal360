@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <description
+  >Ensures location stay end date times are not before the start date time.</description>
+    <errorConditionFormula
+  >AND(NOT(ISBLANK(End_DateTime__c)), NOT(ISBLANK(Start_DateTime__c)), End_DateTime__c &lt; Start_DateTime__c)</errorConditionFormula>
+    <errorMessage
+  >End Date Time must be on or after Start Date Time.</errorMessage>
+    <fullName>A360_Stay_End_After_Start</fullName>
+</ValidationRule>

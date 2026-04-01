@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>A360_Partner_Type__c</fullName>
+    <description>Role this account plays in Animal 360 operations.</description>
+    <inlineHelpText
+  >Use this field to classify the partner organisation for Animal 360.</inlineHelpText>
+    <label>A360 Partner Type</label>
+    <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+            <value>
+                <fullName>Shelter</fullName>
+                <default>false</default>
+                <label>Shelter</label>
+            </value>
+            <value>
+                <fullName>Rescue</fullName>
+                <default>false</default>
+                <label>Rescue</label>
+            </value>
+            <value>
+                <fullName>Veterinary Clinic</fullName>
+                <default>false</default>
+                <label>Veterinary Clinic</label>
+            </value>
+            <value>
+                <fullName>Foster Network</fullName>
+                <default>false</default>
+                <label>Foster Network</label>
+            </value>
+            <value>
+                <fullName>Council</fullName>
+                <default>false</default>
+                <label>Council</label>
+            </value>
+            <value>
+                <fullName>Transport</fullName>
+                <default>false</default>
+                <label>Transport</label>
+            </value>
+            <value>
+                <fullName>Owner</fullName>
+                <default>false</default>
+                <label>Owner</label>
+            </value>
+            <value>
+                <fullName>Adopter</fullName>
+                <default>false</default>
+                <label>Adopter</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+            </valueSetDefinition>
+        </valueSet>
+</CustomField>

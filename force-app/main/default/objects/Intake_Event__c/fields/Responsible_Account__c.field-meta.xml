@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Responsible_Account__c</fullName>
+    <description>Responsible organisation captured at intake.</description>
+    <label>Responsible Account</label>
+    <referenceTo>Account</referenceTo>
+    <relationshipLabel>Intake Events</relationshipLabel>
+    <relationshipName>Intake_Events</relationshipName>
+    <type>Lookup</type>
+</CustomField>

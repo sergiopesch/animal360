@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Captures a bounded period of care for an animal.</description>
+    <enableActivities>true</enableActivities>
+    <enableReports>true</enableReports>
+    <label>Animal Episode</label>
+    <nameField>
+        <label>Episode Number</label>
+        <displayFormat>EP-{00000}</displayFormat>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Animal Episodes</pluralLabel>
+    <sharingModel>ControlledByParent</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>

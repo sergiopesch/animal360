@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ReportFolder xmlns="http://soap.sforce.com/2006/04/metadata">
+    <accessType>Public</accessType>
+    <fullName>Animal_360</fullName>
+    <name>Animal 360</name>
+    <publicFolderAccess>ReadOnly</publicFolderAccess>
+</ReportFolder>

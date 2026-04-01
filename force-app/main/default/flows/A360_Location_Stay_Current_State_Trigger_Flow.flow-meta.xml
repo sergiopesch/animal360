@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>66.0</apiVersion>
+    <interviewLabel
+  >Location Stay Rollup Trigger {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Location Stay Current State Trigger Flow</label>
+    <processType>AutoLaunchedFlow</processType>
+    <runInMode>SystemModeWithSharing</runInMode>
+    <start>
+        <locationX>40</locationX>
+        <locationY>80</locationY>
+        <connector>
+            <targetReference>Run_Rollup_Subflow</targetReference>
+        </connector>
+        <object>Animal_Location_Stay__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <subflows>
+        <name>Run_Rollup_Subflow</name>
+        <label>Run Rollup Subflow</label>
+        <locationX>280</locationX>
+        <locationY>80</locationY>
+        <flowName>A360_Animal_Current_State_Rollup_Flow</flowName>
+        <inputAssignments>
+            <name>episodeId</name>
+            <value><elementReference
+        >$Record.Animal_Episode__c</elementReference></value>
+        </inputAssignments>
+    </subflows>
+</Flow>

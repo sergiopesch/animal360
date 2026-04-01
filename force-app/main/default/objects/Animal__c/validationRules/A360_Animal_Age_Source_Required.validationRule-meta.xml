@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <description
+  >Requires either a date of birth or an estimated age for new records.</description>
+    <errorConditionFormula
+  >AND(ISBLANK(Date_of_Birth__c), ISBLANK(Estimated_Age_Months__c))</errorConditionFormula>
+    <errorMessage
+  >Provide either a date of birth or an estimated age in months.</errorMessage>
+    <fullName>A360_Animal_Age_Source_Required</fullName>
+</ValidationRule>

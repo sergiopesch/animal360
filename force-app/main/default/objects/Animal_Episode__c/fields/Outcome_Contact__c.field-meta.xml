@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Outcome_Contact__c</fullName>
+    <description
+  >Destination or responsible contact captured at closeout.</description>
+    <label>Outcome Contact</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Episodes as Outcome Contact</relationshipLabel>
+    <relationshipName>Episodes_as_Outcome_Contact</relationshipName>
+    <type>Lookup</type>
+</CustomField>

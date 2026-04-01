@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Species__c</fullName>
+    <description>Primary species classification.</description>
+    <inlineHelpText>Choose the animal species.</inlineHelpText>
+    <label>Species</label>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetName>A360_Species</valueSetName>
+    </valueSet>
+</CustomField>

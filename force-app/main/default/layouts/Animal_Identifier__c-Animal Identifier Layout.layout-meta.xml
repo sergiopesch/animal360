@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Layout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <layoutSections>
+        <customLabel>true</customLabel>
+        <label>Identifier Details</label>
+        <layoutColumns>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Name</field>
+            </layoutItems>
+            <layoutItems>
+                <field>Animal__c</field>
+            </layoutItems>
+            <layoutItems>
+                <field>Identifier_Type__c</field>
+            </layoutItems>
+            <layoutItems>
+                <field>Identifier_Value__c</field>
+            </layoutItems>
+        </layoutColumns>
+        <layoutColumns>
+            <layoutItems>
+                <field>Is_Primary__c</field>
+            </layoutItems>
+            <layoutItems>
+                <field>Issuing_Body__c</field>
+            </layoutItems>
+            <layoutItems>
+                <field>Country__c</field>
+            </layoutItems>
+            <layoutItems>
+                <field>Start_Date__c</field>
+            </layoutItems>
+            <layoutItems>
+                <field>End_Date__c</field>
+            </layoutItems>
+        </layoutColumns>
+        <style>TwoColumnsTopToBottom</style>
+    </layoutSections>
+</Layout>

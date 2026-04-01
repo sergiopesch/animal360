@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Episode_Type__c</fullName>
+    <description>Classification for this episode.</description>
+    <label>Episode Type</label>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetName>A360_Episode_Type</valueSetName>
+    </valueSet>
+</CustomField>

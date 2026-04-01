@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Current_Location_Stay__c</fullName>
+    <description
+  >System-maintained pointer to the active location stay.</description>
+    <inlineHelpText
+  >This field is system maintained by Phase I automation.</inlineHelpText>
+    <label>Current Location Stay</label>
+    <referenceTo>Animal_Location_Stay__c</referenceTo>
+    <relationshipLabel>Current Episodes</relationshipLabel>
+    <relationshipName>Current_Episodes</relationshipName>
+    <type>Lookup</type>
+</CustomField>

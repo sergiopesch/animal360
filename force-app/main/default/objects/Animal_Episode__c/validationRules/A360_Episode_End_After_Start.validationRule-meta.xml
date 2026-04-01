@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <description
+  >Ensures episode end date times are not before intake date times.</description>
+    <errorConditionFormula
+  >AND(NOT(ISBLANK(End_DateTime__c)), NOT(ISBLANK(Intake_DateTime__c)), End_DateTime__c &lt; Intake_DateTime__c)</errorConditionFormula>
+    <errorMessage
+  >End Date Time must be on or after Intake Date Time.</errorMessage>
+    <fullName>A360_Episode_End_After_Start</fullName>
+</ValidationRule>

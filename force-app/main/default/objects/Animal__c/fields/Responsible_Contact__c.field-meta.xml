@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Responsible_Contact__c</fullName>
+    <description>Primary contact responsible for the animal.</description>
+    <label>Responsible Contact</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Responsible Contact Animals</relationshipLabel>
+    <relationshipName>Responsible_Contact_Animals</relationshipName>
+    <type>Lookup</type>
+</CustomField>

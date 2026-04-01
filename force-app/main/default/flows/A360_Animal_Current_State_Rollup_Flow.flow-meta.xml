@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>66.0</apiVersion>
+    <actionCalls>
+        <name>Run_Rollup_Service</name>
+        <label>Run Rollup Service</label>
+        <locationX>280</locationX>
+        <locationY>80</locationY>
+        <actionName>A360AnimalRollupService</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>animalId</name>
+            <value><elementReference>animalId</elementReference></value>
+        </inputParameters>
+        <inputParameters>
+            <name>episodeId</name>
+            <value><elementReference>episodeId</elementReference></value>
+        </inputParameters>
+    </actionCalls>
+    <interviewLabel
+  >Animal Current State Rollup {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Animal Current State Rollup Flow</label>
+    <processType>AutoLaunchedFlow</processType>
+    <runInMode>SystemModeWithSharing</runInMode>
+    <start>
+        <locationX>40</locationX>
+        <locationY>80</locationY>
+        <connector>
+            <targetReference>Run_Rollup_Service</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <name>animalId</name>
+        <dataType>String</dataType>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>episodeId</name>
+        <dataType>String</dataType>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

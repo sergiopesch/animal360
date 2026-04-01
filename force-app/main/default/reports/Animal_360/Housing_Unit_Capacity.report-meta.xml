@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>CUST_NAME</field>
+    </columns>
+    <columns>
+        <field>Housing_Unit__c.Unit_Code__c</field>
+    </columns>
+    <columns>
+        <field>Housing_Unit__c.Housing_Type__c</field>
+    </columns>
+    <columns>
+        <field>Housing_Unit__c.Capacity__c</field>
+    </columns>
+    <columns>
+        <field>Housing_Unit__c.Current_Occupancy__c</field>
+    </columns>
+    <columns>
+        <field>Housing_Unit__c.Is_Active__c</field>
+    </columns>
+    <description
+  >Phase I starter report showing configured housing unit capacity.</description>
+
+    <folderName>Animal_360</folderName>
+    <format>Tabular</format>
+    <name>Housing Unit Capacity</name>
+    <reportType>CustomEntity$Housing_Unit__c</reportType>
+    <reportTypeApiName>CustomEntity$Housing_Unit__c</reportTypeApiName>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>false</showGrandTotal>
+    <showSubTotals>false</showSubTotals>
+    <sortColumn>Housing_Unit__c.Unit_Code__c</sortColumn>
+    <sortOrder>Asc</sortOrder>
+</Report>

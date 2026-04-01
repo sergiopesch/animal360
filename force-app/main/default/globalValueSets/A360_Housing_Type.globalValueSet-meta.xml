@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Kennel</fullName>
+        <default>false</default>
+        <label>Kennel</label>
+    </customValue>
+    <customValue>
+        <fullName>Cattery</fullName>
+        <default>false</default>
+        <label>Cattery</label>
+    </customValue>
+    <customValue>
+        <fullName>Foster Home</fullName>
+        <default>false</default>
+        <label>Foster Home</label>
+    </customValue>
+    <customValue>
+        <fullName>Isolation</fullName>
+        <default>false</default>
+        <label>Isolation</label>
+    </customValue>
+    <customValue>
+        <fullName>Stall</fullName>
+        <default>false</default>
+        <label>Stall</label>
+    </customValue>
+    <customValue>
+        <fullName>Pasture</fullName>
+        <default>false</default>
+        <label>Pasture</label>
+    </customValue>
+    <customValue>
+        <fullName>Aquarium</fullName>
+        <default>false</default>
+        <label>Aquarium</label>
+    </customValue>
+    <customValue>
+        <fullName>Other</fullName>
+        <default>false</default>
+        <label>Other</label>
+    </customValue>
+    <masterLabel>Housing Type</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

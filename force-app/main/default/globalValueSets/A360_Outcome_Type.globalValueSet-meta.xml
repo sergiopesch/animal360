@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Adopted</fullName>
+        <default>false</default>
+        <label>Adopted</label>
+    </customValue>
+    <customValue>
+        <fullName>Returned to Owner</fullName>
+        <default>false</default>
+        <label>Returned to Owner</label>
+    </customValue>
+    <customValue>
+        <fullName>Transferred</fullName>
+        <default>false</default>
+        <label>Transferred</label>
+    </customValue>
+    <customValue>
+        <fullName>Foster Placement</fullName>
+        <default>false</default>
+        <label>Foster Placement</label>
+    </customValue>
+    <customValue>
+        <fullName>Released</fullName>
+        <default>false</default>
+        <label>Released</label>
+    </customValue>
+    <customValue>
+        <fullName>Euthanised</fullName>
+        <default>false</default>
+        <label>Euthanised</label>
+    </customValue>
+    <customValue>
+        <fullName>Deceased</fullName>
+        <default>false</default>
+        <label>Deceased</label>
+    </customValue>
+    <customValue>
+        <fullName>Other</fullName>
+        <default>false</default>
+        <label>Other</label>
+    </customValue>
+    <masterLabel>Outcome Type</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

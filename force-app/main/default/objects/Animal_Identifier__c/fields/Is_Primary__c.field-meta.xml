@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Is_Primary__c</fullName>
+    <description
+  >Marks the identifier as the primary identifier for the animal.</description>
+    <label>Is Primary</label>
+    <defaultValue>false</defaultValue>
+    <type>Checkbox</type>
+</CustomField>

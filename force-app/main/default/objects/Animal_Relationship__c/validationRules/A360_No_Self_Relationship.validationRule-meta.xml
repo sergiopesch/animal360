@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <description
+  >Prevents an animal relationship from referencing the same animal on both sides.</description>
+    <errorConditionFormula>From_Animal__c = To_Animal__c</errorConditionFormula>
+    <errorMessage>From Animal and To Animal must be different.</errorMessage>
+    <fullName>A360_No_Self_Relationship</fullName>
+</ValidationRule>

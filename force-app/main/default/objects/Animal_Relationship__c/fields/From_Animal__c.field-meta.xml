@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>From_Animal__c</fullName>
+    <description>Source animal in the relationship.</description>
+    <label>From Animal</label>
+    <referenceTo>Animal__c</referenceTo>
+    <relationshipLabel>Outbound Relationships</relationshipLabel>
+    <relationshipName>Outbound_Relationships</relationshipName>
+    <type>Lookup</type>
+</CustomField>

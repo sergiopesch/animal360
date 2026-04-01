@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>CUST_NAME</field>
+    </columns>
+    <columns>
+        <field>Animal__c.Display_Name__c</field>
+    </columns>
+    <columns>
+        <field>Animal__c.Species__c</field>
+    </columns>
+    <columns>
+        <field>Animal__c.Current_Status__c</field>
+    </columns>
+    <columns>
+        <field>Animal__c.Current_Care_Status__c</field>
+    </columns>
+    <columns>
+        <field>Animal__c.Current_Housing_Unit__c</field>
+    </columns>
+    <description
+  >Phase I starter report showing the current status of animals in care.</description>
+    <filter>
+        <booleanFilter>1</booleanFilter>
+        <criteriaItems>
+            <column>Animal__c.Current_Status__c</column>
+            <operator>equals</operator>
+            <value>In Care</value>
+        </criteriaItems>
+    </filter>
+    <folderName>Animal_360</folderName>
+    <format>Tabular</format>
+    <name>Animals Currently In Care</name>
+    <reportType>CustomEntity$Animal__c</reportType>
+    <reportTypeApiName>CustomEntity$Animal__c</reportTypeApiName>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>false</showGrandTotal>
+    <showSubTotals>false</showSubTotals>
+    <sortColumn>Animal__c.Display_Name__c</sortColumn>
+    <sortOrder>Asc</sortOrder>
+</Report>

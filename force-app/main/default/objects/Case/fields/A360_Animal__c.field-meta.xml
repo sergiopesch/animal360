@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>A360_Animal__c</fullName>
+    <description>Animal context linked to the case.</description>
+    <label>A360 Animal</label>
+    <referenceTo>Animal__c</referenceTo>
+    <relationshipLabel>Cases</relationshipLabel>
+    <relationshipName>Cases</relationshipName>
+    <type>Lookup</type>
+</CustomField>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ReportType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <baseObject>Housing_Unit__c</baseObject>
+    <category>other</category>
+    <deployed>true</deployed>
+    <description
+  >Phase I report type for housing utilisation reporting.</description>
+    <fullName>Housing_Unit_with_Location_Stays</fullName>
+    <join>
+        <outerJoin>true</outerJoin>
+        <relationship>Housing_Unit_Location_Stays__r</relationship>
+    </join>
+    <label>Housing Units with Location Stays</label>
+    <sections>
+        <columns>
+            <checkedByDefault>true</checkedByDefault>
+            <field>Name</field>
+            <table>Housing_Unit__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>true</checkedByDefault>
+            <field>Unit_Code__c</field>
+            <table>Housing_Unit__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>true</checkedByDefault>
+            <field>Housing_Type__c</field>
+            <table>Housing_Unit__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>true</checkedByDefault>
+            <field>Capacity__c</field>
+            <table>Housing_Unit__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>true</checkedByDefault>
+            <field>Current_Occupancy__c</field>
+            <table>Housing_Unit__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>true</checkedByDefault>
+            <field>Is_Active__c</field>
+            <table>Housing_Unit__c</table>
+        </columns>
+        <masterLabel>Housing Unit</masterLabel>
+    </sections>
+    <sections>
+        <columns>
+            <checkedByDefault>true</checkedByDefault>
+            <field>Name</field>
+            <table>Housing_Unit__c.Housing_Unit_Location_Stays__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>true</checkedByDefault>
+            <field>Animal_Episode__c</field>
+            <table>Housing_Unit__c.Housing_Unit_Location_Stays__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>true</checkedByDefault>
+            <field>Start_DateTime__c</field>
+            <table>Housing_Unit__c.Housing_Unit_Location_Stays__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>true</checkedByDefault>
+            <field>End_DateTime__c</field>
+            <table>Housing_Unit__c.Housing_Unit_Location_Stays__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>true</checkedByDefault>
+            <field>Is_Current__c</field>
+            <table>Housing_Unit__c.Housing_Unit_Location_Stays__r</table>
+        </columns>
+        <masterLabel>Location Stays</masterLabel>
+    </sections>
+</ReportType>

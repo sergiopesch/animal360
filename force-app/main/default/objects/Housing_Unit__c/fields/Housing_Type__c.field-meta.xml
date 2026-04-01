@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Housing_Type__c</fullName>
+    <description>Classification for the housing unit.</description>
+    <label>Housing Type</label>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetName>A360_Housing_Type</valueSetName>
+    </valueSet>
+</CustomField>

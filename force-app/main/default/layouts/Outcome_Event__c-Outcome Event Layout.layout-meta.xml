@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Layout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <layoutSections>
+        <customLabel>true</customLabel>
+        <label>Outcome Event Details</label>
+        <layoutColumns>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Name</field>
+            </layoutItems>
+            <layoutItems>
+                <field>Animal_Episode__c</field>
+            </layoutItems>
+            <layoutItems>
+                <field>Outcome_Type__c</field>
+            </layoutItems>
+            <layoutItems>
+                <field>Event_DateTime__c</field>
+            </layoutItems>
+        </layoutColumns>
+        <layoutColumns>
+            <layoutItems>
+                <field>Destination_Account__c</field>
+            </layoutItems>
+            <layoutItems>
+                <field>Destination_Contact__c</field>
+            </layoutItems>
+            <layoutItems>
+                <field>Notes__c</field>
+            </layoutItems>
+        </layoutColumns>
+        <style>TwoColumnsTopToBottom</style>
+    </layoutSections>
+</Layout>

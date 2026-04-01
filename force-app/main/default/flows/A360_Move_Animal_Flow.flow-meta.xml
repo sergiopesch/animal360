@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>66.0</apiVersion>
+    <interviewLabel>Move Animal {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Move Animal Flow</label>
+    <processType>Flow</processType>
+    <runInMode>SystemModeWithSharing</runInMode>
+    <screens>
+        <name>Enter_Move_Details</name>
+        <label>Enter Move Details</label>
+        <locationX>260</locationX>
+        <locationY>80</locationY>
+        <allowBack>false</allowBack>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Close_Current_Stay</targetReference>
+        </connector>
+                <fields>
+            <name>Move_Instructions</name>
+            <fieldType>DisplayText</fieldType>
+            <isVisible>true</isVisible>
+            <fieldText
+      >Enter the episode Id, the destination housing unit Id, and the move details. Picklist-backed fields require the exact configured labels.</fieldText>
+        </fields>
+                <fields>
+            <name>Episode_Id_Value</name>
+            <fieldType>InputField</fieldType>
+            <dataType>String</dataType>
+            <fieldText>Episode Id</fieldText>
+            <isRequired>true</isRequired>
+            <isVisible>true</isVisible>
+        </fields>
+                <fields>
+            <name>New_Housing_Unit_Id_Value</name>
+            <fieldType>InputField</fieldType>
+            <dataType>String</dataType>
+            <fieldText>New Housing Unit Id</fieldText>
+            <isRequired>true</isRequired>
+            <isVisible>true</isVisible>
+        </fields>
+                <fields>
+            <name>Move_DateTime_Value</name>
+            <fieldType>InputField</fieldType>
+            <dataType>DateTime</dataType>
+            <fieldText>Move Date Time</fieldText>
+            <helpText
+      >Defaults to the current org date and time. Update it if the move happened earlier.</helpText>
+            <defaultValue><elementReference
+        >$Flow.CurrentDateTime</elementReference></defaultValue>
+            <isRequired>true</isRequired>
+            <isVisible>true</isVisible>
+        </fields>
+                <fields>
+            <name>Move_Reason_Value</name>
+            <fieldType>InputField</fieldType>
+            <dataType>String</dataType>
+            <fieldText>Move Reason</fieldText>
+            <helpText
+      >Use one of the configured values, for example Routine Move or Medical Isolation.</helpText>
+            <isRequired>true</isRequired>
+            <isVisible>true</isVisible>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Success_Screen</name>
+        <label>Move Complete</label>
+        <locationX>1120</locationX>
+        <locationY>80</locationY>
+        <allowBack>false</allowBack>
+        <allowPause>false</allowPause>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+                <fields>
+            <name>Success_Message</name>
+            <fieldType>DisplayText</fieldType>
+            <isVisible>true</isVisible>
+            <fieldText
+      >Animal move completed successfully. Episode Id: {!Episode_Id_Value} New Stay Id: {!varNewStayId}.</fieldText>
+        </fields>
+    </screens>
+    <screens>
+        <name>Error_Screen</name>
+        <label>Move Error</label>
+        <locationX>920</locationX>
+        <locationY>80</locationY>
+        <allowBack>false</allowBack>
+        <allowPause>false</allowPause>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+                <fields>
+            <name>Error_Message</name>
+            <fieldType>DisplayText</fieldType>
+            <isVisible>true</isVisible>
+            <fieldText
+      >The move flow could not complete. {!$Flow.FaultMessage}</fieldText>
+        </fields>
+    </screens>
+    <recordUpdates>
+        <name>Close_Current_Stay</name>
+        <label>Close Current Stay</label>
+        <locationX>480</locationX>
+        <locationY>80</locationY>
+        <connector>
+            <targetReference>Create_New_Stay</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Error_Screen</targetReference>
+        </faultConnector>
+        <filters>
+            <field>Animal_Episode__c</field>
+            <operator>EqualTo</operator>
+            <value><elementReference>Episode_Id_Value</elementReference></value>
+        </filters>
+        <filters>
+            <field>Is_Current__c</field>
+            <operator>EqualTo</operator>
+            <value><booleanValue>true</booleanValue></value>
+        </filters>
+        <inputAssignments>
+            <field>End_DateTime__c</field>
+            <value><elementReference
+        >Move_DateTime_Value</elementReference></value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Is_Current__c</field>
+            <value><booleanValue>false</booleanValue></value>
+        </inputAssignments>
+        <object>Animal_Location_Stay__c</object>
+    </recordUpdates>
+    <recordCreates>
+        <name>Create_New_Stay</name>
+        <label>Create New Stay</label>
+        <locationX>680</locationX>
+        <locationY>80</locationY>
+        <assignRecordIdToReference>varNewStayId</assignRecordIdToReference>
+        <connector>
+            <targetReference>Run_Rollup_Subflow</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Error_Screen</targetReference>
+        </faultConnector>
+        <inputAssignments>
+            <field>Animal_Episode__c</field>
+            <value><elementReference>Episode_Id_Value</elementReference></value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Housing_Unit__c</field>
+            <value><elementReference
+        >New_Housing_Unit_Id_Value</elementReference></value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Start_DateTime__c</field>
+            <value><elementReference
+        >Move_DateTime_Value</elementReference></value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Is_Current__c</field>
+            <value><booleanValue>true</booleanValue></value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Move_Reason__c</field>
+            <value><elementReference
+        >Move_Reason_Value</elementReference></value>
+        </inputAssignments>
+        <object>Animal_Location_Stay__c</object>
+    </recordCreates>
+    <subflows>
+        <name>Run_Rollup_Subflow</name>
+        <label>Run Rollup Subflow</label>
+        <locationX>880</locationX>
+        <locationY>80</locationY>
+        <connector>
+            <targetReference>Success_Screen</targetReference>
+        </connector>
+        <flowName>A360_Animal_Current_State_Rollup_Flow</flowName>
+        <inputAssignments>
+            <name>episodeId</name>
+            <value><elementReference>Episode_Id_Value</elementReference></value>
+        </inputAssignments>
+    </subflows>
+    <start>
+        <locationX>40</locationX>
+        <locationY>80</locationY>
+        <connector>
+            <targetReference>Enter_Move_Details</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <name>varNewStayId</name>
+        <dataType>String</dataType>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

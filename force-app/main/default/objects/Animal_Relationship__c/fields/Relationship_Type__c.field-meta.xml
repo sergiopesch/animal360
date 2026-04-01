@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Relationship_Type__c</fullName>
+    <description>Type of relationship between the animals.</description>
+    <label>Relationship Type</label>
+    <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+            <value>
+                <fullName>Littermate</fullName>
+                <default>false</default>
+                <label>Littermate</label>
+            </value>
+            <value>
+                <fullName>Bonded Pair</fullName>
+                <default>false</default>
+                <label>Bonded Pair</label>
+            </value>
+            <value>
+                <fullName>Offspring</fullName>
+                <default>false</default>
+                <label>Offspring</label>
+            </value>
+            <value>
+                <fullName>Parent</fullName>
+                <default>false</default>
+                <label>Parent</label>
+            </value>
+            <value>
+                <fullName>Aggression Risk</fullName>
+                <default>false</default>
+                <label>Aggression Risk</label>
+            </value>
+            <value>
+                <fullName>Medical Cohort</fullName>
+                <default>false</default>
+                <label>Medical Cohort</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+            </valueSetDefinition>
+        </valueSet>
+</CustomField>

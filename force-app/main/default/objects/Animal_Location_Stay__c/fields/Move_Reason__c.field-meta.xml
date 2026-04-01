@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Move_Reason__c</fullName>
+    <description>Reason the stay started.</description>
+    <label>Move Reason</label>
+    <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+            <value>
+                <fullName>Intake Placement</fullName>
+                <default>false</default>
+                <label>Intake Placement</label>
+            </value>
+            <value>
+                <fullName>Routine Move</fullName>
+                <default>false</default>
+                <label>Routine Move</label>
+            </value>
+            <value>
+                <fullName>Medical Isolation</fullName>
+                <default>false</default>
+                <label>Medical Isolation</label>
+            </value>
+            <value>
+                <fullName>Behavioural Management</fullName>
+                <default>false</default>
+                <label>Behavioural Management</label>
+            </value>
+            <value>
+                <fullName>Foster Transfer</fullName>
+                <default>false</default>
+                <label>Foster Transfer</label>
+            </value>
+            <value>
+                <fullName>Outcome Processing</fullName>
+                <default>false</default>
+                <label>Outcome Processing</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+            </valueSetDefinition>
+        </valueSet>
+</CustomField>

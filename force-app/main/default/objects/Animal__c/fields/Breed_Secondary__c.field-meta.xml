@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Breed_Secondary__c</fullName>
+    <description>Secondary breed or type description when known.</description>
+    <label>Secondary Breed</label>
+    <length>80</length>
+    <type>Text</type>
+</CustomField>

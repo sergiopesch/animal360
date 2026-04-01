@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description
+  >Tracks each placement of an episode in a housing unit over time.</description>
+    <enableActivities>false</enableActivities>
+    <enableReports>true</enableReports>
+    <label>Animal Location Stay</label>
+    <nameField>
+        <label>Location Stay Number</label>
+        <displayFormat>STAY-{00000}</displayFormat>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Animal Location Stays</pluralLabel>
+    <sharingModel>ControlledByParent</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>

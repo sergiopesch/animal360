@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Layout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <layoutSections>
+        <customLabel>true</customLabel>
+        <label>Relationship Details</label>
+        <layoutColumns>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Name</field>
+            </layoutItems>
+            <layoutItems>
+                <field>From_Animal__c</field>
+            </layoutItems>
+            <layoutItems>
+                <field>To_Animal__c</field>
+            </layoutItems>
+            <layoutItems>
+                <field>Relationship_Type__c</field>
+            </layoutItems>
+        </layoutColumns>
+        <layoutColumns>
+            <layoutItems>
+                <field>Start_Date__c</field>
+            </layoutItems>
+            <layoutItems>
+                <field>End_Date__c</field>
+            </layoutItems>
+            <layoutItems>
+                <field>Notes__c</field>
+            </layoutItems>
+        </layoutColumns>
+        <style>TwoColumnsTopToBottom</style>
+    </layoutSections>
+</Layout>

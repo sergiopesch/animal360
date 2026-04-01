@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Destination_Contact__c</fullName>
+    <description>Destination contact captured at outcome.</description>
+    <label>Destination Contact</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Outcome Event Contacts</relationshipLabel>
+    <relationshipName>Outcome_Event_Contacts</relationshipName>
+    <type>Lookup</type>
+</CustomField>
