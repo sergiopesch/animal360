@@ -194,6 +194,7 @@ function buildDomainState(domain, existingDomain) {
     inferredAffects: sanitizeString(prior.inferredAffects),
     actionRequired: prior.actionRequired === true,
     actionSummary: sanitizeString(prior.actionSummary),
+    actionSummaryDisabled: prior.actionRequired !== true,
     confidenceLevel: sanitizeString(
       prior.confidenceLevel || domain.defaultConfidence
     ),
@@ -228,9 +229,18 @@ function buildFormState(template, existingState, assessmentContext) {
     overallPositiveGrade: sanitizeString(prior.overallPositiveGrade),
     overallWelfareConcern: sanitizeString(prior.overallWelfareConcern),
     domain5MentalStateSummary: sanitizeString(prior.domain5MentalStateSummary),
-    domains: (template?.domains || []).map((domain) =>
-      buildDomainState(domain, priorDomainsByCode.get(domain.domainCode))
-    )
+    domains: (template?.domains || [])
+      .map((domain) =>
+        buildDomainState(domain, priorDomainsByCode.get(domain.domainCode))
+      )
+      .map((domain) => ({
+        ...domain,
+        indicatorCount: (domain.indicators || []).length,
+        visibleIndicatorCount: (domain.indicators || []).length,
+        requiredVisibleIndicatorCount: (domain.indicators || []).filter(
+          (indicator) => indicator.isRequired
+        ).length
+      }))
   };
 }
 
@@ -366,6 +376,49 @@ export default class A360WelfareAssessmentEntry extends LightningElement {
     return this.formState.domains || [];
   }
 
+  get showTemplatePrompt() {
+    return !this.isLoading && !this.hasTemplate && !this.hasError;
+  }
+
+  get templateHeaderTitle() {
+    if (this.hasTemplate && this.template?.templateName) {
+      return `${this.template.templateName} Assessment`;
+    }
+    return "Welfare Assessment";
+  }
+
+  get templateHeaderSubtitle() {
+    if (!this.hasTemplate) {
+      return "Select an episode and template to begin an evidence-driven welfare review.";
+    }
+    return "Capture structured observations, assess concern levels, and flag interventions with confidence.";
+  }
+
+  get totalDomainCount() {
+    return this.renderedDomains.length;
+  }
+
+  get totalIndicatorCount() {
+    return this.renderedDomains.reduce(
+      (total, domain) => total + (domain.indicatorCount || 0),
+      0
+    );
+  }
+
+  get visibleIndicatorCount() {
+    return this.renderedDomains.reduce(
+      (total, domain) => total + (domain.visibleIndicatorCount || 0),
+      0
+    );
+  }
+
+  get requiredVisibleIndicatorCount() {
+    return this.renderedDomains.reduce(
+      (total, domain) => total + (domain.requiredVisibleIndicatorCount || 0),
+      0
+    );
+  }
+
   async loadContext() {
     this.isLoading = true;
     this.loadError = "";
@@ -446,14 +499,25 @@ export default class A360WelfareAssessmentEntry extends LightningElement {
   handleDomainFieldChange(event) {
     const domainCode = event.target.dataset.domainCode;
     const fieldName = event.target.name;
+    const nextValue = readInputValue(event);
     const nextDomains = this.renderedDomains.map((domain) => {
       if (domain.domainCode !== domainCode) {
         return domain;
       }
 
+      if (fieldName === "actionRequired") {
+        const isActionRequired = nextValue === true;
+        return {
+          ...domain,
+          actionRequired: isActionRequired,
+          actionSummaryDisabled: !isActionRequired,
+          actionSummary: isActionRequired ? domain.actionSummary : ""
+        };
+      }
+
       return {
         ...domain,
-        [fieldName]: readInputValue(event)
+        [fieldName]: nextValue
       };
     });
 
@@ -553,17 +617,28 @@ export default class A360WelfareAssessmentEntry extends LightningElement {
   }
 
   applyVisibilityRules(formState) {
-    const domains = (formState.domains || []).map((domain) => ({
-      ...domain,
-      indicators: domain.indicators.map((indicator) => ({
+    const domains = (formState.domains || []).map((domain) => {
+      const indicators = domain.indicators.map((indicator) => ({
         ...indicator,
         isVisible: this.evaluateVisibleWhenRule(
           indicator.visibleWhenRule,
           formState.domains || [],
           indicator
         )
-      }))
-    }));
+      }));
+      const visibleIndicators = indicators.filter(
+        (indicator) => indicator.isVisible
+      );
+      return {
+        ...domain,
+        indicators,
+        indicatorCount: indicators.length,
+        visibleIndicatorCount: visibleIndicators.length,
+        requiredVisibleIndicatorCount: visibleIndicators.filter(
+          (indicator) => indicator.isRequired
+        ).length
+      };
+    });
 
     return {
       ...formState,

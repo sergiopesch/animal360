@@ -20,7 +20,7 @@
             <fieldType>DisplayText</fieldType>
             <isVisible>true</isVisible>
             <fieldText
-      >Enter the minimum Phase I details. For picklist-backed values, use the exact configured labels. Housing Unit Id should be the Salesforce record Id of the target housing unit.</fieldText>
+      >Enter the required intake details. For picklist values, use configured labels. Housing Unit ID must be the Salesforce record ID for the destination housing unit.</fieldText>
         </fields>
                 <fields>
             <name>Animal_Display_Name</name>
@@ -86,7 +86,7 @@
             <name>Housing_Unit_Id_Value</name>
             <fieldType>InputField</fieldType>
             <dataType>String</dataType>
-            <fieldText>Housing Unit Id</fieldText>
+            <fieldText>Housing Unit ID</fieldText>
             <isRequired>true</isRequired>
             <isVisible>true</isVisible>
         </fields>
@@ -107,7 +107,7 @@
             <fieldType>DisplayText</fieldType>
             <isVisible>true</isVisible>
             <fieldText
-      >Animal intake completed successfully. Animal Id: {!varAnimalId} Episode Id: {!varEpisodeId}.</fieldText>
+      >Animal intake completed successfully. Animal ID: {!varAnimalId}. Episode ID: {!varEpisodeId}.</fieldText>
         </fields>
     </screens>
     <screens>
@@ -124,7 +124,7 @@
             <fieldType>DisplayText</fieldType>
             <isVisible>true</isVisible>
             <fieldText
-      >The intake flow could not complete. {!$Flow.FaultMessage}</fieldText>
+      >The intake flow could not complete. Review the error and try again. {!$Flow.FaultMessage}</fieldText>
         </fields>
     </screens>
     <recordCreates>

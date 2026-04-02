@@ -20,13 +20,13 @@
             <fieldType>DisplayText</fieldType>
             <isVisible>true</isVisible>
             <fieldText
-      >Enter the episode Id and closeout details. Outcome Type must use one of the configured labels such as Adopted or Returned to Owner.</fieldText>
+      >Enter the Episode ID and closeout details. Outcome Type must use configured labels, such as Adopted or Returned to Owner.</fieldText>
         </fields>
                 <fields>
             <name>Episode_Id_Value</name>
             <fieldType>InputField</fieldType>
             <dataType>String</dataType>
-            <fieldText>Episode Id</fieldText>
+            <fieldText>Episode ID</fieldText>
             <isRequired>true</isRequired>
             <isVisible>true</isVisible>
         </fields>
@@ -75,7 +75,7 @@
             <fieldType>DisplayText</fieldType>
             <isVisible>true</isVisible>
             <fieldText
-      >Episode close completed successfully. Episode Id: {!Episode_Id_Value} Outcome Event Id: {!varOutcomeEventId}.</fieldText>
+      >Episode close completed successfully. Episode ID: {!Episode_Id_Value}. Outcome Event ID: {!varOutcomeEventId}.</fieldText>
         </fields>
     </screens>
     <screens>
@@ -92,7 +92,7 @@
             <fieldType>DisplayText</fieldType>
             <isVisible>true</isVisible>
             <fieldText
-      >The close flow could not complete. {!$Flow.FaultMessage}</fieldText>
+      >The close flow could not complete. Review the error and try again. {!$Flow.FaultMessage}</fieldText>
         </fields>
     </screens>
     <recordCreates>

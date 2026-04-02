@@ -20,13 +20,13 @@
             <fieldType>DisplayText</fieldType>
             <isVisible>true</isVisible>
             <fieldText
-      >Enter the episode Id, the destination housing unit Id, and the move details. Picklist-backed fields require the exact configured labels.</fieldText>
+      >Enter the Episode ID, destination Housing Unit ID, and move details. For picklist values, use configured labels.</fieldText>
         </fields>
                 <fields>
             <name>Episode_Id_Value</name>
             <fieldType>InputField</fieldType>
             <dataType>String</dataType>
-            <fieldText>Episode Id</fieldText>
+            <fieldText>Episode ID</fieldText>
             <isRequired>true</isRequired>
             <isVisible>true</isVisible>
         </fields>
@@ -34,7 +34,7 @@
             <name>New_Housing_Unit_Id_Value</name>
             <fieldType>InputField</fieldType>
             <dataType>String</dataType>
-            <fieldText>New Housing Unit Id</fieldText>
+            <fieldText>New Housing Unit ID</fieldText>
             <isRequired>true</isRequired>
             <isVisible>true</isVisible>
         </fields>
@@ -77,7 +77,7 @@
             <fieldType>DisplayText</fieldType>
             <isVisible>true</isVisible>
             <fieldText
-      >Animal move completed successfully. Episode Id: {!Episode_Id_Value} New Stay Id: {!varNewStayId}.</fieldText>
+      >Animal move completed successfully. Episode ID: {!Episode_Id_Value}. New Stay ID: {!varNewStayId}.</fieldText>
         </fields>
     </screens>
     <screens>
@@ -94,7 +94,7 @@
             <fieldType>DisplayText</fieldType>
             <isVisible>true</isVisible>
             <fieldText
-      >The move flow could not complete. {!$Flow.FaultMessage}</fieldText>
+      >The move flow could not complete. Review the error and try again. {!$Flow.FaultMessage}</fieldText>
         </fields>
     </screens>
     <recordUpdates>

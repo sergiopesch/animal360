@@ -63,7 +63,7 @@
             <fieldType>DisplayText</fieldType>
             <isVisible>true</isVisible>
             <fieldText
-      >Assessment saved successfully. Assessment Id: {!assessmentId}. Overall concern: {!overallConcern}. Immediate action required: {!immediateActionRequired}. Care Plan Id: {!carePlanId}.</fieldText>
+      >Assessment saved successfully. Assessment ID: {!assessmentId}. Overall concern: {!overallConcern}. Immediate action required: {!immediateActionRequired}. Care Plan ID: {!carePlanId}.</fieldText>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
@@ -80,7 +80,7 @@
             <fieldType>DisplayText</fieldType>
             <isVisible>true</isVisible>
             <fieldText
-      >The welfare assessment flow could not complete. {!$Flow.FaultMessage}</fieldText>
+      >The welfare assessment flow could not complete. Review the error and try again. {!$Flow.FaultMessage}</fieldText>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
