@@ -3,19 +3,34 @@
     title="Welfare Assessment Entry"
     icon-name="standard:scan_card"
   >
-    <div class="slds-var-p-around_medium">
+    <div class="entry-shell slds-var-p-around_medium">
+      <section class="hero-header slds-var-m-bottom_medium">
+        <p class="hero-eyebrow">Animal360 • Salesforce UX</p>
+        <h2 class="hero-title">{templateHeaderTitle}</h2>
+        <p class="hero-subtitle">{templateHeaderSubtitle}</p>
+      </section>
+
       <template if:true={isLoading}>
-        <lightning-spinner
-          alternative-text="Loading assessment template"
-        ></lightning-spinner>
+        <div class="status-region" aria-live="polite">
+          <lightning-spinner
+            alternative-text="Loading assessment template..."
+          ></lightning-spinner>
+        </div>
       </template>
 
       <template if:true={hasError}>
-        <div class="slds-text-color_error slds-var-m-bottom_medium">
+        <div
+          class="slds-text-color_error slds-var-m-bottom_medium slds-box slds-theme_error"
+          role="alert"
+          aria-live="assertive"
+        >
           {errorMessage}
         </div>
       </template>
 
+      <div class="section-heading slds-var-m-bottom_small">
+        Assessment Setup
+      </div>
       <div class="slds-grid slds-wrap slds-gutters slds-var-m-bottom_medium">
         <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
           <lightning-combobox
@@ -23,7 +38,7 @@
             label="Episode"
             value={episodeId}
             options={episodeOptions}
-            placeholder="Select an episode"
+            placeholder="Select an episode..."
             onchange={handleEpisodeChange}
           ></lightning-combobox>
         </div>
@@ -33,7 +48,7 @@
             label="Template"
             value={templateId}
             options={templateOptions}
-            placeholder="Select a template"
+            placeholder="Select a template..."
             onchange={handleTemplateChange}
           ></lightning-combobox>
         </div>
@@ -48,16 +63,51 @@
         </div>
       </div>
 
+      <template if:true={showTemplatePrompt}>
+        <div class="slds-box slds-theme_default slds-var-m-bottom_medium">
+          Select an episode and assessment template to start entering welfare
+          observations.
+        </div>
+      </template>
+
       <template if:true={hasTemplate}>
-        <div class="slds-box slds-theme_shade slds-var-m-bottom_medium">
+        <div
+          class="template-banner slds-box slds-theme_shade slds-var-m-bottom_medium"
+        >
           <div class="slds-text-title_caps">Template</div>
           <div class="slds-text-heading_small">{template.templateName}</div>
-          <div class="slds-text-body_small">
-            {template.templateCode} | {template.species} | {template.context} |
-            v{template.version}
+          <div class="template-meta slds-var-m-top_x-small">
+            <span class="slds-badge template-badge"
+              >{template.templateCode}</span
+            >
+            <span class="slds-badge template-badge">{template.species}</span>
+            <span class="slds-badge template-badge">{template.context}</span>
+            <span class="slds-badge template-badge">v{template.version}</span>
           </div>
         </div>
 
+        <div class="kpi-grid slds-var-m-bottom_medium">
+          <article class="kpi-card">
+            <p class="kpi-label">Domains</p>
+            <p class="kpi-value">{totalDomainCount}</p>
+          </article>
+          <article class="kpi-card">
+            <p class="kpi-label">Indicators</p>
+            <p class="kpi-value">{totalIndicatorCount}</p>
+          </article>
+          <article class="kpi-card">
+            <p class="kpi-label">Visible Now</p>
+            <p class="kpi-value">{visibleIndicatorCount}</p>
+          </article>
+          <article class="kpi-card">
+            <p class="kpi-label">Required Now</p>
+            <p class="kpi-value">{requiredVisibleIndicatorCount}</p>
+          </article>
+        </div>
+
+        <div class="section-heading slds-var-m-bottom_small">
+          Assessment Summary
+        </div>
         <div class="slds-grid slds-wrap slds-gutters slds-var-m-bottom_medium">
           <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
             <lightning-input
@@ -149,11 +199,25 @@
         <template for:each={renderedDomains} for:item="domain">
           <section
             key={domain.domainCode}
-            class="slds-box slds-var-m-bottom_large"
+            class="domain-section slds-box slds-var-m-bottom_large"
           >
             <div class="slds-var-m-bottom_medium">
-              <div class="slds-text-title_caps">{domain.domainCode}</div>
-              <div class="slds-text-heading_small">{domain.domainLabel}</div>
+              <div class="domain-header-row slds-var-m-bottom_x-small">
+                <div>
+                  <div class="slds-text-title_caps">{domain.domainCode}</div>
+                  <div class="slds-text-heading_small">
+                    {domain.domainLabel}
+                  </div>
+                </div>
+                <div class="domain-meta">
+                  <span class="slds-badge domain-meta-badge">
+                    {domain.visibleIndicatorCount} visible
+                  </span>
+                  <span class="slds-badge domain-meta-badge">
+                    {domain.requiredVisibleIndicatorCount} required
+                  </span>
+                </div>
+              </div>
               <p class="slds-text-body_small slds-var-m-top_x-small">
                 {domain.guidanceText}
               </p>
@@ -242,6 +306,7 @@
                     name="actionSummary"
                     label="Action Summary"
                     value={domain.actionSummary}
+                    disabled={domain.actionSummaryDisabled}
                     onchange={handleDomainFieldChange}
                   ></lightning-textarea>
                 </div>
@@ -252,12 +317,19 @@
               <template if:true={indicator.isVisible}>
                 <div
                   key={indicator.indicatorKey}
-                  class="slds-box slds-theme_shade slds-var-m-bottom_medium"
+                  class="indicator-card slds-box slds-theme_shade slds-var-m-bottom_medium"
                 >
                   <div class="slds-grid slds-wrap slds-gutters">
                     <div class="slds-col slds-size_1-of-1">
-                      <div class="slds-text-title_bold">
-                        {indicator.indicatorLabel}
+                      <div class="indicator-header">
+                        <div class="slds-text-title_bold">
+                          {indicator.indicatorLabel}
+                        </div>
+                        <template if:true={indicator.isRequired}>
+                          <span class="slds-badge indicator-required"
+                            >Required</span
+                          >
+                        </template>
                       </div>
                       <template if:true={indicator.helpText}>
                         <p class="slds-text-body_small slds-var-m-top_x-small">
