@@ -1,35 +1,42 @@
 # animal360
 
-`animal360` is a single-package Salesforce DX application for animal welfare organisations. It combines Phase I operational workflows with the Phase II Welfare Evidence MVP so teams can manage animal intake and episode lifecycle, capture structured welfare evidence, evaluate risk, and coordinate follow-up care in Salesforce.
+![Salesforce DX](https://img.shields.io/badge/Salesforce-DX-00A1E0?logo=salesforce&logoColor=white)
+![API 66.0](https://img.shields.io/badge/API-66.0-0176D3)
+![Package](https://img.shields.io/badge/Package-Single%20DX-0B5CAB)
+![Phase II](https://img.shields.io/badge/Welfare%20Evidence-MVP-1589EE)
+![CI](https://github.com/sergiopesch/animal360/actions/workflows/ci.yml/badge.svg)
 
-## Current Scope
+**Salesforce-native animal welfare operations and welfare evidence management.**  
+Track animals, episodes, housing, welfare assessments, clinical follow-up, and care-plan automation in a single Salesforce DX application.
 
-The repository currently includes:
+## What It Does
 
-- Phase I operational foundations:
+`animal360` combines two major delivery layers:
+
+- **Phase I operations**
   - animal and episode records
   - housing and location-stay tracking
-  - intake, move, and closeout screen flows
-  - shared current-state rollup services
-- Phase II welfare evidence foundations:
+  - intake, move, and closeout workflows
+  - shared current-state rollups
+- **Phase II welfare evidence**
   - metadata-driven assessment template configuration
-  - runtime assessment templates and template assignment records
+  - runtime welfare assessment capture
   - `Welfare_Assessment__c`, `Welfare_Domain_Summary__c`, and `Welfare_Observation__c`
   - `Care_Plan__c`, `Care_Plan_Action__c`, `Clinical_Event__c`, and `Human_Animal_Interaction__c`
-  - the `a360WelfareAssessmentEntry` LWC-assisted assessment flow
-  - risk evaluation, care-plan auto-create, and review-reminder automation
-  - Phase II report types, starter reports, and permission-set updates
+  - risk evaluation, care-plan auto-create, and review reminders
+  - Phase II reporting and permission-set model
 
 ## Repository Layout
 
 - `force-app/main/default`: primary Salesforce metadata and source
-- `docs`: implementation assumptions and delivery backlog documents
-- `scripts`: metadata generation helpers and small CLI support assets
-- `manifest/package.xml`: deployable metadata manifest for the current package scope
+- `docs`: implementation assumptions, delivery backlog, and audit inventory
+- `scripts`: metadata generation helpers and support assets
+- `manifest/package.xml`: deployable package manifest
+- `config/project-scratch-def.json`: scratch-org definition baseline
 
-## Key Entry Points
+## App Surface
 
-Main user-facing or operational automation entry points in the repo include:
+Primary flow entry points:
 
 - `A360_Intake_Flow`
 - `A360_Move_Animal_Flow`
@@ -41,7 +48,7 @@ Main user-facing or operational automation entry points in the repo include:
 - `A360_Care_Plan_Auto_Create_Flow`
 - `A360_Review_Due_Reminder_Flow`
 
-Key Apex services include:
+Primary Apex services:
 
 - `A360AssessmentTemplateService`
 - `A360AssessmentPersistenceService`
@@ -50,41 +57,32 @@ Key Apex services include:
 - `A360ReviewReminderService`
 - `A360AnimalRollupService`
 
-## Prerequisites
+## Requirements
 
-You will need:
+- Salesforce CLI with `sf`
+- access to a Salesforce org for deployment
+- Node.js and npm for local tooling
 
-- Salesforce CLI with the `sf` command available
-- access to a target Salesforce org
-- Node.js and npm for repo tooling
+The project is configured as:
 
-The project is configured as a single-package DX workspace in `sfdx-project.json` with API version `66.0`. The implementation docs and validation commands assume an authenticated org alias of `animal360`.
+- single-package Salesforce DX
+- package root: `force-app`
+- namespace: empty
+- source API version: `66.0`
 
-## Getting Started
+## Quick Start
 
-1. Clone the repository and install Node-based tooling:
-
-   ```bash
-   git clone https://github.com/sergiopesch/animal360.git
-   cd animal360
-   npm install
-   ```
-
-2. Authenticate to your target org, for example:
-
-   ```bash
-   sf org login web -a animal360
-   ```
-
-3. Deploy the current package:
-
-   ```bash
-   sf project deploy start -o animal360 -x manifest/package.xml
-   ```
+```bash
+git clone https://github.com/sergiopesch/animal360.git
+cd animal360
+npm install
+sf org login web -a animal360
+sf project deploy start -o animal360 -x manifest/package.xml
+```
 
 ## Phase II Bootstrap
 
-After deploying Phase II metadata for the first time, seed the packaged assessment template defaults into the runtime template objects by executing the following as anonymous Apex:
+After the first Phase II deployment, seed the packaged assessment template defaults into runtime records:
 
 ```apex
 A360AssessmentTemplateService.SeedResult result =
@@ -92,38 +90,47 @@ A360AssessmentTemplateService.SeedResult result =
 System.debug(JSON.serializePretty(result));
 ```
 
-This materializes the packaged defaults into:
+This materializes packaged defaults into:
 
 - `Assessment_Template__c`
 - `Template_Domain_Definition__c`
 - `Template_Indicator_Assignment__c`
 
-Review reminders are intentionally packaged as reusable automation, not as a hardcoded org schedule. If you want scheduled reminder creation, invoke `A360_Review_Due_Reminder_Flow` from your org-specific scheduling strategy.
+Review reminders are intentionally packaged as reusable automation rather than as a hardcoded org schedule. To schedule reminder generation, invoke `A360_Review_Due_Reminder_Flow` from your org-specific automation strategy.
 
-## Local Tooling And Validation
+## DevOps And Validation
 
-Lint and test the repo tooling with:
+Local repo checks:
 
 ```bash
 npm run lint
 npm test
+npm run prettier:verify
 ```
 
-Run the focused Phase II Apex regression suite with:
+Focused Phase II Apex regression:
 
 ```bash
 sf apex run test -o animal360 --tests A360Phase2ServiceTest --result-format human --code-coverage --wait 30
 ```
 
-For iterative metadata deployment during development, deploy a narrower path instead of the full manifest, for example:
+Example narrow deploy during development:
 
 ```bash
 sf project deploy start -o animal360 --source-dir force-app/main/default/lwc/a360WelfareAssessmentEntry
 ```
 
-## Metadata Generation Helpers
+Current repository workflow notes:
 
-The repository includes generation scripts used to scaffold or regenerate major metadata sets:
+- formatting is enforced through `prettier`
+- LWC JavaScript is enforced through `eslint`
+- staged LWC changes run related Jest checks through `lint-staged`
+- GitHub Actions runs formatting verification, lint, and LWC unit tests on pushes and pull requests
+- org-backed deployment validation remains CLI/org-driven because the repository does not commit org credentials or a CI auth flow
+
+## Metadata Generators
+
+The repository includes script-backed metadata generation:
 
 - `scripts/generate-phase1-metadata.mjs`
 - `scripts/generate-phase2-metadata.mjs`
@@ -131,17 +138,22 @@ The repository includes generation scripts used to scaffold or regenerate major 
 
 If you rerun these scripts, review the generated metadata before deploying or committing.
 
-## Project Documentation
+## Documentation
 
-Start with these docs for architecture and delivery context:
+Start here for implementation context:
 
 - `docs/phase1-implementation-assumptions.md`
 - `docs/phase2-implementation-assumptions.md`
 - `docs/phase2-build-backlog.md`
+- `docs/application-inventory.md`
 
 ## Contributing
 
-Contributions are welcome. Before opening a pull request, run the repo formatting, lint, and targeted validation commands relevant to your change.
+Before opening a pull request:
+
+- run formatting, lint, and targeted validation for your change
+- review generated metadata if any generator script was used
+- confirm the target org deploys cleanly for the changed metadata scope
 
 ## License
 
