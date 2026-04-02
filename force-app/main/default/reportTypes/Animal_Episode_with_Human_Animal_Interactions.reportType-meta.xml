@@ -4,7 +4,7 @@
     <category>other</category>
     <deployed>true</deployed>
     <description
-  >Phase II report type for episode and interaction reporting.</description>
+  >Report type for episode and human-animal interaction reporting.</description>
     <fullName>Animal_Episode_with_Human_Animal_Interactions</fullName>
     <join>
         <outerJoin>true</outerJoin>

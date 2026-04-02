@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Destination_Account__c</fullName>
-    <description>Destination account captured at outcome.</description>
-    <label>Destination Account</label>
+    <description>Destination organisation captured at outcome.</description>
+    <label>Destination Organisation</label>
     <referenceTo>Account</referenceTo>
     <relationshipLabel>Outcome Events</relationshipLabel>
     <relationshipName>Outcome_Events</relationshipName>

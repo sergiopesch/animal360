@@ -2,7 +2,7 @@
 <CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
     <deploymentStatus>Deployed</deploymentStatus>
     <description
-  >Editable runtime assessment template used to drive Phase II welfare capture.</description>
+  >Editable runtime assessment template used to drive welfare evidence capture.</description>
     <enableActivities>false</enableActivities>
     <enableReports>true</enableReports>
     <label>Assessment Template</label>

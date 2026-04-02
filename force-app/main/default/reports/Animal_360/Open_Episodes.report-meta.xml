@@ -19,7 +19,7 @@
         <field>Animal_Episode__c.Is_Current__c</field>
     </columns>
     <description
-  >Phase I starter report showing episodes that are currently open.</description>
+  >Operational report showing care episodes that are currently open.</description>
     <filter>
         <booleanFilter>1</booleanFilter>
         <criteriaItems>

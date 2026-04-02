@@ -22,7 +22,7 @@
     </classAccesses>
 
     <description
-  >Assessment-entry access for Phase II welfare evidence capture.</description>
+  >Assessment-entry access for Love 4 Animals welfare evidence capture and review workflows.</description>
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.A360_Animal_360_Notes__c</field>
@@ -941,7 +941,7 @@ A360_Welfare_Assessment_Flow;
 A360_Assessment_Risk_Evaluation_Flow;
     </flow>
     </flowAccesses>
-    <label>Animal360 Assessor</label>
+    <label>Love 4 Animals Assessor</label>
     <objectPermissions>
         <allowCreate>false</allowCreate>
         <allowDelete>false</allowDelete>

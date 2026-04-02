@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>A360_Partner_Type__c</fullName>
-    <description>Role this account plays in Animal 360 operations.</description>
+    <description
+  >Role this partner organisation plays in Love 4 Animals operations.</description>
     <inlineHelpText
-  >Use this field to classify the partner organisation for Animal 360.</inlineHelpText>
+  >Use this field to classify the partner organisation for Love 4 Animals.</inlineHelpText>
     <label>A360 Partner Type</label>
     <type>Picklist</type>
         <valueSet>

@@ -3,7 +3,7 @@
     <fullName>Current_Episode__c</fullName>
     <description>System-maintained pointer to the active episode.</description>
     <inlineHelpText
-  >This field is system maintained by Phase I automation.</inlineHelpText>
+  >This field is system maintained by operational automation.</inlineHelpText>
     <label>Current Episode</label>
     <referenceTo>Animal_Episode__c</referenceTo>
     <relationshipLabel>Current Animals</relationshipLabel>

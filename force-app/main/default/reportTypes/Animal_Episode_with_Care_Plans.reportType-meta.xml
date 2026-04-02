@@ -4,7 +4,7 @@
     <category>other</category>
     <deployed>true</deployed>
     <description
-  >Phase II report type for episode and care plan reporting.</description>
+  >Report type for episode and care plan outcome reporting.</description>
     <fullName>Animal_Episode_with_Care_Plans</fullName>
     <join>
         <outerJoin>true</outerJoin>

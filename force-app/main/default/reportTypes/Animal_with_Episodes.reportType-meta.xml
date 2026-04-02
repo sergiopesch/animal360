@@ -4,7 +4,7 @@
     <category>other</category>
     <deployed>true</deployed>
     <description
-  >Phase I report type for animal and episode reporting.</description>
+  >Report type for animal profiles and care episode reporting.</description>
     <fullName>Animal_with_Episodes</fullName>
     <join>
         <outerJoin>true</outerJoin>

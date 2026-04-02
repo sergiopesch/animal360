@@ -934,7 +934,7 @@ const customMetadataRecords = [
     typeApiName: 'Animal360_Risk_Rule__mdt',
     recordName: `Risk_Rule_${ruleOrder}`,
     label: `Risk Rule ${ruleOrder}`,
-    description: `Packaged risk rule ${ruleOrder} for Phase II welfare evaluation.`,
+    description: `Packaged risk rule ${ruleOrder} for welfare evaluation workflows.`,
     values: [
       { field: 'Rule_Order__c', type: 'double', value: ruleOrder },
       { field: 'Indicator_Key__c', type: 'string', value: indicatorKey },
@@ -950,7 +950,7 @@ const customMetadataRecords = [
     typeApiName: 'Animal360_Automation_Setting__mdt',
     recordName: 'DEFAULT',
     label: 'Default Automation',
-    description: 'Default packaged automation settings for Phase II.',
+    description: 'Default packaged automation settings for welfare and care workflows.',
     values: [
       { field: 'Setting_Key__c', type: 'string', value: 'DEFAULT' },
       { field: 'Auto_Create_Care_Plan__c', type: 'boolean', value: 'true' },
@@ -1001,7 +1001,7 @@ const customObjects = [
     apiName: 'Assessment_Template__c',
     label: 'Assessment Template',
     pluralLabel: 'Assessment Templates',
-    description: 'Editable runtime assessment template used to drive Phase II welfare capture.',
+    description: 'Editable runtime assessment template used to drive welfare evidence capture.',
     enableActivities: false,
     enableReports: true,
     sharingModel: 'ReadWrite',
@@ -1749,27 +1749,27 @@ const customTabs = [
   {
     apiName: 'Assessment_Template__c',
     motif: 'Custom17: Sprocket',
-    description: 'Assessment Template navigation tab for Animal 360 Phase II template administration.',
+    description: 'Assessment template navigation tab for Love 4 Animals welfare rubric administration.',
   },
   {
     apiName: 'Welfare_Assessment__c',
     motif: 'Custom23: Pencil',
-    description: 'Welfare Assessment navigation tab for Animal 360 Phase II evidence capture.',
+    description: 'Welfare assessment navigation tab for Love 4 Animals evidence capture.',
   },
   {
     apiName: 'Care_Plan__c',
     motif: 'Custom18: Form',
-    description: 'Care Plan navigation tab for Animal 360 Phase II interventions.',
+    description: 'Care plan navigation tab for Love 4 Animals interventions.',
   },
   {
     apiName: 'Clinical_Event__c',
     motif: 'Custom61: Ambulance',
-    description: 'Clinical Event navigation tab for Animal 360 Phase II clinical records.',
+    description: 'Clinical event navigation tab for Love 4 Animals clinical records.',
   },
   {
     apiName: 'Human_Animal_Interaction__c',
     motif: 'Custom39: Telescope',
-    description: 'Human Animal Interaction navigation tab for Animal 360 Phase II interaction records.',
+    description: 'Human-animal interaction navigation tab for Love 4 Animals interaction records.',
   },
 ];
 
@@ -1777,19 +1777,19 @@ const customPermissions = [
   {
     apiName: 'A360_Manage_Assessment_Templates',
     label: 'Manage Assessment Templates',
-    description: 'Allows a user to maintain Animal 360 assessment template runtime records and seed configuration.',
+    description: 'Allows a user to maintain Love 4 Animals assessment template runtime records and seed configuration.',
   },
   {
     apiName: 'A360_Welfare_Escalation_Override',
     label: 'Welfare Escalation Override',
-    description: 'Allows a user to override default escalation or care-plan automation in Animal 360.',
+    description: 'Allows a user to override default escalation or care-plan automation in Love 4 Animals workflows.',
   },
 ];
 
 const customApp = {
   apiName: 'Animal_360',
-  label: 'Animal 360',
-  description: 'Animal 360 application updated for Phase II welfare evidence, care planning, and clinical operations.',
+  label: 'Love 4 Animals',
+  description: 'Love 4 Animals application for welfare evidence, care planning, and clinical operations.',
   defaultLandingTab: 'Animal__c',
   tabs: [
     'Animal__c',
@@ -1821,7 +1821,7 @@ const episodeLayout = {
       ],
     },
     {
-      label: 'Phase II Current State',
+      label: 'Current State',
       columns: [
         ['Current_Location_Stay__c', 'Current_Welfare_Level__c', 'Current_Clinical_Priority__c'],
         ['Next_Review_Date__c', 'Outcome_Account__c', 'Outcome_Contact__c'],
@@ -1931,7 +1931,7 @@ async function main() {
   await writeTabsAndApp();
   await writeCustomPermissions();
   await writeManifest();
-  process.stdout.write('Phase II metadata foundation generated.\n');
+  process.stdout.write('Welfare metadata foundation generated.\n');
 }
 
 main().catch((error) => {

@@ -5,7 +5,7 @@
   xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 >
     <description
-  >Packaged risk rule 1 for Phase II welfare evaluation.</description>
+  >Packaged risk rule 1 for welfare evaluation workflows.</description>
     <label>Risk Rule 1</label>
     <protected>false</protected>
     <values>

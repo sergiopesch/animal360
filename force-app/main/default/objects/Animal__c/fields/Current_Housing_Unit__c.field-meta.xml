@@ -4,7 +4,7 @@
     <description
   >System-maintained pointer to the active housing unit.</description>
     <inlineHelpText
-  >This field is system maintained by Phase I automation.</inlineHelpText>
+  >This field is system maintained by operational automation.</inlineHelpText>
     <label>Current Housing Unit</label>
     <referenceTo>Housing_Unit__c</referenceTo>
     <relationshipLabel>Currently Housed Animals</relationshipLabel>

@@ -2,7 +2,7 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>A360_Preferred_Contact_Channel__c</fullName>
     <description
-  >Preferred contact channel for Animal 360 operations.</description>
+  >Preferred contact channel for Love 4 Animals operations.</description>
     <label>A360 Preferred Contact Channel</label>
     <type>Picklist</type>
         <valueSet>

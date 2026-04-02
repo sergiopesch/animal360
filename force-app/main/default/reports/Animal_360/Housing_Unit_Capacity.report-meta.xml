@@ -19,7 +19,7 @@
         <field>Housing_Unit__c.Is_Active__c</field>
     </columns>
     <description
-  >Phase I starter report showing configured housing unit capacity.</description>
+  >Operational report showing configured housing unit capacity and occupancy readiness.</description>
 
     <folderName>Animal_360</folderName>
     <format>Tabular</format>

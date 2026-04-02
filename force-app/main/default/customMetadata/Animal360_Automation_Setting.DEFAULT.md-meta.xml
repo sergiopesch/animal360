@@ -5,7 +5,7 @@
   xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 >
     <description
-  >Default packaged automation settings for Phase II.</description>
+  >Default packaged automation settings for welfare assessment and care-plan workflows.</description>
     <label>Default Automation</label>
     <protected>false</protected>
     <values>

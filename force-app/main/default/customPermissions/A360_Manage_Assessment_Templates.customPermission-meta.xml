@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <CustomPermission xmlns="http://soap.sforce.com/2006/04/metadata">
     <description
-  >Allows a user to maintain Animal 360 assessment template runtime records and seed configuration.</description>
+  >Allows a user to maintain Love 4 Animals assessment template runtime records and seed configuration.</description>
     <label>Manage Assessment Templates</label>
 </CustomPermission>

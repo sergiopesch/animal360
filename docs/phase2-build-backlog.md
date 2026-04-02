@@ -1,10 +1,10 @@
-# Phase II Build Backlog
+# Welfare And Care Build Backlog
 
 ## Baseline
 
-- Phase I metadata, Apex integrity services, and the shared `A360_Animal_Current_State_Rollup_Flow` are already present in `force-app/main/default`.
+- Core operational metadata, Apex integrity services, and the shared `A360_Animal_Current_State_Rollup_Flow` are already present in `force-app/main/default`.
 - No separate package-structure document exists in the repo, so package assumptions are recorded in `docs/phase2-implementation-assumptions.md`.
-- Phase II delivery remains single-package DX metadata rooted at `force-app`.
+- Welfare and care delivery remains single-package DX metadata rooted at `force-app`.
 
 ## Delivery Spine
 
@@ -26,7 +26,7 @@
 - Manifest:
   - expand `manifest/package.xml` for `CustomMetadata`, `CustomPermission`, `Dashboard`, `DashboardFolder`, `LightningComponentBundle`, and `ListView`
 - Apex:
-  - phase II seed and service entry points
+  - welfare seed and service entry points
 - Validation:
   - confirm package path remains `force-app`
   - confirm deployment target alias remains `animal360`
@@ -85,7 +85,7 @@
 
 ### Batch 3: Evidence schema and current-state extensions
 
-- Phase II extensions to existing objects:
+- Welfare extensions to existing objects:
   - `objects/Animal_Episode__c/fields/Current_Welfare_Level__c.field-meta.xml`
   - `objects/Animal_Episode__c/fields/Current_Clinical_Priority__c.field-meta.xml`
   - `objects/Animal_Episode__c/fields/Next_Review_Date__c.field-meta.xml`
@@ -132,8 +132,8 @@
   - `applications/Animal_360.app-meta.xml`
   - new custom tabs for welfare and care-plan objects
 - Report metadata:
-  - phase II report types
-  - phase II starter reports
+  - welfare report types
+  - welfare starter reports
   - dashboard folder and dashboards
 
 ### Batch 6: Assessment and risk automation
@@ -144,7 +144,7 @@
   - care-plan auto-create service
   - review reminder task service
   - rollup service updates for current welfare propagation
-  - focused phase II test class coverage
+  - focused welfare test class coverage
 - Lightning web components:
   - dynamic assessment-entry screen component bundle
 - Flows:
@@ -177,4 +177,4 @@
 - Handoff:
   - residual risks
   - validated workstreams
-  - follow-on items for Phase III
+  - follow-on items for future optimisation iterations

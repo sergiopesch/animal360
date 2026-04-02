@@ -58,7 +58,7 @@ Current repository inventory at a glance:
 
 ### Runtime Custom Objects
 
-Phase I operational objects:
+Core operational objects:
 
 - `Animal__c`
 - `Animal_Episode__c`
@@ -69,7 +69,7 @@ Phase I operational objects:
 - `Intake_Event__c`
 - `Outcome_Event__c`
 
-Phase II welfare, template, and intervention objects:
+Welfare, template, and intervention objects:
 
 - `Assessment_Template__c`
 - `Template_Domain_Definition__c`
@@ -105,13 +105,13 @@ Phase II welfare, template, and intervention objects:
 
 Source: `force-app/main/default/permissionsets`
 
-| API name                  | Description                                                                            | Notable access scope                                                                                                                    | Custom permissions granted                                             | Flow access                                                                                                                              |
-| ------------------------- | -------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| `Animal360_Admin`         | Administrative Phase I and Phase II access for Animal 360.                             | Full CRUD plus broad admin access across the application metadata and runtime objects.                                                  | `A360_Manage_Assessment_Templates`, `A360_Welfare_Escalation_Override` | All application flows                                                                                                                    |
-| `Animal360_Care_Manager`  | Operational Phase I and Phase II access for care, welfare, and intervention workflows. | CRUD on core operational, welfare, care-plan, and interaction records; read-only on template/config and clinical event objects.         | `A360_Welfare_Escalation_Override`                                     | Intake, move, close, rollup, welfare assessment, risk evaluation, care plan, auto-create, reminder                                       |
-| `Animal360_Clinical_User` | Clinical-event and follow-up access for Phase II clinical workflows.                   | Edit access focused on `Clinical_Event__c` and `Care_Plan_Action__c`; most other app records are read-only.                             | None                                                                   | `A360_Assessment_Risk_Evaluation_Flow`, `A360_Create_Care_Plan_Flow`, `A360_Care_Plan_Auto_Create_Flow`, `A360_Review_Due_Reminder_Flow` |
-| `Animal360_Assessor`      | Assessment-entry access for Phase II welfare evidence capture.                         | Create and edit access for welfare assessments, domain summaries, observations, and interactions; most other app records are read-only. | None                                                                   | `A360_Welfare_Assessment_Flow`, `A360_Assessment_Risk_Evaluation_Flow`                                                                   |
-| `Animal360_Read_Only`     | Read-only Phase I and Phase II reporting and lookup access for Animal 360.             | Read-only and reporting-focused access across Animal 360 operational and welfare records.                                               | None                                                                   | None                                                                                                                                     |
+| API name                  | Description                                                                 | Notable access scope                                                                                                                    | Custom permissions granted                                             | Flow access                                                                                                                              |
+| ------------------------- | --------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `Animal360_Admin`         | Administrative access for Love 4 Animals operational and welfare workflows. | Full CRUD plus broad admin access across the application metadata and runtime objects.                                                  | `A360_Manage_Assessment_Templates`, `A360_Welfare_Escalation_Override` | All application flows                                                                                                                    |
+| `Animal360_Care_Manager`  | Operational access for care, welfare, and intervention workflows.           | CRUD on core operational, welfare, care-plan, and interaction records; read-only on template/config and clinical event objects.         | `A360_Welfare_Escalation_Override`                                     | Intake, move, close, rollup, welfare assessment, risk evaluation, care plan, auto-create, reminder                                       |
+| `Animal360_Clinical_User` | Clinical-event and follow-up access for clinical workflows.                 | Edit access focused on `Clinical_Event__c` and `Care_Plan_Action__c`; most other app records are read-only.                             | None                                                                   | `A360_Assessment_Risk_Evaluation_Flow`, `A360_Create_Care_Plan_Flow`, `A360_Care_Plan_Auto_Create_Flow`, `A360_Review_Due_Reminder_Flow` |
+| `Animal360_Assessor`      | Assessment-entry access for welfare evidence capture.                       | Create and edit access for welfare assessments, domain summaries, observations, and interactions; most other app records are read-only. | None                                                                   | `A360_Welfare_Assessment_Flow`, `A360_Assessment_Risk_Evaluation_Flow`                                                                   |
+| `Animal360_Read_Only`     | Read-only reporting and lookup access for Love 4 Animals data.              | Read-only and reporting-focused access across Love 4 Animals operational and welfare records.                                           | None                                                                   | None                                                                                                                                     |
 
 ## Custom Permissions
 
@@ -266,7 +266,7 @@ Welfare and intervention layouts:
 - Purpose: Core animal record for intake, housing, episode management, and current-state reporting.
 - Label: `Animal`
 - Sharing model: `ReadWrite`
-- Phase: `Phase I`
+- Workstream: `Core Operations`
 - Source: `force-app/main/default/objects/Animal__c`
 
 | API name                  | Label                  | Type     | Description                                                         |
@@ -277,7 +277,7 @@ Welfare and intervention layouts:
 | `Current_Episode__c`      | Current Episode        | Lookup   | System-maintained pointer to the active episode.                    |
 | `Current_Housing_Unit__c` | Current Housing Unit   | Lookup   | System-maintained pointer to the active housing unit.               |
 | `Current_Status__c`       | Current Status         | Picklist | System-maintained lifecycle status summary.                         |
-| `Current_Welfare_Risk__c` | Current Welfare Risk   | Picklist | Current welfare risk flag for Phase I reporting.                    |
+| `Current_Welfare_Risk__c` | Current Welfare Risk   | Picklist | Current welfare risk flag for operational reporting.                |
 | `Date_of_Birth__c`        | Date of Birth          | Date     | Confirmed or best-known date of birth.                              |
 | `Date_of_Death__c`        | Date of Death          | Date     | Known date of death.                                                |
 | `Display_Name__c`         | Display Name           | Text     | User-facing display name for the animal.                            |
@@ -299,7 +299,7 @@ Validation rules:
 - Purpose: Bounded period of care for an animal.
 - Label: `Animal Episode`
 - Sharing model: `ControlledByParent`
-- Phase: `Phase I`
+- Workstream: `Core Operations`
 - Source: `force-app/main/default/objects/Animal_Episode__c`
 
 | API name                       | Label                     | Type         | Description                                                                    |
@@ -330,7 +330,7 @@ Validation rules:
 - Purpose: Operational and external identifiers assigned to an animal.
 - Label: `Animal Identifier`
 - Sharing model: `ControlledByParent`
-- Phase: `Phase I`
+- Workstream: `Core Operations`
 - Source: `force-app/main/default/objects/Animal_Identifier__c`
 
 | API name              | Label            | Type         | Description                                                    |
@@ -353,7 +353,7 @@ Validation rules:
 - Purpose: Placement history of an episode in a housing unit over time.
 - Label: `Animal Location Stay`
 - Sharing model: `ControlledByParent`
-- Phase: `Phase I`
+- Workstream: `Core Operations`
 - Source: `force-app/main/default/objects/Animal_Location_Stay__c`
 
 | API name            | Label           | Type         | Description                                             |
@@ -376,7 +376,7 @@ Validation rules:
 - Purpose: Important operational relationship between animals.
 - Label: `Animal Relationship`
 - Sharing model: `ReadWrite`
-- Phase: `Phase I`
+- Workstream: `Core Operations`
 - Source: `force-app/main/default/objects/Animal_Relationship__c`
 
 | API name               | Label             | Type         | Description                               |
@@ -397,13 +397,13 @@ Validation rules:
 - Purpose: Physical or virtual placement location.
 - Label: `Housing Unit`
 - Sharing model: `ReadWrite`
-- Phase: `Phase I`
+- Workstream: `Core Operations`
 - Source: `force-app/main/default/objects/Housing_Unit__c`
 
 | API name               | Label             | Type         | Description                                          |
 | ---------------------- | ----------------- | ------------ | ---------------------------------------------------- |
 | `Capacity__c`          | Capacity          | Number       | Nominal capacity for the housing unit.               |
-| `Current_Occupancy__c` | Current Occupancy | Number       | Phase I reporting field for current occupancy.       |
+| `Current_Occupancy__c` | Current Occupancy | Number       | Operational reporting field for current occupancy.   |
 | `Housing_Type__c`      | Housing Type      | Picklist     | Classification for the housing unit.                 |
 | `Is_Active__c`         | Is Active         | Checkbox     | Marks whether the housing unit is available for use. |
 | `Notes__c`             | Notes             | LongTextArea | Operational notes about the housing unit.            |
@@ -419,7 +419,7 @@ Validation rules:
 - Purpose: Intake transaction that opened an episode.
 - Label: `Intake Event`
 - Sharing model: `ControlledByParent`
-- Phase: `Phase I`
+- Workstream: `Core Operations`
 - Source: `force-app/main/default/objects/Intake_Event__c`
 
 | API name                 | Label               | Type         | Description                                  |
@@ -440,7 +440,7 @@ Validation rules:
 - Purpose: Closing transaction for an episode.
 - Label: `Outcome Event`
 - Sharing model: `ControlledByParent`
-- Phase: `Phase I`
+- Workstream: `Core Operations`
 - Source: `force-app/main/default/objects/Outcome_Event__c`
 
 | API name                 | Label               | Type         | Description                                |
@@ -461,7 +461,7 @@ Validation rules:
 - Purpose: Editable runtime assessment template used to drive welfare capture.
 - Label: `Assessment Template`
 - Sharing model: `ReadWrite`
-- Phase: `Phase II`
+- Workstream: `Welfare And Care`
 - Source: `force-app/main/default/objects/Assessment_Template__c`
 
 | API name                   | Label                 | Type         | Description                                                                                                   |
@@ -487,7 +487,7 @@ Validation rules:
 - Purpose: Action-layer record responding to welfare assessments.
 - Label: `Care Plan`
 - Sharing model: `ControlledByParent`
-- Phase: `Phase II`
+- Workstream: `Welfare And Care`
 - Source: `force-app/main/default/objects/Care_Plan__c`
 
 | API name                | Label              | Type         | Description                                                    |
@@ -512,7 +512,7 @@ Validation rules:
 - Purpose: Action item belonging to a care plan.
 - Label: `Care Plan Action`
 - Sharing model: `ControlledByParent`
-- Phase: `Phase II`
+- Workstream: `Welfare And Care`
 - Source: `force-app/main/default/objects/Care_Plan_Action__c`
 
 | API name              | Label            | Type         | Description                                          |
@@ -535,7 +535,7 @@ Validation rules:
 - Purpose: Lightweight clinical event linked to an animal and episode.
 - Label: `Clinical Event`
 - Sharing model: `ReadWrite`
-- Phase: `Phase II`
+- Workstream: `Welfare And Care`
 - Source: `force-app/main/default/objects/Clinical_Event__c`
 
 | API name                  | Label                | Type         | Description                                                    |
@@ -569,7 +569,7 @@ Validation rules:
 - Purpose: Historical human-animal interaction record.
 - Label: `Human Animal Interaction`
 - Sharing model: `ReadWrite`
-- Phase: `Phase II`
+- Workstream: `Welfare And Care`
 - Source: `force-app/main/default/objects/Human_Animal_Interaction__c`
 
 | API name                        | Label                      | Type         | Description                                                                 |
@@ -598,7 +598,7 @@ Validation rules:
 - Purpose: Runtime domain row belonging to an assessment template.
 - Label: `Template Domain Definition`
 - Sharing model: `ControlledByParent`
-- Phase: `Phase II`
+- Workstream: `Welfare And Care`
 - Source: `force-app/main/default/objects/Template_Domain_Definition__c`
 
 | API name                 | Label               | Type         | Description                                                                  |
@@ -620,7 +620,7 @@ Validation rules:
 - Purpose: Runtime indicator assignment row belonging to an assessment template.
 - Label: `Template Indicator Assignment`
 - Sharing model: `ControlledByParent`
-- Phase: `Phase II`
+- Workstream: `Welfare And Care`
 - Source: `force-app/main/default/objects/Template_Indicator_Assignment__c`
 
 | API name                    | Label                  | Type         | Description                                                                  |
@@ -644,7 +644,7 @@ Validation rules:
 - Purpose: Historical welfare assessment event linked to an animal episode.
 - Label: `Welfare Assessment`
 - Sharing model: `ControlledByParent`
-- Phase: `Phase II`
+- Workstream: `Welfare And Care`
 - Source: `force-app/main/default/objects/Welfare_Assessment__c`
 
 | API name                           | Label                         | Type         | Description                                                                    |
@@ -681,7 +681,7 @@ Validation rules:
 - Purpose: Historical per-domain summary captured as part of a welfare assessment.
 - Label: `Welfare Domain Summary`
 - Sharing model: `ControlledByParent`
-- Phase: `Phase II`
+- Workstream: `Welfare And Care`
 - Source: `force-app/main/default/objects/Welfare_Domain_Summary__c`
 
 | API name                   | Label                 | Type         | Description                                                                             |
@@ -706,7 +706,7 @@ Validation rules:
 - Purpose: Historical evidence line captured as part of a welfare assessment.
 - Label: `Welfare Observation`
 - Sharing model: `ControlledByParent`
-- Phase: `Phase II`
+- Workstream: `Welfare And Care`
 - Source: `force-app/main/default/objects/Welfare_Observation__c`
 
 | API name                     | Label                   | Type         | Description                                                                                |

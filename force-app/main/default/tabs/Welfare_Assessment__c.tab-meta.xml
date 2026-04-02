@@ -2,6 +2,6 @@
 <CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
     <customObject>true</customObject>
     <description
-  >Welfare Assessment navigation tab for Animal 360 Phase II evidence capture.</description>
+  >Welfare assessment navigation tab for Love 4 Animals evidence capture and review.</description>
     <motif>Custom23: Pencil</motif>
 </CustomTab>

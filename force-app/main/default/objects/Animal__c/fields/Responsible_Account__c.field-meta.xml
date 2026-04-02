@@ -3,7 +3,7 @@
     <fullName>Responsible_Account__c</fullName>
     <description
   >Organisation currently responsible for the animal.</description>
-    <label>Responsible Account</label>
+    <label>Responsible Organisation</label>
     <referenceTo>Account</referenceTo>
     <relationshipLabel>Responsible Animals</relationshipLabel>
     <relationshipName>Responsible_Animals</relationshipName>

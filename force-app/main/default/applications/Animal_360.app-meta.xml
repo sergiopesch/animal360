@@ -2,11 +2,11 @@
 <CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
     <defaultLandingTab>Animal__c</defaultLandingTab>
     <description
-  >Animal 360 application updated for Phase II welfare evidence, care planning, and clinical operations.</description>
+  >Love 4 Animals application for intake, welfare assessment, care planning, and clinical operations in London.</description>
     <formFactors>Large</formFactors>
     <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
     <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
-    <label>Animal 360</label>
+    <label>Love 4 Animals</label>
     <navType>Standard</navType>
     <tabs>Animal__c</tabs>
     <tabs>Animal_Episode__c</tabs>

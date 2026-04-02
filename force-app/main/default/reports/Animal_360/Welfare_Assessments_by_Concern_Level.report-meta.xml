@@ -26,7 +26,7 @@
     >Animal_Episode__c.Welfare_Assessments__r$Next_Review_Date__c</field>
     </columns>
     <description
-  >Phase II report showing welfare assessments by assessed concern level.</description>
+  >Welfare monitoring report showing assessments by concern level.</description>
 
     <folderName>Animal_360</folderName>
     <format>Tabular</format>

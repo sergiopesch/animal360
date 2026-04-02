@@ -4,7 +4,7 @@
     <isExposed>true</isExposed>
     <masterLabel>Welfare Assessment Entry</masterLabel>
     <description
-  >Dynamic welfare assessment entry screen component for the Phase II assessment flow.</description>
+  >Dynamic welfare assessment entry screen component for Love 4 Animals assessment workflows.</description>
     <targets>
         <target>lightning__FlowScreen</target>
     </targets>

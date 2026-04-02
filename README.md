@@ -1,35 +1,35 @@
-# animal360
+# Love 4 Animals Platform
 
 ![Salesforce DX](https://img.shields.io/badge/Salesforce-DX-00A1E0?logo=salesforce&logoColor=white)
 ![API 66.0](https://img.shields.io/badge/API-66.0-0176D3)
 ![Package](https://img.shields.io/badge/Package-Single%20DX-0B5CAB)
-![Phase II](https://img.shields.io/badge/Welfare%20Evidence-MVP-1589EE)
+![Mission](https://img.shields.io/badge/Love%204%20Animals-London-1589EE)
 ![CI](https://github.com/sergiopesch/animal360/actions/workflows/ci.yml/badge.svg)
 
-**Salesforce-native animal welfare operations and welfare evidence management.**  
-Track animals, episodes, housing, welfare assessments, clinical follow-up, and care-plan automation in a single Salesforce DX application.
+**Salesforce-native platform for the Love 4 Animals mission in London.**  
+Track intake, care, welfare assessments, clinical follow-up, and outcomes in a single Salesforce DX application.
 
 ## What It Does
 
-`animal360` combines two major delivery layers:
+This repository combines two operational capability areas:
 
-- **Phase I operations**
+- **Core animal-care operations**
   - animal and episode records
   - housing and location-stay tracking
   - intake, move, and closeout workflows
   - shared current-state rollups
-- **Phase II welfare evidence**
+- **Welfare evidence and intervention planning**
   - metadata-driven assessment template configuration
   - runtime welfare assessment capture
   - `Welfare_Assessment__c`, `Welfare_Domain_Summary__c`, and `Welfare_Observation__c`
   - `Care_Plan__c`, `Care_Plan_Action__c`, `Clinical_Event__c`, and `Human_Animal_Interaction__c`
   - risk evaluation, care-plan auto-create, and review reminders
-  - Phase II reporting and permission-set model
+  - reporting and role-based permission-set model
 
 ## Repository Layout
 
 - `force-app/main/default`: primary Salesforce metadata and source
-- `docs`: implementation assumptions, delivery backlog, and audit inventory
+- `docs`: implementation assumptions, planning artifacts, and audit inventory
 - `scripts`: metadata generation helpers and support assets
 - `manifest/package.xml`: deployable package manifest
 - `config/project-scratch-def.json`: scratch-org definition baseline
@@ -80,9 +80,9 @@ sf org login web -a animal360
 sf project deploy start -o animal360 -x manifest/package.xml
 ```
 
-## Phase II Bootstrap
+## Assessment Template Bootstrap
 
-After the first Phase II deployment, seed the packaged assessment template defaults into runtime records:
+After first deployment, seed packaged assessment template defaults into runtime records:
 
 ```apex
 A360AssessmentTemplateService.SeedResult result =
@@ -108,7 +108,7 @@ npm test
 npm run prettier:verify
 ```
 
-Focused Phase II Apex regression:
+Focused welfare-services Apex regression:
 
 ```bash
 sf apex run test -o animal360 --tests A360Phase2ServiceTest --result-format human --code-coverage --wait 30

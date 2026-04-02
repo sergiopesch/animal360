@@ -3,7 +3,8 @@
     <baseObject>Animal_Episode__c</baseObject>
     <category>other</category>
     <deployed>true</deployed>
-    <description>Phase I report type for placement reporting.</description>
+    <description
+  >Report type for placement and location-stay reporting.</description>
     <fullName>Animal_Episode_with_Location_Stays</fullName>
     <join>
         <outerJoin>true</outerJoin>

@@ -4,7 +4,7 @@
     <category>other</category>
     <deployed>true</deployed>
     <description
-  >Phase II report type for assessment and observation reporting.</description>
+  >Report type for welfare assessment and observation reporting.</description>
     <fullName>Welfare_Assessment_with_Observations</fullName>
     <join>
         <outerJoin>true</outerJoin>

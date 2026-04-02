@@ -4,7 +4,7 @@
     <category>other</category>
     <deployed>true</deployed>
     <description
-  >Phase II report type for episode and welfare assessment reporting.</description>
+  >Report type for episode and welfare assessment reporting.</description>
     <fullName>Animal_Episode_with_Welfare_Assessments</fullName>
     <join>
         <outerJoin>true</outerJoin>

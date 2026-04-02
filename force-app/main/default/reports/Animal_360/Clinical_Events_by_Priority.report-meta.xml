@@ -19,7 +19,7 @@
         <field>Clinical_Event__c.Next_Review_Date__c</field>
     </columns>
     <description
-  >Phase II report showing clinical events ordered by clinical priority.</description>
+  >Clinical oversight report showing events ordered by clinical priority.</description>
 
     <folderName>Animal_360</folderName>
     <format>Tabular</format>

@@ -2,7 +2,7 @@
 <CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
     <deploymentStatus>Deployed</deploymentStatus>
     <description
-  >Represents a physical or virtual placement location used in Phase I.</description>
+  >Represents a physical or virtual placement location used in animal-care operations.</description>
     <enableActivities>false</enableActivities>
     <enableReports>true</enableReports>
     <label>Housing Unit</label>

@@ -373,14 +373,14 @@ const launchableOperationalFlows = [
 
 const reportFolder = {
   apiName: 'Animal_360',
-  label: 'Animal 360',
+  label: 'Love 4 Animals',
 };
 
 const reportTypes = [
   {
     apiName: 'Animal_Episode_with_Welfare_Assessments',
     label: 'Animal Episodes with Welfare Assessments',
-    description: 'Phase II report type for episode and welfare assessment reporting.',
+    description: 'Report type for episode and welfare assessment reporting.',
     baseObject: 'Animal_Episode__c',
     join: { outerJoin: true, relationship: 'Welfare_Assessments__r' },
     sections: [
@@ -408,7 +408,7 @@ const reportTypes = [
   {
     apiName: 'Welfare_Assessment_with_Observations',
     label: 'Welfare Assessments with Observations',
-    description: 'Phase II report type for assessment and observation reporting.',
+    description: 'Report type for assessment and observation reporting.',
     baseObject: 'Welfare_Assessment__c',
     join: { outerJoin: true, relationship: 'Observations__r' },
     sections: [
@@ -427,7 +427,7 @@ const reportTypes = [
   {
     apiName: 'Animal_Episode_with_Care_Plans',
     label: 'Animal Episodes with Care Plans',
-    description: 'Phase II report type for episode and care plan reporting.',
+    description: 'Report type for episode and care plan reporting.',
     baseObject: 'Animal_Episode__c',
     join: { outerJoin: true, relationship: 'Care_Plans__r' },
     sections: [
@@ -446,7 +446,7 @@ const reportTypes = [
   {
     apiName: 'Animal_Episode_with_Clinical_Events',
     label: 'Animal Episodes with Clinical Events',
-    description: 'Phase II report type for episode and clinical event reporting.',
+    description: 'Report type for episode and clinical event reporting.',
     baseObject: 'Animal_Episode__c',
     join: { outerJoin: true, relationship: 'Clinical_Events__r' },
     sections: [
@@ -465,7 +465,7 @@ const reportTypes = [
   {
     apiName: 'Animal_Episode_with_Human_Animal_Interactions',
     label: 'Animal Episodes with Human Animal Interactions',
-    description: 'Phase II report type for episode and interaction reporting.',
+    description: 'Report type for episode and interaction reporting.',
     baseObject: 'Animal_Episode__c',
     join: { outerJoin: true, relationship: 'Human_Animal_Interactions__r' },
     sections: [
@@ -487,7 +487,7 @@ const reports = [
   {
     apiName: 'Welfare_Assessments_by_Concern_Level',
     label: 'Welfare Assessments by Concern',
-    description: 'Phase II report showing welfare assessments by assessed concern level.',
+    description: 'Welfare report showing assessments by concern level.',
     reportType: customReportTypeName('Animal_Episode_with_Welfare_Assessments'),
     columns: [
       customReportField('Animal_Episode__c', 'Animal__c'),
@@ -524,7 +524,7 @@ const reports = [
   {
     apiName: 'High_and_Critical_Cases_Requiring_Action',
     label: 'Cases Requiring Action',
-    description: 'Phase II report listing welfare assessments that require immediate action.',
+    description: 'Welfare escalation report listing assessments that require immediate action.',
     reportType: customReportTypeName('Animal_Episode_with_Welfare_Assessments'),
     columns: [
       customReportField('Animal_Episode__c', 'Animal__c'),
@@ -566,7 +566,7 @@ const reports = [
   {
     apiName: 'Welfare_Trend_by_Animal',
     label: 'Welfare Trend by Animal',
-    description: 'Phase II report showing welfare assessments over time by animal.',
+    description: 'Welfare trend report showing assessments over time by animal.',
     reportType: customReportTypeName('Animal_Episode_with_Welfare_Assessments'),
     columns: [
       customReportField('Animal_Episode__c', 'Animal__c'),
@@ -597,7 +597,7 @@ const reports = [
   {
     apiName: 'Assessments_Overdue_for_Review',
     label: 'Assessments Overdue',
-    description: 'Phase II report listing completed assessments whose next review date is overdue.',
+    description: 'Welfare oversight report listing completed assessments whose next review date is overdue.',
     reportType: customReportTypeName('Animal_Episode_with_Welfare_Assessments'),
     columns: [
       customReportField('Animal_Episode__c', 'Animal__c'),
@@ -649,7 +649,7 @@ const reports = [
   {
     apiName: 'Open_Care_Plans_by_Type',
     label: 'Open Care Plans by Type',
-    description: 'Phase II report showing currently open care plans by plan type.',
+    description: 'Care coordination report showing currently open care plans by plan type.',
     reportType: customReportTypeName('Animal_Episode_with_Care_Plans'),
     columns: [
       customReportField('Animal_Episode__c', 'Animal__c'),
@@ -686,7 +686,7 @@ const reports = [
   {
     apiName: 'Clinical_Events_by_Priority',
     label: 'Clinical Events by Priority',
-    description: 'Phase II report showing clinical events ordered by clinical priority.',
+    description: 'Clinical oversight report showing events ordered by clinical priority.',
     reportType: 'CustomEntity$Clinical_Event__c',
     reportTypeApiName: 'CustomEntity$Clinical_Event__c',
     columns: [
@@ -703,7 +703,7 @@ const reports = [
   {
     apiName: 'Interactions_by_Response_Pattern',
     label: 'Interactions by Response Pattern',
-    description: 'Phase II report showing interaction outcomes and response patterns.',
+    description: 'Behaviour report showing interaction outcomes and response patterns.',
     reportType: customReportTypeName('Animal_Episode_with_Human_Animal_Interactions'),
     columns: [
       customReportField('Animal_Episode__c', 'Animal__c'),
@@ -834,7 +834,7 @@ async function main() {
     {
       apiName: 'Animal360_Admin',
       label: 'Animal360 Admin',
-      description: 'Administrative Phase I and Phase II access for Animal 360.',
+      description: 'Administrative access for Love 4 Animals welfare operations and care workflows.',
       applications: ['Animal_360'],
       classAccesses: allApexClasses,
       customPermissions: [
@@ -873,7 +873,7 @@ async function main() {
     {
       apiName: 'Animal360_Care_Manager',
       label: 'Animal360 Care Manager',
-      description: 'Operational Phase I and Phase II access for care, welfare, and intervention workflows.',
+      description: 'Operational access for Love 4 Animals care, welfare, and intervention workflows.',
       applications: ['Animal_360'],
       classAccesses: [
         'A360AnimalRollupService',
@@ -921,7 +921,7 @@ async function main() {
     {
       apiName: 'Animal360_Read_Only',
       label: 'Animal360 Read Only',
-      description: 'Read-only Phase I and Phase II reporting and lookup access for Animal 360.',
+      description: 'Read-only reporting and lookup access for Love 4 Animals operational and welfare data.',
       applications: ['Animal_360'],
       classAccesses: [],
       customPermissions: [],
@@ -950,7 +950,7 @@ async function main() {
     {
       apiName: 'Animal360_Assessor',
       label: 'Animal360 Assessor',
-      description: 'Assessment-entry access for Phase II welfare evidence capture.',
+      description: 'Assessment-entry access for Love 4 Animals welfare evidence capture.',
       applications: ['Animal_360'],
       classAccesses: [
         'A360AssessmentTemplateService',
@@ -995,7 +995,7 @@ async function main() {
     {
       apiName: 'Animal360_Clinical_User',
       label: 'Animal360 Clinical User',
-      description: 'Clinical-event and follow-up access for Phase II clinical workflows.',
+      description: 'Clinical-event and follow-up access for Love 4 Animals clinical workflows.',
       applications: ['Animal_360'],
       classAccesses: [
         'A360AssessmentTemplateService',
@@ -1065,7 +1065,7 @@ async function main() {
     );
   }
 
-  process.stdout.write('Phase II security and reporting metadata generated.\n');
+  process.stdout.write('Welfare security and reporting metadata generated.\n');
 }
 
 main().catch((error) => {

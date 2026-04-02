@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <CustomPermission xmlns="http://soap.sforce.com/2006/04/metadata">
     <description
-  >Allows a user to override default escalation or care-plan automation in Animal 360.</description>
+  >Allows a user to override default escalation or care-plan automation in Love 4 Animals workflows.</description>
     <label>Welfare Escalation Override</label>
 </CustomPermission>

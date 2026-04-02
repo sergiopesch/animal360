@@ -4,7 +4,7 @@
     <description
   >System-maintained pointer to the active location stay.</description>
     <inlineHelpText
-  >This field is system maintained by Phase I automation.</inlineHelpText>
+  >This field is system maintained by operational automation.</inlineHelpText>
     <label>Current Location Stay</label>
     <referenceTo>Animal_Location_Stay__c</referenceTo>
     <relationshipLabel>Current Episodes</relationshipLabel>

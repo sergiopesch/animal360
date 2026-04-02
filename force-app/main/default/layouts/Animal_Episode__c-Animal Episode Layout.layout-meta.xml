@@ -39,7 +39,7 @@
     </layoutSections>
     <layoutSections>
         <customLabel>true</customLabel>
-        <label>Phase II Current State</label>
+        <label>Current State</label>
         <layoutColumns>
             <layoutItems>
                 <field>Current_Location_Stay__c</field>

@@ -19,7 +19,7 @@
         <field>Animal__c.Current_Housing_Unit__c</field>
     </columns>
     <description
-  >Phase I starter report showing the current status of animals in care.</description>
+  >Operational report showing the current status of animals in Love 4 Animals care.</description>
     <filter>
         <booleanFilter>1</booleanFilter>
         <criteriaItems>

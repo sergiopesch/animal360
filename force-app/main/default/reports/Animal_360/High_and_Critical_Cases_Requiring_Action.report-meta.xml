@@ -22,7 +22,7 @@
     >Animal_Episode__c.Welfare_Assessments__r$Next_Review_Date__c</field>
     </columns>
     <description
-  >Phase II report listing welfare assessments that require immediate action.</description>
+  >Welfare escalation report listing assessments that require immediate action.</description>
     <filter>
         <booleanFilter>1</booleanFilter>
         <criteriaItems>

@@ -3,7 +3,7 @@
     <fullName>Current_Status__c</fullName>
     <description>System-maintained lifecycle status summary.</description>
     <inlineHelpText
-  >This field is system maintained by Phase I automation.</inlineHelpText>
+  >This field is system maintained by operational automation.</inlineHelpText>
     <label>Current Status</label>
     <type>Picklist</type>
         <valueSet>

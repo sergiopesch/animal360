@@ -4,7 +4,7 @@
     <category>other</category>
     <deployed>true</deployed>
     <description
-  >Phase I report type for housing utilisation reporting.</description>
+  >Report type for housing utilisation and occupancy reporting.</description>
     <fullName>Housing_Unit_with_Location_Stays</fullName>
     <join>
         <outerJoin>true</outerJoin>

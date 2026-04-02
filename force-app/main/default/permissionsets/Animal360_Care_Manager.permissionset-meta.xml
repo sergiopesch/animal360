@@ -33,7 +33,7 @@
         <name>A360_Welfare_Escalation_Override</name>
     </customPermissions>
     <description
-  >Operational Phase I and Phase II access for care, welfare, and intervention workflows.</description>
+  >Operational access for Love 4 Animals care coordination, welfare tracking, and intervention workflows.</description>
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.A360_Animal_360_Notes__c</field>
@@ -994,7 +994,7 @@ A360_Care_Plan_Auto_Create_Flow;
 A360_Review_Due_Reminder_Flow;
     </flow>
     </flowAccesses>
-    <label>Animal360 Care Manager</label>
+    <label>Love 4 Animals Care Manager</label>
     <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>false</allowDelete>

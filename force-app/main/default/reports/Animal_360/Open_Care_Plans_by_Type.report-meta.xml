@@ -22,7 +22,7 @@
         <field>Animal_Episode__c.Care_Plans__r$Owner_User__c</field>
     </columns>
     <description
-  >Phase II report showing currently open care plans by plan type.</description>
+  >Care coordination report showing currently open care plans by plan type.</description>
     <filter>
         <booleanFilter>1 AND 2</booleanFilter>
         <criteriaItems>

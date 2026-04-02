@@ -302,7 +302,7 @@ const customObjects = [
     apiName: 'Animal__c',
     label: 'Animal',
     pluralLabel: 'Animals',
-    description: 'Core animal record for Phase I intake, housing, and episode management.',
+    description: 'Core animal record for intake, housing, and episode management.',
     sharingModel: 'ReadWrite',
     visibility: 'Public',
     enableActivities: true,
@@ -344,7 +344,7 @@ const customObjects = [
       }),
       lookupField('Current_Episode__c', 'Current Episode', 'Animal_Episode__c', 'Current Animals', 'Current_Animals', {
         description: 'System-maintained pointer to the active episode.',
-        helpText: 'This field is system maintained by Phase I automation.',
+        helpText: 'This field is system maintained by operational automation.',
       }),
       lookupField(
         'Current_Housing_Unit__c',
@@ -354,19 +354,19 @@ const customObjects = [
         'Currently_Housed_Animals',
         {
           description: 'System-maintained pointer to the active housing unit.',
-          helpText: 'This field is system maintained by Phase I automation.',
+          helpText: 'This field is system maintained by operational automation.',
         },
       ),
       picklistLocalField('Current_Status__c', 'Current Status', currentStatusValues, {
         description: 'System-maintained lifecycle status summary.',
-        helpText: 'This field is system maintained by Phase I automation.',
+        helpText: 'This field is system maintained by operational automation.',
       }),
       picklistLocalField('Current_Care_Status__c', 'Current Care Status', episodeStatusValues, {
         description: 'System-maintained summary of the active episode status.',
-        helpText: 'This field is system maintained by Phase I automation.',
+        helpText: 'This field is system maintained by operational automation.',
       }),
       picklistGlobalField('Current_Welfare_Risk__c', 'Current Welfare Risk', 'A360_Welfare_Risk', {
-        description: 'Current welfare risk flag for Phase I reporting.',
+        description: 'Current welfare risk flag for operational reporting.',
       }),
       lookupField('Responsible_Account__c', 'Responsible Account', 'Account', 'Responsible Animals', 'Responsible_Animals', {
         description: 'Organisation currently responsible for the animal.',
@@ -584,7 +584,7 @@ const customObjects = [
         'Current_Episodes',
         {
           description: 'System-maintained pointer to the active location stay.',
-          helpText: 'This field is system maintained by Phase I automation.',
+          helpText: 'This field is system maintained by operational automation.',
         },
       ),
       longTextField('Notes__c', 'Notes', 32768, 4, {
@@ -627,7 +627,7 @@ const customObjects = [
     apiName: 'Housing_Unit__c',
     label: 'Housing Unit',
     pluralLabel: 'Housing Units',
-    description: 'Represents a physical or virtual placement location used in Phase I.',
+    description: 'Represents a physical or virtual placement location used in animal-care operations.',
     sharingModel: 'ReadWrite',
     visibility: 'Public',
     enableActivities: false,
@@ -649,7 +649,7 @@ const customObjects = [
         description: 'Nominal capacity for the housing unit.',
       }),
       numberField('Current_Occupancy__c', 'Current Occupancy', 3, 0, {
-        description: 'Phase I reporting field for current occupancy.',
+        description: 'Operational reporting field for current occupancy.',
       }),
       checkboxField('Is_Active__c', 'Is Active', true, {
         description: 'Marks whether the housing unit is available for use.',
@@ -852,19 +852,19 @@ const customObjects = [
 const standardObjectFields = {
   Account: [
     picklistLocalField('A360_Partner_Type__c', 'A360 Partner Type', partnerTypeValues, {
-      description: 'Role this account plays in Animal 360 operations.',
-      helpText: 'Use this field to classify the partner organisation for Animal 360.',
+      description: 'Role this partner organisation plays in Love 4 Animals operations.',
+      helpText: 'Use this field to classify the partner organisation for Love 4 Animals.',
     }),
     longTextField('A360_Animal_360_Notes__c', 'A360 Notes', 32768, 4, {
-      description: 'Animal 360-specific operating notes about the account.',
+      description: 'Love 4 Animals operating notes about the partner organisation.',
     }),
   ],
   Contact: [
     picklistLocalField('A360_Animal_360_Role__c', 'A360 Role', contactRoleValues, {
-      description: 'Role this contact plays in Animal 360 operations.',
+      description: 'Role this contact plays in Love 4 Animals operations.',
     }),
     picklistLocalField('A360_Preferred_Contact_Channel__c', 'A360 Preferred Contact Channel', contactChannelValues, {
-      description: 'Preferred contact channel for Animal 360 operations.',
+      description: 'Preferred contact channel for Love 4 Animals operations.',
     }),
   ],
   Case: [
@@ -885,14 +885,14 @@ const standardObjectFields = {
 
 const reportFolder = {
   apiName: 'Animal_360',
-  label: 'Animal 360',
+  label: 'Love 4 Animals',
 };
 
 const reportTypes = [
   {
     apiName: 'Animal_with_Episodes',
     label: 'Animals with Episodes',
-    description: 'Phase I report type for animal and episode reporting.',
+    description: 'Report type for animal and episode reporting.',
     baseObject: 'Animal__c',
     join: { relationship: 'Episodes__r', outerJoin: true },
     sections: [
@@ -911,7 +911,7 @@ const reportTypes = [
   {
     apiName: 'Animal_Episode_with_Location_Stays',
     label: 'Animal Episodes with Location Stays',
-    description: 'Phase I report type for placement reporting.',
+    description: 'Report type for placement reporting.',
     baseObject: 'Animal_Episode__c',
     join: { relationship: 'Location_Stays__r', outerJoin: true },
     sections: [
@@ -930,7 +930,7 @@ const reportTypes = [
   {
     apiName: 'Housing_Unit_with_Location_Stays',
     label: 'Housing Units with Location Stays',
-    description: 'Phase I report type for housing utilisation reporting.',
+    description: 'Report type for housing utilisation reporting.',
     baseObject: 'Housing_Unit__c',
     join: { relationship: 'Housing_Unit_Location_Stays__r', outerJoin: true },
     sections: [
@@ -952,7 +952,7 @@ const reports = [
   {
     fileName: 'Animals_Currently_In_Care',
     label: 'Animals Currently In Care',
-    description: 'Phase I starter report showing the current status of animals in care.',
+    description: 'Operational report showing the current status of animals in care.',
     reportType: 'CustomEntity$Animal__c',
     reportTypeApiName: 'CustomEntity$Animal__c',
     columns: [
@@ -969,7 +969,7 @@ const reports = [
   {
     fileName: 'Open_Episodes',
     label: 'Open Episodes',
-    description: 'Phase I starter report showing episodes that are currently open.',
+    description: 'Operational report showing episodes that are currently open.',
     reportType: 'CustomEntityCustomEntity$Animal__c$Animal_Episode__c',
     reportTypeApiName: 'CustomEntityCustomEntity$Animal__c$Animal_Episode__c',
     columns: [
@@ -986,7 +986,7 @@ const reports = [
   {
     fileName: 'Housing_Unit_Capacity',
     label: 'Housing Unit Capacity',
-    description: 'Phase I starter report showing configured housing unit capacity.',
+    description: 'Operational report showing configured housing unit capacity.',
     reportType: 'CustomEntity$Housing_Unit__c',
     reportTypeApiName: 'CustomEntity$Housing_Unit__c',
     columns: [
@@ -1012,8 +1012,8 @@ const customTabs = [
 
 const customApp = {
   apiName: 'Animal_360',
-  label: 'Animal 360',
-  description: 'Phase I Animal 360 application for intake, movement, closure, and reporting.',
+  label: 'Love 4 Animals',
+  description: 'Love 4 Animals application for intake, movement, closure, and reporting.',
   defaultLandingTab: 'Animal__c',
   tabs: ['Animal__c', 'Animal_Episode__c', 'Housing_Unit__c', 'Intake_Event__c', 'Outcome_Event__c', 'standard-Case', 'standard-Report'],
 };
@@ -1240,7 +1240,7 @@ ${sectionsXml}
 function buildCustomTabXml(tab) {
   return `<CustomTab xmlns="${XMLNS}">
     <customObject>true</customObject>
-    <description>${escapeXml(`${tab.label} navigation tab for the Animal 360 Phase I app.`)}</description>
+    <description>${escapeXml(`${tab.label} navigation tab for Love 4 Animals operations.`)}</description>
     <motif>${escapeXml(tab.motif)}</motif>
 </CustomTab>`;
 }
@@ -1630,7 +1630,7 @@ function buildIntakeFlowXml() {
           name: 'Intake_Instructions',
           fieldType: 'DisplayText',
           displayText:
-            'Enter the minimum Phase I details. For picklist-backed values, use the exact configured labels. Housing Unit Id should be the Salesforce record Id of the target housing unit.',
+            'Enter the required intake details. For picklist-backed values, use configured labels. Housing Unit ID should be the Salesforce record ID of the target housing unit.',
         })}
         ${screenFieldXml({
           name: 'Animal_Display_Name',
@@ -2272,7 +2272,7 @@ function permissionSetConfigs() {
     {
       apiName: 'Animal360_Admin',
       label: 'Animal360 Admin',
-      description: 'Administrative Phase I access for Animal 360.',
+      description: 'Administrative access for Love 4 Animals operations.',
       applications: [customApp.apiName],
       classAccesses: classNames,
       fieldPermissions: adminFieldPermissions,
@@ -2284,7 +2284,7 @@ function permissionSetConfigs() {
     {
       apiName: 'Animal360_Care_Manager',
       label: 'Animal360 Care Manager',
-      description: 'Operational Phase I access for animal intake, movement, and closeout.',
+      description: 'Operational access for animal intake, movement, and closeout.',
       applications: [customApp.apiName],
       classAccesses: ['A360AnimalRollupService'],
       fieldPermissions: careManagerFieldPermissions,
@@ -2296,7 +2296,7 @@ function permissionSetConfigs() {
     {
       apiName: 'Animal360_Read_Only',
       label: 'Animal360 Read Only',
-      description: 'Read-only Phase I reporting and lookup access for Animal 360.',
+      description: 'Read-only reporting and lookup access for Love 4 Animals operations.',
       applications: [customApp.apiName],
       classAccesses: [],
       fieldPermissions: readOnlyFieldPermissions,
@@ -2309,18 +2309,18 @@ function permissionSetConfigs() {
 }
 
 async function writeDocs() {
-  const markdown = `# Phase I Implementation Assumptions
+  const markdown = `# Core Operations Implementation Assumptions
 
 ## Delivery Defaults
 
 - The repository remains a single-package Salesforce DX project rooted at \`force-app\`.
 - The package has no namespace and continues to target API version ${API_VERSION}.
 - Initial validation is expected against the authenticated org alias \`animal360\`, with scratch-org support remaining optional.
-- Record types, packaged distribution, and Phase II metadata-driven assessment work remain out of scope for this Phase I delivery.
+- Record types, packaged distribution, and additional welfare metadata-driven assessment work remain out of scope for this delivery.
 
 ## Data And Integrity Decisions
 
-- \`Animal__c\`, \`Housing_Unit__c\`, and \`Animal_Relationship__c\` use public read/write sharing for Phase I to avoid blocking early operational rollout.
+- \`Animal__c\`, \`Housing_Unit__c\`, and \`Animal_Relationship__c\` use public read/write sharing to avoid blocking early operational rollout.
 - Child records that are lifecycle-dependent on a parent record use master-detail and inherit sharing from the parent.
 - Cross-record integrity rules are enforced in Apex trigger handlers, not validation rules, when the rule spans multiple rows:
   - one primary identifier per animal
@@ -2335,14 +2335,14 @@ async function writeDocs() {
   - \`A360_Intake_Flow\`
   - \`A360_Move_Animal_Flow\`
   - \`A360_Close_Episode_Flow\`
-- The screen flows deliberately accept Salesforce record Ids for lookup inputs in Phase I to keep the metadata bundle deployable without extra LWC work.
+- The screen flows deliberately accept Salesforce record IDs for lookup inputs to keep the metadata bundle deployable without extra LWC work.
 - A shared autolaunched flow, \`A360_Animal_Current_State_Rollup_Flow\`, wraps the Apex rollup service and is reused by operational flows and thin record-trigger wrappers.
 
 ## Reporting And Access
 
-- Starter reporting is delivered with a public read-only \`Animal 360\` report folder and three baseline reports over the standard object report types.
+- Starter reporting is delivered with a public read-only \`Love 4 Animals\` report folder and three baseline reports over standard object report types.
 - Custom report types are included for future joined reporting on animals, episodes, and housing utilisation.
-- Phase I personas are delivered as permission sets:
+- Operations personas are delivered as permission sets:
   - \`Animal360_Admin\`
   - \`Animal360_Care_Manager\`
   - \`Animal360_Read_Only\`
@@ -2448,7 +2448,7 @@ async function main() {
   await writePermissionSets();
   await writeReports();
   await writeManifest();
-  process.stdout.write('Phase I metadata generated.\n');
+  process.stdout.write('Core operations metadata generated.\n');
 }
 
 main().catch((error) => {

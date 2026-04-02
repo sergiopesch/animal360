@@ -2,7 +2,7 @@
 <CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
     <deploymentStatus>Deployed</deploymentStatus>
     <description
-  >Core animal record for Phase I intake, housing, and episode management.</description>
+  >Core animal record for intake, housing, welfare tracking, and episode management.</description>
     <enableActivities>true</enableActivities>
     <enableReports>true</enableReports>
     <label>Animal</label>

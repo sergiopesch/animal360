@@ -26,7 +26,7 @@
     >Animal_Episode__c.Human_Animal_Interactions__r$Animal_Response__c</field>
     </columns>
     <description
-  >Phase II report showing interaction outcomes and response patterns.</description>
+  >Behaviour and handling report showing interaction outcomes and response patterns.</description>
 
     <folderName>Animal_360</folderName>
     <format>Tabular</format>

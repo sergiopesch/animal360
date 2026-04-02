@@ -4,7 +4,7 @@
     <description
   >System-maintained summary of the active episode status.</description>
     <inlineHelpText
-  >This field is system maintained by Phase I automation.</inlineHelpText>
+  >This field is system maintained by operational automation.</inlineHelpText>
     <label>Current Care Status</label>
     <type>Picklist</type>
         <valueSet>
