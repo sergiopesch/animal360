@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Evidence_Source__c</fullName>
+    <description
+  >Source of the evidence captured in the observation.</description>
+    <label>Evidence Source</label>
+    <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+            <value>
+                <fullName>Direct Observation</fullName>
+                <default>false</default>
+                <label>Direct Observation</label>
+            </value>
+            <value>
+                <fullName>Clinical Examination</fullName>
+                <default>false</default>
+                <label>Clinical Examination</label>
+            </value>
+            <value>
+                <fullName>Carer Report</fullName>
+                <default>false</default>
+                <label>Carer Report</label>
+            </value>
+            <value>
+                <fullName>Historical Record</fullName>
+                <default>false</default>
+                <label>Historical Record</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+            </valueSetDefinition>
+        </valueSet>
+</CustomField>

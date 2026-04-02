@@ -39,10 +39,21 @@
     </layoutSections>
     <layoutSections>
         <customLabel>true</customLabel>
-        <label>Current State</label>
+        <label>Phase II Current State</label>
         <layoutColumns>
             <layoutItems>
                 <field>Current_Location_Stay__c</field>
+            </layoutItems>
+            <layoutItems>
+                <field>Current_Welfare_Level__c</field>
+            </layoutItems>
+            <layoutItems>
+                <field>Current_Clinical_Priority__c</field>
+            </layoutItems>
+        </layoutColumns>
+        <layoutColumns>
+            <layoutItems>
+                <field>Next_Review_Date__c</field>
             </layoutItems>
             <layoutItems>
                 <field>Outcome_Account__c</field>
@@ -51,10 +62,18 @@
                 <field>Outcome_Contact__c</field>
             </layoutItems>
         </layoutColumns>
+        <style>TwoColumnsTopToBottom</style>
+    </layoutSections>
+    <layoutSections>
+        <customLabel>true</customLabel>
+        <label>Episode Narrative</label>
         <layoutColumns>
             <layoutItems>
                 <field>Notes__c</field>
             </layoutItems>
+        </layoutColumns>
+        <layoutColumns>
+
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
     </layoutSections>

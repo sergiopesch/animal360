@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <description
+  >An observation must capture at least one observed value or declare the value type explicitly for boolean capture.</description>
+    <errorConditionFormula
+  >AND(ISPICKVAL(Observation_Value_Type__c, &quot;&quot;), NOT(Observed_Boolean__c), ISBLANK(Observed_Picklist_Value__c), ISBLANK(TEXT(Observed_Numeric_Value__c)), ISBLANK(Observed_Text__c), ISBLANK(TEXT(Observed_DateTime__c)))</errorConditionFormula>
+    <errorMessage
+  >Provide an observed value or set the observation value type before saving the observation.</errorMessage>
+    <fullName>A360_Observation_Value_Required</fullName>
+</ValidationRule>

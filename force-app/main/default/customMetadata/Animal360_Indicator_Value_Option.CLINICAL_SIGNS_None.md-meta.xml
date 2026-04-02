@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomMetadata
+  xmlns="http://soap.sforce.com/2006/04/metadata"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+>
+    <description>Packaged value option None for CLINICAL_SIGNS.</description>
+    <label>CLINICAL_SIGNS None</label>
+    <protected>false</protected>
+    <values>
+        <field>Indicator_Key__c</field>
+        <value xsi:type="xsd:string">CLINICAL_SIGNS</value>
+    </values>
+    <values>
+        <field>Option_Value__c</field>
+        <value xsi:type="xsd:string">None</value>
+    </values>
+    <values>
+        <field>Option_Label__c</field>
+        <value xsi:type="xsd:string">None</value>
+    </values>
+    <values>
+        <field>Display_Order__c</field>
+        <value xsi:type="xsd:double">1</value>
+    </values>
+    <values>
+        <field>Default_Severity_Level__c</field>
+        <value xsi:type="xsd:string" />
+    </values>
+    <values>
+        <field>Default_Enhancement_Level__c</field>
+        <value xsi:type="xsd:string" />
+    </values>
+</CustomMetadata>

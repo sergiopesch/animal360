@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <description
+  >Immediate action cannot be checked unless an overall welfare concern is set.</description>
+    <errorConditionFormula
+  >AND(Immediate_Action_Required__c, ISPICKVAL(Overall_Welfare_Concern__c, &quot;&quot;))</errorConditionFormula>
+    <errorMessage
+  >Set the overall welfare concern before marking immediate action required.</errorMessage>
+    <fullName>A360_Immediate_Action_Requires_Concern</fullName>
+</ValidationRule>

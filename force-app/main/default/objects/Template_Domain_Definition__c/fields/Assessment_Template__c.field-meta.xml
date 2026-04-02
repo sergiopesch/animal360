@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Assessment_Template__c</fullName>
+    <description
+  >Runtime template that owns the domain definition row.</description>
+    <label>Assessment Template</label>
+    <referenceTo>Assessment_Template__c</referenceTo>
+    <relationshipLabel>Domain Definitions</relationshipLabel>
+    <relationshipName>Domain_Definitions</relationshipName>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    <type>MasterDetail</type>
+</CustomField>

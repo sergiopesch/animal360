@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Interaction_Contact__c</fullName>
+    <description
+  >Optional external or internal contact who participated in the interaction.</description>
+    <label>Interaction Contact</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Human Animal Interactions</relationshipLabel>
+    <relationshipName>Human_Animal_Interactions</relationshipName>
+    <type>Lookup</type>
+</CustomField>

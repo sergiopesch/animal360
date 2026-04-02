@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Layout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <layoutSections>
+        <customLabel>true</customLabel>
+        <label>Indicator Assignment</label>
+        <layoutColumns>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Name</field>
+            </layoutItems>
+            <layoutItems>
+                <field>Assessment_Template__c</field>
+            </layoutItems>
+            <layoutItems>
+                <field>Indicator_Key__c</field>
+            </layoutItems>
+            <layoutItems>
+                <field>Domain_Code__c</field>
+            </layoutItems>
+            <layoutItems>
+                <field>Display_Order__c</field>
+            </layoutItems>
+        </layoutColumns>
+        <layoutColumns>
+            <layoutItems>
+                <field>Is_Required__c</field>
+            </layoutItems>
+            <layoutItems>
+                <field>Default_Severity_Scale__c</field>
+            </layoutItems>
+            <layoutItems>
+                <field>Metadata_Row_Key__c</field>
+            </layoutItems>
+        </layoutColumns>
+        <style>TwoColumnsTopToBottom</style>
+    </layoutSections>
+    <layoutSections>
+        <customLabel>true</customLabel>
+        <label>Guidance And Visibility</label>
+        <layoutColumns>
+            <layoutItems>
+                <field>Help_Text__c</field>
+            </layoutItems>
+        </layoutColumns>
+        <layoutColumns>
+            <layoutItems>
+                <field>Visible_When_Rule__c</field>
+            </layoutItems>
+        </layoutColumns>
+        <style>TwoColumnsTopToBottom</style>
+    </layoutSections>
+</Layout>

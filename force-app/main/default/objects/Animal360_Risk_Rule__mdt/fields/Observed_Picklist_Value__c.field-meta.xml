@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Observed_Picklist_Value__c</fullName>
+    <description>Optional observed picklist value that must match.</description>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <label>Observed Picklist Value</label>
+    <length>100</length>
+    <type>Text</type>
+</CustomField>

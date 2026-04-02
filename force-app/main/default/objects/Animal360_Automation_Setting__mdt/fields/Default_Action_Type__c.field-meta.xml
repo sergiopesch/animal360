@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Default_Action_Type__c</fullName>
+    <description
+  >Default action type used for generated care-plan actions.</description>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <label>Default Action Type</label>
+    <length>80</length>
+    <type>Text</type>
+</CustomField>

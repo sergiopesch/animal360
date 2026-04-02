@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Overall_Welfare_Concern__c</fullName>
+    <description
+  >Overall welfare concern assigned by metadata-driven risk evaluation.</description>
+    <label>Overall Welfare Concern</label>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetName>A360_Welfare_Risk</valueSetName>
+    </valueSet>
+</CustomField>

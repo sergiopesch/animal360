@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Interaction_Quality__c</fullName>
+    <description
+  >Quality of the interaction from the handler perspective.</description>
+    <label>Interaction Quality</label>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetName>A360_Interaction_Quality</valueSetName>
+    </valueSet>
+</CustomField>

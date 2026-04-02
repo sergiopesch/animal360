@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Auto_Create_Care_Plan__c</fullName>
+    <description
+  >Enables care-plan auto creation for matching high-risk assessments.</description>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <label>Auto Create Care Plan</label>
+    <defaultValue>true</defaultValue>
+    <type>Checkbox</type>
+</CustomField>

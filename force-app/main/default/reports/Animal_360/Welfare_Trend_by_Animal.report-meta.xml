@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>Animal_Episode__c$Animal__c</field>
+    </columns>
+    <columns>
+        <field
+    >Animal_Episode__c.Welfare_Assessments__r$Assessment_DateTime__c</field>
+    </columns>
+    <columns>
+        <field
+    >Animal_Episode__c.Welfare_Assessments__r$Overall_Welfare_Concern__c</field>
+    </columns>
+    <columns>
+        <field
+    >Animal_Episode__c.Welfare_Assessments__r$Overall_Negative_Grade__c</field>
+    </columns>
+    <columns>
+        <field
+    >Animal_Episode__c.Welfare_Assessments__r$Overall_Positive_Grade__c</field>
+    </columns>
+    <description
+  >Phase II report showing welfare assessments over time by animal.</description>
+
+    <folderName>Animal_360</folderName>
+    <format>Tabular</format>
+    <name>Welfare Trend by Animal</name>
+    <reportType>Animal_Episode_with_Welfare_Assessments__c</reportType>
+
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>false</showGrandTotal>
+    <showSubTotals>false</showSubTotals>
+    <sortColumn>Animal_Episode__c$Animal__c</sortColumn>
+    <sortOrder>Asc</sortOrder>
+</Report>

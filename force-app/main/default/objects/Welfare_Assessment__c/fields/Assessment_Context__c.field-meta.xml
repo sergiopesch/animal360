@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Assessment_Context__c</fullName>
+    <description
+  >Operational context in which the assessment occurred.</description>
+    <label>Assessment Context</label>
+    <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+            <value>
+                <fullName>Intake</fullName>
+                <default>false</default>
+                <label>Intake</label>
+            </value>
+            <value>
+                <fullName>Routine</fullName>
+                <default>true</default>
+                <label>Routine</label>
+            </value>
+            <value>
+                <fullName>Housing</fullName>
+                <default>false</default>
+                <label>Housing</label>
+            </value>
+            <value>
+                <fullName>Clinical</fullName>
+                <default>false</default>
+                <label>Clinical</label>
+            </value>
+            <value>
+                <fullName>Outcome</fullName>
+                <default>false</default>
+                <label>Outcome</label>
+            </value>
+            </valueSetDefinition>
+        </valueSet>
+</CustomField>

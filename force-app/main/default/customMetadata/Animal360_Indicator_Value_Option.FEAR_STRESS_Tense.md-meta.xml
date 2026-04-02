@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomMetadata
+  xmlns="http://soap.sforce.com/2006/04/metadata"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+>
+    <description>Packaged value option Tense for FEAR_STRESS.</description>
+    <label>FEAR_STRESS Tense</label>
+    <protected>false</protected>
+    <values>
+        <field>Indicator_Key__c</field>
+        <value xsi:type="xsd:string">FEAR_STRESS</value>
+    </values>
+    <values>
+        <field>Option_Value__c</field>
+        <value xsi:type="xsd:string">Tense</value>
+    </values>
+    <values>
+        <field>Option_Label__c</field>
+        <value xsi:type="xsd:string">Tense</value>
+    </values>
+    <values>
+        <field>Display_Order__c</field>
+        <value xsi:type="xsd:double">3</value>
+    </values>
+    <values>
+        <field>Default_Severity_Level__c</field>
+        <value xsi:type="xsd:string">Moderate</value>
+    </values>
+    <values>
+        <field>Default_Enhancement_Level__c</field>
+        <value xsi:type="xsd:string" />
+    </values>
+</CustomMetadata>

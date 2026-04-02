@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Reward_Used__c</fullName>
+    <description
+  >Indicates whether a reward was used in the interaction.</description>
+    <label>Reward Used</label>
+    <defaultValue>false</defaultValue>
+    <type>Checkbox</type>
+</CustomField>

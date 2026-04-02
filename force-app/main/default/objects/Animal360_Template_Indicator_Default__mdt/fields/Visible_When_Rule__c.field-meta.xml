@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Visible_When_Rule__c</fullName>
+    <description
+  >Optional runtime visibility rule interpreted by the assessment-entry UI.</description>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <label>Visible When Rule</label>
+    <length>32768</length>
+    <visibleLines>4</visibleLines>
+    <type>LongTextArea</type>
+</CustomField>

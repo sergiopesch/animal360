@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ReportType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <baseObject>Animal_Episode__c</baseObject>
+    <category>other</category>
+    <deployed>true</deployed>
+    <description
+  >Phase II report type for episode and interaction reporting.</description>
+    <fullName>Animal_Episode_with_Human_Animal_Interactions</fullName>
+    <join>
+        <outerJoin>true</outerJoin>
+        <relationship>Human_Animal_Interactions__r</relationship>
+    </join>
+    <label>Animal Episodes with Human Animal Interactions</label>
+    <sections>
+        <columns>
+            <checkedByDefault>true</checkedByDefault>
+            <field>Name</field>
+            <table>Animal_Episode__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>true</checkedByDefault>
+            <field>Animal__c</field>
+            <table>Animal_Episode__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>true</checkedByDefault>
+            <field>Episode_Status__c</field>
+            <table>Animal_Episode__c</table>
+        </columns>
+        <masterLabel>Animal Episode</masterLabel>
+    </sections>
+    <sections>
+        <columns>
+            <checkedByDefault>true</checkedByDefault>
+            <field>Name</field>
+            <table>Animal_Episode__c.Human_Animal_Interactions__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>true</checkedByDefault>
+            <field>Interaction_DateTime__c</field>
+            <table>Animal_Episode__c.Human_Animal_Interactions__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>true</checkedByDefault>
+            <field>Interaction_Type__c</field>
+            <table>Animal_Episode__c.Human_Animal_Interactions__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>true</checkedByDefault>
+            <field>Interaction_Quality__c</field>
+            <table>Animal_Episode__c.Human_Animal_Interactions__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>true</checkedByDefault>
+            <field>Animal_Response__c</field>
+            <table>Animal_Episode__c.Human_Animal_Interactions__r</table>
+        </columns>
+        <masterLabel>Interactions</masterLabel>
+    </sections>
+</ReportType>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>66.0</apiVersion>
+    <description
+  >Autolaunched flow that creates reminder tasks for completed assessments approaching or past their next review date.</description>
+    <actionCalls>
+        <name>Create_Reminder_Tasks</name>
+        <label>Create Reminder Tasks</label>
+        <locationX>280</locationX>
+        <locationY>80</locationY>
+        <actionName>A360ReviewReminderService</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>asOfDate</name>
+            <value>
+                <elementReference>asOfDate</elementReference>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>reminderCount</assignToReference>
+            <name>reminderCount</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>targetDate</assignToReference>
+            <name>targetDate</name>
+        </outputParameters>
+    </actionCalls>
+    <interviewLabel
+  >Review Due Reminder {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Review Due Reminder Flow</label>
+    <processType>AutoLaunchedFlow</processType>
+    <runInMode>SystemModeWithSharing</runInMode>
+    <start>
+        <locationX>40</locationX>
+        <locationY>80</locationY>
+        <connector>
+            <targetReference>Create_Reminder_Tasks</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <name>asOfDate</name>
+        <dataType>String</dataType>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>reminderCount</name>
+        <dataType>Number</dataType>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <scale>0</scale>
+    </variables>
+    <variables>
+        <name>targetDate</name>
+        <dataType>Date</dataType>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+</Flow>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Pain_Observed__c</fullName>
+    <description>Flags whether pain was observed in the event.</description>
+    <label>Pain Observed</label>
+    <defaultValue>false</defaultValue>
+    <type>Checkbox</type>
+</CustomField>

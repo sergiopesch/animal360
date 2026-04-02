@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Action_Type__c</fullName>
+    <description>Type of action required under the care plan.</description>
+    <label>Action Type</label>
+    <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+            <value>
+                <fullName>Review Assessment</fullName>
+                <default>false</default>
+                <label>Review Assessment</label>
+            </value>
+            <value>
+                <fullName>Housing Change</fullName>
+                <default>false</default>
+                <label>Housing Change</label>
+            </value>
+            <value>
+                <fullName>Clinical Review</fullName>
+                <default>false</default>
+                <label>Clinical Review</label>
+            </value>
+            <value>
+                <fullName>Medication</fullName>
+                <default>false</default>
+                <label>Medication</label>
+            </value>
+            <value>
+                <fullName>Enrichment</fullName>
+                <default>false</default>
+                <label>Enrichment</label>
+            </value>
+            <value>
+                <fullName>Behaviour Plan</fullName>
+                <default>false</default>
+                <label>Behaviour Plan</label>
+            </value>
+            </valueSetDefinition>
+        </valueSet>
+</CustomField>

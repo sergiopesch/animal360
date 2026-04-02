@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Indicator_Label__c</fullName>
+    <description
+  >Indicator label captured at the time of observation for direct reporting.</description>
+    <label>Indicator Label</label>
+    <length>120</length>
+    <type>Text</type>
+</CustomField>

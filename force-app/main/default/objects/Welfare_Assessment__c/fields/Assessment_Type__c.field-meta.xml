@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Assessment_Type__c</fullName>
+    <description>Type of assessment event.</description>
+    <label>Assessment Type</label>
+    <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+            <value>
+                <fullName>Baseline</fullName>
+                <default>true</default>
+                <label>Baseline</label>
+            </value>
+            <value>
+                <fullName>Reassessment</fullName>
+                <default>false</default>
+                <label>Reassessment</label>
+            </value>
+            <value>
+                <fullName>Spot Check</fullName>
+                <default>false</default>
+                <label>Spot Check</label>
+            </value>
+            <value>
+                <fullName>Triggered Review</fullName>
+                <default>false</default>
+                <label>Triggered Review</label>
+            </value>
+            </valueSetDefinition>
+        </valueSet>
+</CustomField>

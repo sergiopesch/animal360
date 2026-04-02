@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Observed_DateTime__c</fullName>
+    <description
+  >Observed date/time value when the indicator is datetime-based.</description>
+    <label>Observed Date Time</label>
+    <type>DateTime</type>
+</CustomField>

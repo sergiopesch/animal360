@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>D1_Nutrition</fullName>
+        <default>false</default>
+        <label>D1 Nutrition</label>
+    </customValue>
+    <customValue>
+        <fullName>D2_Environment</fullName>
+        <default>false</default>
+        <label>D2 Environment</label>
+    </customValue>
+    <customValue>
+        <fullName>D3_Health</fullName>
+        <default>false</default>
+        <label>D3 Health</label>
+    </customValue>
+    <customValue>
+        <fullName>D4_Behaviour</fullName>
+        <default>false</default>
+        <label>D4 Behaviour</label>
+    </customValue>
+    <customValue>
+        <fullName>D5_Mental_State</fullName>
+        <default>false</default>
+        <label>D5 Mental State</label>
+    </customValue>
+    <masterLabel>Domain Code</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

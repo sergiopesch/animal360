@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Restraint_Used__c</fullName>
+    <description
+  >Indicates whether restraint was used in the interaction.</description>
+    <label>Restraint Used</label>
+    <defaultValue>false</defaultValue>
+    <type>Checkbox</type>
+</CustomField>

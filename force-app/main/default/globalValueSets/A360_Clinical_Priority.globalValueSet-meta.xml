@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Routine</fullName>
+        <default>false</default>
+        <label>Routine</label>
+    </customValue>
+    <customValue>
+        <fullName>Soon</fullName>
+        <default>false</default>
+        <label>Soon</label>
+    </customValue>
+    <customValue>
+        <fullName>Urgent</fullName>
+        <default>false</default>
+        <label>Urgent</label>
+    </customValue>
+    <customValue>
+        <fullName>Emergency</fullName>
+        <default>false</default>
+        <label>Emergency</label>
+    </customValue>
+    <masterLabel>Clinical Priority</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

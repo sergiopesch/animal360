@@ -2,7 +2,7 @@
 <CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
     <defaultLandingTab>Animal__c</defaultLandingTab>
     <description
-  >Phase I Animal 360 application for intake, movement, closure, and reporting.</description>
+  >Animal 360 application updated for Phase II welfare evidence, care planning, and clinical operations.</description>
     <formFactors>Large</formFactors>
     <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
     <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
@@ -11,9 +11,15 @@
     <tabs>Animal__c</tabs>
     <tabs>Animal_Episode__c</tabs>
     <tabs>Housing_Unit__c</tabs>
+    <tabs>Welfare_Assessment__c</tabs>
+    <tabs>Care_Plan__c</tabs>
+    <tabs>Clinical_Event__c</tabs>
+    <tabs>Human_Animal_Interaction__c</tabs>
+    <tabs>Assessment_Template__c</tabs>
     <tabs>Intake_Event__c</tabs>
     <tabs>Outcome_Event__c</tabs>
     <tabs>standard-Case</tabs>
     <tabs>standard-Report</tabs>
+    <tabs>standard-Dashboard</tabs>
     <uiType>Lightning</uiType>
 </CustomApplication>

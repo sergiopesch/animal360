@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Domain_5_Mental_State_Summary__c</fullName>
+    <description
+  >Narrative mental-state inference made from the combined evidence.</description>
+    <label>Domain 5 Mental State Summary</label>
+    <length>32768</length>
+    <visibleLines>5</visibleLines>
+    <type>LongTextArea</type>
+</CustomField>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>Animal_Episode__c$Animal__c</field>
+    </columns>
+    <columns>
+        <field>Animal_Episode__c$Episode_Status__c</field>
+    </columns>
+    <columns>
+        <field>Animal_Episode__c.Human_Animal_Interactions__r$Name</field>
+    </columns>
+    <columns>
+        <field
+    >Animal_Episode__c.Human_Animal_Interactions__r$Interaction_DateTime__c</field>
+    </columns>
+    <columns>
+        <field
+    >Animal_Episode__c.Human_Animal_Interactions__r$Interaction_Type__c</field>
+    </columns>
+    <columns>
+        <field
+    >Animal_Episode__c.Human_Animal_Interactions__r$Interaction_Quality__c</field>
+    </columns>
+    <columns>
+        <field
+    >Animal_Episode__c.Human_Animal_Interactions__r$Animal_Response__c</field>
+    </columns>
+    <description
+  >Phase II report showing interaction outcomes and response patterns.</description>
+
+    <folderName>Animal_360</folderName>
+    <format>Tabular</format>
+    <name>Interactions by Response Pattern</name>
+    <reportType>Animal_Episode_with_Human_Animal_Interactions__c</reportType>
+
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>false</showGrandTotal>
+    <showSubTotals>false</showSubTotals>
+    <sortColumn
+  >Animal_Episode__c.Human_Animal_Interactions__r$Interaction_DateTime__c</sortColumn>
+    <sortOrder>Asc</sortOrder>
+</Report>

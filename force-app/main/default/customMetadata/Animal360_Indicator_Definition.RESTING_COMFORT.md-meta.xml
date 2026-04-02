@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomMetadata
+  xmlns="http://soap.sforce.com/2006/04/metadata"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+>
+    <description>Packaged indicator for environmental comfort.</description>
+    <label>Resting Comfort</label>
+    <protected>false</protected>
+    <values>
+        <field>Indicator_Key__c</field>
+        <value xsi:type="xsd:string">RESTING_COMFORT</value>
+    </values>
+    <values>
+        <field>Indicator_Label__c</field>
+        <value xsi:type="xsd:string">Resting Comfort</value>
+    </values>
+    <values>
+        <field>Domain_Code__c</field>
+        <value xsi:type="xsd:string">D2_Environment</value>
+    </values>
+    <values>
+        <field>Value_Type__c</field>
+        <value xsi:type="xsd:string">Picklist</value>
+    </values>
+    <values>
+        <field>Help_Text__c</field>
+        <value
+      xsi:type="xsd:string"
+    >Capture whether the current housing environment supports comfortable rest and shelter.</value>
+    </values>
+    <values>
+        <field>Is_Active__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+</CustomMetadata>

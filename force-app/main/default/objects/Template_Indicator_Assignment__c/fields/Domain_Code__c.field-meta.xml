@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Domain_Code__c</fullName>
+    <description>Domain grouping for the indicator assignment.</description>
+    <label>Domain Code</label>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetName>A360_Domain_Code</valueSetName>
+    </valueSet>
+</CustomField>

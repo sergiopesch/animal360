@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Current_Clinical_Priority__c</fullName>
+    <description
+  >System-maintained current clinical priority for the active episode.</description>
+    <inlineHelpText
+  >This field is maintained by assessment automation and should remain read-only for operational users.</inlineHelpText>
+    <label>Current Clinical Priority</label>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetName>A360_Clinical_Priority</valueSetName>
+    </valueSet>
+</CustomField>

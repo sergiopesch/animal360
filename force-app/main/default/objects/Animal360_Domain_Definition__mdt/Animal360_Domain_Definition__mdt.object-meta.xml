@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description
+  >Packaged Five Domains catalogue used to seed runtime templates and reporting semantics.</description>
+    <label>Animal360 Domain Definition</label>
+    <pluralLabel>Animal360 Domain Definitions</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

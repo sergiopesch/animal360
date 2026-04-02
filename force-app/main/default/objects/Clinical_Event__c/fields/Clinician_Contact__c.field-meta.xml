@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Clinician_Contact__c</fullName>
+    <description
+  >External or internal clinician contact linked to the event.</description>
+    <label>Clinician Contact</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Clinical Events</relationshipLabel>
+    <relationshipName>Clinical_Events</relationshipName>
+    <type>Lookup</type>
+</CustomField>

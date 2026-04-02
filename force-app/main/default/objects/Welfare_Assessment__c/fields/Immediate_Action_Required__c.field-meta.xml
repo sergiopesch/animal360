@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Immediate_Action_Required__c</fullName>
+    <description
+  >Flags assessments that require immediate escalation or intervention.</description>
+    <label>Immediate Action Required</label>
+    <defaultValue>false</defaultValue>
+    <type>Checkbox</type>
+</CustomField>

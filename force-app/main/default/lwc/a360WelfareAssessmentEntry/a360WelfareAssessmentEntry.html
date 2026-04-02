@@ -1,0 +1,467 @@
+<template>
+  <lightning-card
+    title="Welfare Assessment Entry"
+    icon-name="standard:scan_card"
+  >
+    <div class="slds-var-p-around_medium">
+      <template if:true={isLoading}>
+        <lightning-spinner
+          alternative-text="Loading assessment template"
+        ></lightning-spinner>
+      </template>
+
+      <template if:true={hasError}>
+        <div class="slds-text-color_error slds-var-m-bottom_medium">
+          {errorMessage}
+        </div>
+      </template>
+
+      <div class="slds-grid slds-wrap slds-gutters slds-var-m-bottom_medium">
+        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+          <lightning-combobox
+            name="episodeId"
+            label="Episode"
+            value={episodeId}
+            options={episodeOptions}
+            placeholder="Select an episode"
+            onchange={handleEpisodeChange}
+          ></lightning-combobox>
+        </div>
+        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+          <lightning-combobox
+            name="templateId"
+            label="Template"
+            value={templateId}
+            options={templateOptions}
+            placeholder="Select a template"
+            onchange={handleTemplateChange}
+          ></lightning-combobox>
+        </div>
+        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+          <lightning-combobox
+            name="assessmentContext"
+            label="Assessment Context"
+            value={assessmentContext}
+            options={assessmentContextOptions}
+            onchange={handleAssessmentContextChange}
+          ></lightning-combobox>
+        </div>
+      </div>
+
+      <template if:true={hasTemplate}>
+        <div class="slds-box slds-theme_shade slds-var-m-bottom_medium">
+          <div class="slds-text-title_caps">Template</div>
+          <div class="slds-text-heading_small">{template.templateName}</div>
+          <div class="slds-text-body_small">
+            {template.templateCode} | {template.species} | {template.context} |
+            v{template.version}
+          </div>
+        </div>
+
+        <div class="slds-grid slds-wrap slds-gutters slds-var-m-bottom_medium">
+          <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+            <lightning-input
+              name="assessmentDateTime"
+              type="datetime-local"
+              label="Assessment Date and Time"
+              value={formState.assessmentDateTime}
+              onchange={handleHeaderChange}
+              required
+            ></lightning-input>
+          </div>
+          <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+            <lightning-combobox
+              name="assessmentType"
+              label="Assessment Type"
+              value={formState.assessmentType}
+              options={assessmentTypeOptions}
+              onchange={handleHeaderChange}
+            ></lightning-combobox>
+          </div>
+          <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+            <lightning-combobox
+              name="assessmentStatus"
+              label="Assessment Status"
+              value={formState.assessmentStatus}
+              options={assessmentStatusOptions}
+              onchange={handleHeaderChange}
+            ></lightning-combobox>
+          </div>
+          <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+            <lightning-combobox
+              name="confidenceLevel"
+              label="Overall Confidence"
+              value={formState.confidenceLevel}
+              options={confidenceOptions}
+              onchange={handleHeaderChange}
+            ></lightning-combobox>
+          </div>
+        </div>
+
+        <div class="slds-grid slds-wrap slds-gutters slds-var-m-bottom_large">
+          <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+            <lightning-combobox
+              name="overallNegativeGrade"
+              label="Overall Negative Grade"
+              value={formState.overallNegativeGrade}
+              options={gradeOptions}
+              onchange={handleHeaderChange}
+            ></lightning-combobox>
+          </div>
+          <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+            <lightning-combobox
+              name="overallPositiveGrade"
+              label="Overall Positive Grade"
+              value={formState.overallPositiveGrade}
+              options={gradeOptions}
+              onchange={handleHeaderChange}
+            ></lightning-combobox>
+          </div>
+          <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+            <lightning-combobox
+              name="overallWelfareConcern"
+              label="Overall Welfare Concern"
+              value={formState.overallWelfareConcern}
+              options={welfareConcernOptions}
+              onchange={handleHeaderChange}
+            ></lightning-combobox>
+          </div>
+          <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+            <lightning-input
+              name="nextReviewDate"
+              type="date"
+              label="Next Review Date"
+              value={formState.nextReviewDate}
+              onchange={handleHeaderChange}
+            ></lightning-input>
+          </div>
+          <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+            <lightning-input
+              name="immediateActionRequired"
+              type="checkbox"
+              label="Immediate Action Required"
+              checked={formState.immediateActionRequired}
+              onchange={handleHeaderChange}
+            ></lightning-input>
+          </div>
+        </div>
+
+        <template for:each={renderedDomains} for:item="domain">
+          <section
+            key={domain.domainCode}
+            class="slds-box slds-var-m-bottom_large"
+          >
+            <div class="slds-var-m-bottom_medium">
+              <div class="slds-text-title_caps">{domain.domainCode}</div>
+              <div class="slds-text-heading_small">{domain.domainLabel}</div>
+              <p class="slds-text-body_small slds-var-m-top_x-small">
+                {domain.guidanceText}
+              </p>
+            </div>
+
+            <div
+              class="slds-grid slds-wrap slds-gutters slds-var-m-bottom_medium"
+            >
+              <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                <lightning-combobox
+                  data-domain-code={domain.domainCode}
+                  name="negativeGrade"
+                  label="Negative Grade"
+                  value={domain.negativeGrade}
+                  options={gradeOptions}
+                  onchange={handleDomainFieldChange}
+                ></lightning-combobox>
+              </div>
+              <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                <lightning-combobox
+                  data-domain-code={domain.domainCode}
+                  name="positiveGrade"
+                  label="Positive Grade"
+                  value={domain.positiveGrade}
+                  options={gradeOptions}
+                  onchange={handleDomainFieldChange}
+                ></lightning-combobox>
+              </div>
+              <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                <lightning-combobox
+                  data-domain-code={domain.domainCode}
+                  name="confidenceLevel"
+                  label="Domain Confidence"
+                  value={domain.confidenceLevel}
+                  options={confidenceOptions}
+                  onchange={handleDomainFieldChange}
+                ></lightning-combobox>
+              </div>
+            </div>
+
+            <template if:true={domain.isMentalStateDomain}>
+              <lightning-textarea
+                label="Mental State Summary"
+                value={formState.domain5MentalStateSummary}
+                onchange={handleMentalStateSummaryChange}
+                required={domain.isRequired}
+                class="slds-var-m-bottom_medium"
+              ></lightning-textarea>
+            </template>
+
+            <template if:false={domain.isMentalStateDomain}>
+              <div
+                class="slds-grid slds-wrap slds-gutters slds-var-m-bottom_medium"
+              >
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2">
+                  <lightning-textarea
+                    data-domain-code={domain.domainCode}
+                    name="keyFindings"
+                    label="Key Findings"
+                    value={domain.keyFindings}
+                    onchange={handleDomainFieldChange}
+                  ></lightning-textarea>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2">
+                  <lightning-textarea
+                    data-domain-code={domain.domainCode}
+                    name="inferredAffects"
+                    label="Inferred Affects"
+                    value={domain.inferredAffects}
+                    onchange={handleDomainFieldChange}
+                  ></lightning-textarea>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                  <lightning-input
+                    data-domain-code={domain.domainCode}
+                    name="actionRequired"
+                    type="checkbox"
+                    label="Action Required"
+                    checked={domain.actionRequired}
+                    onchange={handleDomainFieldChange}
+                  ></lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-large-size_2-of-3">
+                  <lightning-textarea
+                    data-domain-code={domain.domainCode}
+                    name="actionSummary"
+                    label="Action Summary"
+                    value={domain.actionSummary}
+                    onchange={handleDomainFieldChange}
+                  ></lightning-textarea>
+                </div>
+              </div>
+            </template>
+
+            <template for:each={domain.indicators} for:item="indicator">
+              <template if:true={indicator.isVisible}>
+                <div
+                  key={indicator.indicatorKey}
+                  class="slds-box slds-theme_shade slds-var-m-bottom_medium"
+                >
+                  <div class="slds-grid slds-wrap slds-gutters">
+                    <div class="slds-col slds-size_1-of-1">
+                      <div class="slds-text-title_bold">
+                        {indicator.indicatorLabel}
+                      </div>
+                      <template if:true={indicator.helpText}>
+                        <p class="slds-text-body_small slds-var-m-top_x-small">
+                          {indicator.helpText}
+                        </p>
+                      </template>
+                    </div>
+
+                    <template if:true={indicator.isPicklist}>
+                      <div
+                        class="slds-col slds-size_1-of-1 slds-large-size_1-of-2"
+                      >
+                        <lightning-combobox
+                          data-domain-code={domain.domainCode}
+                          data-indicator-key={indicator.indicatorKey}
+                          name="observedPicklistValue"
+                          label="Observed Value"
+                          value={indicator.observedPicklistValue}
+                          options={indicator.options}
+                          onchange={handleIndicatorFieldChange}
+                        ></lightning-combobox>
+                      </div>
+                    </template>
+
+                    <template if:true={indicator.isBoolean}>
+                      <div
+                        class="slds-col slds-size_1-of-1 slds-large-size_1-of-2"
+                      >
+                        <lightning-combobox
+                          data-domain-code={domain.domainCode}
+                          data-indicator-key={indicator.indicatorKey}
+                          name="observedBooleanValue"
+                          label="Observed Value"
+                          value={indicator.observedBooleanValue}
+                          options={booleanOptions}
+                          onchange={handleIndicatorFieldChange}
+                        ></lightning-combobox>
+                      </div>
+                    </template>
+
+                    <template if:true={indicator.isNumber}>
+                      <div
+                        class="slds-col slds-size_1-of-1 slds-large-size_1-of-2"
+                      >
+                        <lightning-input
+                          data-domain-code={domain.domainCode}
+                          data-indicator-key={indicator.indicatorKey}
+                          name="observedNumericValue"
+                          type="number"
+                          label="Observed Value"
+                          value={indicator.observedNumericValue}
+                          onchange={handleIndicatorFieldChange}
+                        ></lightning-input>
+                      </div>
+                    </template>
+
+                    <template if:true={indicator.isText}>
+                      <div class="slds-col slds-size_1-of-1">
+                        <lightning-textarea
+                          data-domain-code={domain.domainCode}
+                          data-indicator-key={indicator.indicatorKey}
+                          name="observedText"
+                          label="Observed Value"
+                          value={indicator.observedText}
+                          onchange={handleIndicatorFieldChange}
+                        ></lightning-textarea>
+                      </div>
+                    </template>
+
+                    <template if:true={indicator.isDateTime}>
+                      <div
+                        class="slds-col slds-size_1-of-1 slds-large-size_1-of-2"
+                      >
+                        <lightning-input
+                          data-domain-code={domain.domainCode}
+                          data-indicator-key={indicator.indicatorKey}
+                          name="observedDateTime"
+                          type="datetime-local"
+                          label="Observed Value"
+                          value={indicator.observedDateTime}
+                          onchange={handleIndicatorFieldChange}
+                        ></lightning-input>
+                      </div>
+                    </template>
+
+                    <template if:true={indicator.showSeverity}>
+                      <div
+                        class="slds-col slds-size_1-of-1 slds-large-size_1-of-4"
+                      >
+                        <lightning-combobox
+                          data-domain-code={domain.domainCode}
+                          data-indicator-key={indicator.indicatorKey}
+                          name="severityLevel"
+                          label="Severity Level"
+                          value={indicator.severityLevel}
+                          options={severityOptions}
+                          onchange={handleIndicatorFieldChange}
+                        ></lightning-combobox>
+                      </div>
+                    </template>
+
+                    <template if:true={indicator.showEnhancement}>
+                      <div
+                        class="slds-col slds-size_1-of-1 slds-large-size_1-of-4"
+                      >
+                        <lightning-combobox
+                          data-domain-code={domain.domainCode}
+                          data-indicator-key={indicator.indicatorKey}
+                          name="enhancementLevel"
+                          label="Enhancement Level"
+                          value={indicator.enhancementLevel}
+                          options={enhancementOptions}
+                          onchange={handleIndicatorFieldChange}
+                        ></lightning-combobox>
+                      </div>
+                    </template>
+
+                    <div
+                      class="slds-col slds-size_1-of-1 slds-large-size_1-of-4"
+                    >
+                      <lightning-combobox
+                        data-domain-code={domain.domainCode}
+                        data-indicator-key={indicator.indicatorKey}
+                        name="duration"
+                        label="Duration"
+                        value={indicator.duration}
+                        options={durationOptions}
+                        onchange={handleIndicatorFieldChange}
+                      ></lightning-combobox>
+                    </div>
+
+                    <div
+                      class="slds-col slds-size_1-of-1 slds-large-size_1-of-4"
+                    >
+                      <lightning-combobox
+                        data-domain-code={domain.domainCode}
+                        data-indicator-key={indicator.indicatorKey}
+                        name="frequency"
+                        label="Frequency"
+                        value={indicator.frequency}
+                        options={frequencyOptions}
+                        onchange={handleIndicatorFieldChange}
+                      ></lightning-combobox>
+                    </div>
+
+                    <div
+                      class="slds-col slds-size_1-of-1 slds-large-size_1-of-3"
+                    >
+                      <lightning-combobox
+                        data-domain-code={domain.domainCode}
+                        data-indicator-key={indicator.indicatorKey}
+                        name="evidenceSource"
+                        label="Evidence Source"
+                        value={indicator.evidenceSource}
+                        options={evidenceSourceOptions}
+                        onchange={handleIndicatorFieldChange}
+                      ></lightning-combobox>
+                    </div>
+
+                    <div
+                      class="slds-col slds-size_1-of-1 slds-large-size_1-of-3"
+                    >
+                      <lightning-combobox
+                        data-domain-code={domain.domainCode}
+                        data-indicator-key={indicator.indicatorKey}
+                        name="confidenceLevel"
+                        label="Observation Confidence"
+                        value={indicator.confidenceLevel}
+                        options={confidenceOptions}
+                        onchange={handleIndicatorFieldChange}
+                      ></lightning-combobox>
+                    </div>
+
+                    <div
+                      class="slds-col slds-size_1-of-1 slds-large-size_1-of-3"
+                    >
+                      <lightning-input
+                        data-domain-code={domain.domainCode}
+                        data-indicator-key={indicator.indicatorKey}
+                        name="requiresIntervention"
+                        type="checkbox"
+                        label="Requires Intervention"
+                        checked={indicator.requiresIntervention}
+                        onchange={handleIndicatorFieldChange}
+                      ></lightning-input>
+                    </div>
+
+                    <div class="slds-col slds-size_1-of-1">
+                      <lightning-textarea
+                        data-domain-code={domain.domainCode}
+                        data-indicator-key={indicator.indicatorKey}
+                        name="interventionNotes"
+                        label="Intervention Notes"
+                        value={indicator.interventionNotes}
+                        onchange={handleIndicatorFieldChange}
+                      ></lightning-textarea>
+                    </div>
+                  </div>
+                </div>
+              </template>
+            </template>
+          </section>
+        </template>
+      </template>
+    </div>
+  </lightning-card>
+</template>

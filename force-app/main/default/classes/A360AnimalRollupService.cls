@@ -52,7 +52,8 @@ public without sharing class A360AnimalRollupService {
           Current_Episode__c,
           Current_Housing_Unit__c,
           Current_Status__c,
-          Current_Care_Status__c
+          Current_Care_Status__c,
+          Current_Welfare_Risk__c
         FROM Animal__c
         WHERE Id IN :animalIds
       ]
@@ -69,7 +70,8 @@ public without sharing class A360AnimalRollupService {
         Animal__c,
         Episode_Status__c,
         Intake_DateTime__c,
-        Current_Location_Stay__c
+        Current_Location_Stay__c,
+        Current_Welfare_Level__c
       FROM Animal_Episode__c
       WHERE Animal__c IN :animalsById.keySet() AND Is_Current__c = TRUE
       ORDER BY Intake_DateTime__c DESC
@@ -116,12 +118,16 @@ public without sharing class A360AnimalRollupService {
       String derivedCurrentCareStatus = currentEpisode == null
         ? null
         : currentEpisode.Episode_Status__c;
+      String derivedCurrentWelfareRisk = currentEpisode == null
+        ? null
+        : currentEpisode.Current_Welfare_Level__c;
 
       if (
         animalRecord.Current_Episode__c != derivedCurrentEpisodeId ||
         animalRecord.Current_Housing_Unit__c != derivedCurrentHousingUnitId ||
         animalRecord.Current_Status__c != derivedCurrentStatus ||
-        animalRecord.Current_Care_Status__c != derivedCurrentCareStatus
+        animalRecord.Current_Care_Status__c != derivedCurrentCareStatus ||
+        animalRecord.Current_Welfare_Risk__c != derivedCurrentWelfareRisk
       ) {
         animalsToUpdate.add(
           new Animal__c(
@@ -129,7 +135,8 @@ public without sharing class A360AnimalRollupService {
             Current_Episode__c = derivedCurrentEpisodeId,
             Current_Housing_Unit__c = derivedCurrentHousingUnitId,
             Current_Status__c = derivedCurrentStatus,
-            Current_Care_Status__c = derivedCurrentCareStatus
+            Current_Care_Status__c = derivedCurrentCareStatus,
+            Current_Welfare_Risk__c = derivedCurrentWelfareRisk
           )
         );
       }

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomMetadata
+  xmlns="http://soap.sforce.com/2006/04/metadata"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+>
+    <description>Packaged indicator for hydration access.</description>
+    <label>Hydration Access</label>
+    <protected>false</protected>
+    <values>
+        <field>Indicator_Key__c</field>
+        <value xsi:type="xsd:string">HYDRATION_ACCESS</value>
+    </values>
+    <values>
+        <field>Indicator_Label__c</field>
+        <value xsi:type="xsd:string">Hydration Access</value>
+    </values>
+    <values>
+        <field>Domain_Code__c</field>
+        <value xsi:type="xsd:string">D1_Nutrition</value>
+    </values>
+    <values>
+        <field>Value_Type__c</field>
+        <value xsi:type="xsd:string">Boolean</value>
+    </values>
+    <values>
+        <field>Help_Text__c</field>
+        <value
+      xsi:type="xsd:string"
+    >Indicate whether the animal had appropriate access to water at the time of assessment.</value>
+    </values>
+    <values>
+        <field>Is_Active__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+</CustomMetadata>

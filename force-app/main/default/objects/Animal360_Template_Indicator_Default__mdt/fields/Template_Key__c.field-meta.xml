@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Template_Key__c</fullName>
+    <description>Packaged template key that owns the assignment.</description>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <label>Template Key</label>
+    <length>100</length>
+    <type>Text</type>
+</CustomField>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Primary_Goal__c</fullName>
+    <description>Primary goal for the plan.</description>
+    <label>Primary Goal</label>
+    <length>32768</length>
+    <visibleLines>4</visibleLines>
+    <type>LongTextArea</type>
+</CustomField>

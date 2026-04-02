@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Observed_Numeric_Value__c</fullName>
+    <description
+  >Observed numeric value when the indicator is number-based.</description>
+    <label>Observed Numeric Value</label>
+    <precision>10</precision>
+    <scale>2</scale>
+    <type>Number</type>
+</CustomField>

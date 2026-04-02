@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Risk_Evaluated_On__c</fullName>
+    <description
+  >Timestamp of the latest risk-evaluation pass for the assessment.</description>
+    <label>Risk Evaluated On</label>
+    <type>DateTime</type>
+</CustomField>

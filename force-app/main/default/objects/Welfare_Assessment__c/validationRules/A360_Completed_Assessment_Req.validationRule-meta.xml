@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <description
+  >Completed assessments must store both assessor and assessment date/time.</description>
+    <errorConditionFormula
+  >AND(ISPICKVAL(Assessment_Status__c, &quot;Completed&quot;), OR(ISBLANK(Assessor__c), ISBLANK(Assessment_DateTime__c)))</errorConditionFormula>
+    <errorMessage
+  >Completed assessments require both an assessor and an assessment date/time.</errorMessage>
+    <fullName>A360_Completed_Assessment_Req</fullName>
+</ValidationRule>

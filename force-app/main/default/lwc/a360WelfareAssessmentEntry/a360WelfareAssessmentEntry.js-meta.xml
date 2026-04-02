@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>66.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Welfare Assessment Entry</masterLabel>
+    <description
+  >Dynamic welfare assessment entry screen component for the Phase II assessment flow.</description>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property
+        name="episodeId"
+        type="String"
+        label="Episode Id"
+        description="Optional episode Id supplied by the launching flow."
+      />
+            <property
+        name="templateId"
+        type="String"
+        label="Template Id"
+        description="Optional template Id supplied by the launching flow."
+      />
+            <property
+        name="assessmentContext"
+        type="String"
+        label="Assessment Context"
+        description="Assessment context to default when the screen loads."
+      />
+            <property
+        name="payloadJson"
+        type="String"
+        label="Assessment Payload JSON"
+        description="Structured JSON payload returned to the flow for persistence."
+      />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

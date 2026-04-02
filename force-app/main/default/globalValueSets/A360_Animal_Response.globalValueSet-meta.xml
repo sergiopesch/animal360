@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Relaxed</fullName>
+        <default>false</default>
+        <label>Relaxed</label>
+    </customValue>
+    <customValue>
+        <fullName>Neutral</fullName>
+        <default>false</default>
+        <label>Neutral</label>
+    </customValue>
+    <customValue>
+        <fullName>Fearful</fullName>
+        <default>false</default>
+        <label>Fearful</label>
+    </customValue>
+    <customValue>
+        <fullName>Avoidant</fullName>
+        <default>false</default>
+        <label>Avoidant</label>
+    </customValue>
+    <customValue>
+        <fullName>Aggressive</fullName>
+        <default>false</default>
+        <label>Aggressive</label>
+    </customValue>
+    <customValue>
+        <fullName>Seeking</fullName>
+        <default>false</default>
+        <label>Seeking</label>
+    </customValue>
+    <masterLabel>Animal Response</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

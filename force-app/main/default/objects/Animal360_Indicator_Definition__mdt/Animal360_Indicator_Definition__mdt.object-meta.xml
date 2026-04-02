@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description
+  >Packaged indicator catalogue used for runtime assessment rendering and persistence.</description>
+    <label>Animal360 Indicator Definition</label>
+    <pluralLabel>Animal360 Indicator Definitions</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

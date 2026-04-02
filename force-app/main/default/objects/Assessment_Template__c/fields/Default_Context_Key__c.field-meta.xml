@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Default_Context_Key__c</fullName>
+    <description
+  >System-maintained uniqueness key that prevents more than one active default template per species and context.</description>
+    <label>Default Context Key</label>
+    <length>150</length>
+    <unique>true</unique>
+    <caseSensitive>false</caseSensitive>
+    <type>Text</type>
+</CustomField>

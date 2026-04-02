@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Layout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <layoutSections>
+        <customLabel>true</customLabel>
+        <label>Plan Details</label>
+        <layoutColumns>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Name</field>
+            </layoutItems>
+            <layoutItems>
+                <field>Animal_Episode__c</field>
+            </layoutItems>
+            <layoutItems>
+                <field>Primary_Assessment__c</field>
+            </layoutItems>
+            <layoutItems>
+                <field>Plan_Type__c</field>
+            </layoutItems>
+            <layoutItems>
+                <field>Status__c</field>
+            </layoutItems>
+        </layoutColumns>
+        <layoutColumns>
+            <layoutItems>
+                <field>Start_Date__c</field>
+            </layoutItems>
+            <layoutItems>
+                <field>Target_Review_Date__c</field>
+            </layoutItems>
+            <layoutItems>
+                <field>Owner_User__c</field>
+            </layoutItems>
+            <layoutItems>
+                <field>Auto_Created__c</field>
+            </layoutItems>
+        </layoutColumns>
+        <style>TwoColumnsTopToBottom</style>
+    </layoutSections>
+    <layoutSections>
+        <customLabel>true</customLabel>
+        <label>Plan Outcome</label>
+        <layoutColumns>
+            <layoutItems>
+                <field>Primary_Goal__c</field>
+            </layoutItems>
+        </layoutColumns>
+        <layoutColumns>
+            <layoutItems>
+                <field>Success_Criteria__c</field>
+            </layoutItems>
+        </layoutColumns>
+        <style>TwoColumnsTopToBottom</style>
+    </layoutSections>
+</Layout>

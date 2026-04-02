@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Assessor__c</fullName>
+    <description>User who completed or owns the assessment event.</description>
+    <label>Assessor</label>
+    <referenceTo>User</referenceTo>
+    <relationshipLabel>Welfare Assessments</relationshipLabel>
+    <relationshipName>Welfare_Assessments</relationshipName>
+    <type>Lookup</type>
+</CustomField>

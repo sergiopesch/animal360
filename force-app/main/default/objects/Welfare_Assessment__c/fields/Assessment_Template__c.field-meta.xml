@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Assessment_Template__c</fullName>
+    <description>Runtime template used to capture the assessment.</description>
+    <label>Assessment Template</label>
+    <referenceTo>Assessment_Template__c</referenceTo>
+    <relationshipLabel>Welfare Assessments</relationshipLabel>
+    <relationshipName>Welfare_Assessments</relationshipName>
+    <type>Lookup</type>
+</CustomField>

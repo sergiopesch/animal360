@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Metadata_Template_Key__c</fullName>
+    <description
+  >Stable packaged template key used for idempotent seed and upgrade sync.</description>
+    <externalId>true</externalId>
+    <label>Metadata Template Key</label>
+    <length>100</length>
+    <unique>true</unique>
+    <caseSensitive>false</caseSensitive>
+    <type>Text</type>
+</CustomField>

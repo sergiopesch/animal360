@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Interaction_DateTime__c</fullName>
+    <description>Date and time of the interaction.</description>
+    <label>Interaction Date Time</label>
+    <type>DateTime</type>
+</CustomField>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Is_Managed_Seed__c</fullName>
+    <description
+  >Distinguishes package-managed seed templates from subscriber-authored runtime templates.</description>
+    <label>Is Managed Seed</label>
+    <defaultValue>false</defaultValue>
+    <type>Checkbox</type>
+</CustomField>

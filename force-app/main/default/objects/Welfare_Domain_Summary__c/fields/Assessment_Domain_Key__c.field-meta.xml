@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Assessment_Domain_Key__c</fullName>
+    <description
+  >System-maintained unique key that ensures one domain summary per domain per assessment.</description>
+    <label>Assessment Domain Key</label>
+    <length>160</length>
+    <unique>true</unique>
+    <caseSensitive>false</caseSensitive>
+    <type>Text</type>
+</CustomField>

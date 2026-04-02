@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Negative</fullName>
+        <default>false</default>
+        <label>Negative</label>
+    </customValue>
+    <customValue>
+        <fullName>Neutral</fullName>
+        <default>false</default>
+        <label>Neutral</label>
+    </customValue>
+    <customValue>
+        <fullName>Positive</fullName>
+        <default>false</default>
+        <label>Positive</label>
+    </customValue>
+    <customValue>
+        <fullName>Enriching</fullName>
+        <default>false</default>
+        <label>Enriching</label>
+    </customValue>
+    <masterLabel>Interaction Quality</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

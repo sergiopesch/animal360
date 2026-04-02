@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomMetadata
+  xmlns="http://soap.sforce.com/2006/04/metadata"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+>
+    <description
+  >Packaged status transition handling for low welfare risk.</description>
+    <label>Low Transition</label>
+    <protected>false</protected>
+    <values>
+        <field>Target_Welfare_Risk__c</field>
+        <value xsi:type="xsd:string">Low</value>
+    </values>
+    <values>
+        <field>Clinical_Priority__c</field>
+        <value xsi:type="xsd:string">Routine</value>
+    </values>
+    <values>
+        <field>Review_Days__c</field>
+        <value xsi:type="xsd:double">30</value>
+    </values>
+    <values>
+        <field>Action_Label__c</field>
+        <value xsi:type="xsd:string">Continue routine monitoring</value>
+    </values>
+    <values>
+        <field>Is_Active__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+</CustomMetadata>
