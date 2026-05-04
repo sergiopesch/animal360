@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="2320" height="1400" viewBox="0 0 2320 1400" role="img" aria-labelledby="title desc">
+  <title id="title">Salesforce Animal360 Data Model</title>
+  <desc id="desc">Salesforce-style Animal360 data model diagram showing standard CRM objects, Person Accounts, Animal360 custom objects, Case context lookups, master-detail relationships, lookup relationships, and assessment configuration.</desc>
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#1f2937" flood-opacity="0.16"/>
+    </filter>
+    <marker id="arrow-solid" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#3f4856"/>
+    </marker>
+    <marker id="arrow-dash" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#5b6472"/>
+    </marker>
+    <marker id="arrow-dot" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#6b7280"/>
+    </marker>
+    <style>
+      .page { fill: #ffffff; }
+      .product { font: 700 22px Arial, Helvetica, sans-serif; fill: #7c3f8c; letter-spacing: 0; }
+      .title { font: 700 44px Arial, Helvetica, sans-serif; fill: #181818; letter-spacing: 0; }
+      .section { fill: #f1f3f6; stroke: #eef1f5; stroke-width: 2; }
+      .section-title { font: italic 18px Arial, Helvetica, sans-serif; fill: #3d3f43; }
+      .std { fill: #f8fafc; stroke: #2f3743; stroke-width: 2.5; filter: url(#shadow); }
+      .std-inner { fill: #ffffff; stroke: #2f3743; stroke-width: 1.8; stroke-dasharray: 4 4; }
+      .custom { fill: #f8eefb; stroke: #873a93; stroke-width: 2.5; filter: url(#shadow); }
+      .focus { fill: #f8eefb; stroke: #873a93; stroke-width: 7; filter: url(#shadow); }
+      .obj { font: 700 21px Arial, Helvetica, sans-serif; fill: #28233a; text-anchor: middle; }
+      .field { font: 13px Arial, Helvetica, sans-serif; fill: #4b5563; text-anchor: middle; }
+      .tiny { font: 12px Arial, Helvetica, sans-serif; fill: #4b5563; text-anchor: middle; }
+      .line { fill: none; stroke: #3f4856; stroke-width: 2.2; marker-end: url(#arrow-solid); }
+      .lookup { fill: none; stroke: #5b6472; stroke-width: 2.2; stroke-dasharray: 9 8; marker-end: url(#arrow-dash); }
+      .config { fill: none; stroke: #6b7280; stroke-width: 2.2; stroke-dasharray: 2 8; marker-end: url(#arrow-dot); }
+      .managed { fill: none; stroke: #3f4856; stroke-width: 2; stroke-dasharray: 3 5; marker-end: url(#arrow-solid); }
+      .legend { font: 16px Arial, Helvetica, sans-serif; fill: #374151; }
+    </style>
+  </defs>
+
+  <rect class="page" width="2320" height="1400"/>
+
+  <image href="assets/salesforce-logo.png" x="28" y="24" width="118" height="76" preserveAspectRatio="xMidYMid meet"/>
+  <text class="product" x="182" y="42">ANIMAL360</text>
+  <text class="title" x="182" y="86">Animal360 Data Model</text>
+
+  <rect class="section" x="24" y="128" width="360" height="1100" rx="8"/>
+  <rect class="section" x="394" y="128" width="330" height="1100" rx="8"/>
+  <rect class="section" x="734" y="128" width="500" height="1100" rx="8"/>
+  <rect class="section" x="1244" y="128" width="520" height="1100" rx="8"/>
+  <rect class="section" x="1774" y="128" width="398" height="1100" rx="8"/>
+
+  <text class="section-title" x="42" y="160">Constituent and CRM Core</text>
+  <text class="section-title" x="412" y="160">Animal Identity</text>
+  <text class="section-title" x="752" y="160">Episode Care Context</text>
+  <text class="section-title" x="1262" y="160">Welfare Evidence and Action</text>
+  <text class="section-title" x="1792" y="160">Assessment Configuration</text>
+
+  <!-- Relationships are drawn before object cards so connectors never cover labels. -->
+  <path class="managed" d="M204 352 V562"/>
+  <path class="line" d="M310 400 H342 V613 H320"/>
+  <path class="lookup" d="M204 780 V664"/>
+  <path class="lookup" d="M342 318 H392 V518 H444"/>
+  <path class="lookup" d="M316 622 H388 V568 H444"/>
+  <path class="lookup" d="M316 842 H374 V600 H444"/>
+  <path class="lookup" d="M316 884 H720 V550 H818"/>
+
+  <path class="line" d="M565 332 V482"/>
+  <path class="line" d="M822 550 H674"/>
+  <path class="lookup" d="M565 618 V738"/>
+  <path class="lookup" d="M670 596 H714 V792 H664"/>
+
+  <path class="line" d="M902 342 V470"/>
+  <path class="line" d="M902 764 V620"/>
+  <path class="line" d="M1090 522 H1068"/>
+  <path class="lookup" d="M1193 470 V340"/>
+  <path class="line" d="M1340 532 H1068"/>
+  <path class="line" d="M1340 832 H1268 V604 H1068"/>
+  <path class="lookup" d="M902 986 V620"/>
+  <path class="lookup" d="M1148 986 V620 H1068"/>
+
+  <path class="line" d="M1590 462 H1568"/>
+  <path class="line" d="M1590 616 H1568"/>
+  <path class="lookup" d="M1452 782 V594"/>
+  <path class="line" d="M1590 832 H1568"/>
+
+  <path class="line" d="M1992 332 V454"/>
+  <path class="line" d="M1992 550 V662"/>
+  <path class="config" d="M1882 292 H1800 V532 H1568"/>
+
+  <g id="account">
+    <rect class="std" x="66" y="206" width="276" height="250" rx="8"/>
+    <text class="obj" x="204" y="242">Account</text>
+    <text class="field" x="204" y="266">standard CRM object</text>
+    <rect class="std-inner" x="98" y="300" width="212" height="52" rx="6"/>
+    <text class="field" x="204" y="322">Person Account</text>
+    <text class="tiny" x="204" y="340">Account record type</text>
+    <rect class="std-inner" x="98" y="374" width="212" height="52" rx="6"/>
+    <text class="field" x="204" y="396">Business Account</text>
+    <text class="tiny" x="204" y="414">organization / partner</text>
+  </g>
+
+  <g id="contact">
+    <rect class="std" x="92" y="566" width="224" height="94" rx="8"/>
+    <text class="obj" x="204" y="602">Contact</text>
+    <text class="field" x="204" y="628">business contacts,</text>
+    <text class="field" x="204" y="646">clinicians, participants</text>
+  </g>
+
+  <g id="case">
+    <rect class="std" x="92" y="780" width="224" height="190" rx="8"/>
+    <text class="obj" x="204" y="818">Case</text>
+    <text class="field" x="204" y="844">standard service object</text>
+    <text class="tiny" x="204" y="874">AccountId / ContactId</text>
+    <text class="tiny" x="204" y="900">A360_Animal__c</text>
+    <text class="tiny" x="204" y="920">A360_Episode__c</text>
+    <text class="tiny" x="204" y="940">A360_Housing_Unit__c</text>
+  </g>
+
+  <g id="animal">
+    <rect class="custom" x="448" y="486" width="222" height="132" rx="8"/>
+    <text class="obj" x="559" y="526">Animal</text>
+    <text class="field" x="559" y="552">identity record</text>
+    <text class="tiny" x="559" y="578">Responsible Account</text>
+    <text class="tiny" x="559" y="596">Responsible Contact</text>
+  </g>
+  <g id="identifier">
+    <rect class="custom" x="470" y="250" width="190" height="82" rx="8"/>
+    <text class="obj" x="565" y="284">Animal</text>
+    <text class="obj" x="565" y="308">Identifier</text>
+  </g>
+  <g id="relationship">
+    <rect class="custom" x="470" y="742" width="190" height="98" rx="8"/>
+    <text class="obj" x="565" y="774">Animal</text>
+    <text class="obj" x="565" y="798">Relationship</text>
+    <text class="tiny" x="565" y="820">from / to Animal</text>
+  </g>
+
+  <g id="episode">
+    <rect class="focus" x="822" y="474" width="242" height="146" rx="10"/>
+    <text class="obj" x="943" y="522">Animal</text>
+    <text class="obj" x="943" y="550">Episode</text>
+    <text class="field" x="943" y="576">time-bounded care context</text>
+    <text class="tiny" x="943" y="598">Outcome Account / Contact</text>
+    <text class="tiny" x="943" y="614">Current Location Stay</text>
+  </g>
+  <g id="intake">
+    <rect class="custom" x="804" y="250" width="196" height="92" rx="8"/>
+    <text class="obj" x="902" y="284">Intake</text>
+    <text class="obj" x="902" y="308">Event</text>
+    <text class="tiny" x="902" y="328">Account / Contact</text>
+  </g>
+  <g id="outcome">
+    <rect class="custom" x="804" y="764" width="196" height="92" rx="8"/>
+    <text class="obj" x="902" y="798">Outcome</text>
+    <text class="obj" x="902" y="822">Event</text>
+    <text class="tiny" x="902" y="842">Account / Contact</text>
+  </g>
+  <g id="housing">
+    <rect class="custom" x="1050" y="250" width="196" height="86" rx="8"/>
+    <text class="obj" x="1148" y="284">Housing</text>
+    <text class="obj" x="1148" y="308">Unit</text>
+    <text class="tiny" x="1148" y="326">Site Account</text>
+  </g>
+  <g id="stay">
+    <rect class="custom" x="1094" y="474" width="198" height="92" rx="8"/>
+    <text class="obj" x="1193" y="510">Animal Location</text>
+    <text class="obj" x="1193" y="536">Stay</text>
+    <text class="tiny" x="1193" y="554">Housing Unit</text>
+  </g>
+  <g id="clinical">
+    <rect class="custom" x="800" y="990" width="204" height="104" rx="8"/>
+    <text class="obj" x="902" y="1024">Clinical</text>
+    <text class="obj" x="902" y="1048">Event</text>
+    <text class="tiny" x="902" y="1068">Animal / Episode</text>
+    <text class="tiny" x="902" y="1086">Contact / Case</text>
+  </g>
+  <g id="interaction">
+    <rect class="custom" x="1038" y="990" width="220" height="104" rx="8"/>
+    <text class="obj" x="1148" y="1024">Human Animal</text>
+    <text class="obj" x="1148" y="1048">Interaction</text>
+    <text class="tiny" x="1148" y="1068">Animal / Episode</text>
+    <text class="tiny" x="1148" y="1086">Interaction Contact</text>
+  </g>
+
+  <g id="assessment">
+    <rect class="custom" x="1340" y="474" width="224" height="120" rx="8"/>
+    <text class="obj" x="1452" y="514">Welfare</text>
+    <text class="obj" x="1452" y="542">Assessment</text>
+    <text class="tiny" x="1452" y="566">Animal / Template</text>
+    <text class="tiny" x="1452" y="584">Assessor / Case</text>
+  </g>
+  <g id="observation">
+    <rect class="custom" x="1594" y="418" width="150" height="88" rx="8"/>
+    <text class="obj" x="1669" y="452">Welfare</text>
+    <text class="obj" x="1669" y="476">Observation</text>
+  </g>
+  <g id="summary">
+    <rect class="custom" x="1594" y="568" width="150" height="96" rx="8"/>
+    <text class="obj" x="1669" y="600">Welfare</text>
+    <text class="obj" x="1669" y="624">Domain</text>
+    <text class="obj" x="1669" y="648">Summary</text>
+  </g>
+  <g id="care-plan">
+    <rect class="custom" x="1340" y="786" width="224" height="92" rx="8"/>
+    <text class="obj" x="1452" y="824">Care Plan</text>
+    <text class="tiny" x="1452" y="850">Primary Assessment</text>
+  </g>
+  <g id="care-action">
+    <rect class="custom" x="1594" y="786" width="150" height="92" rx="8"/>
+    <text class="obj" x="1669" y="820">Care Plan</text>
+    <text class="obj" x="1669" y="844">Action</text>
+  </g>
+
+  <g id="template">
+    <rect class="custom" x="1882" y="250" width="220" height="82" rx="8"/>
+    <text class="obj" x="1992" y="284">Assessment</text>
+    <text class="obj" x="1992" y="308">Template</text>
+  </g>
+  <g id="domain">
+    <rect class="custom" x="1882" y="458" width="220" height="92" rx="8"/>
+    <text class="obj" x="1992" y="494">Template Domain</text>
+    <text class="obj" x="1992" y="520">Definition</text>
+  </g>
+  <g id="assignment">
+    <rect class="custom" x="1882" y="666" width="220" height="92" rx="8"/>
+    <text class="obj" x="1992" y="702">Template Indicator</text>
+    <text class="obj" x="1992" y="728">Assignment</text>
+  </g>
+
+  <g transform="translate(52 1280)">
+    <rect class="std" x="0" y="0" width="58" height="38" rx="6" filter="none"/>
+    <text class="legend" x="78" y="25">Salesforce standard object</text>
+    <rect class="custom" x="330" y="0" width="58" height="38" rx="6" filter="none"/>
+    <text class="legend" x="410" y="25">Animal360 custom object</text>
+    <path class="line" d="M670 19 H760"/>
+    <text class="legend" x="782" y="25">Master-detail / required context</text>
+    <path class="lookup" d="M1080 19 H1170"/>
+    <text class="legend" x="1192" y="25">Lookup / reference</text>
+    <path class="config" d="M1410 19 H1500"/>
+    <text class="legend" x="1522" y="25">Configuration drives runtime</text>
+    <path class="managed" d="M1810 19 H1900"/>
+    <text class="legend" x="1922" y="25">Salesforce-managed relationship</text>
+  </g>
+</svg>

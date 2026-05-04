@@ -1026,69 +1026,47 @@
     </fieldPermissions>
     <flowAccesses>
         <enabled>true</enabled>
-        <flow>
-A360_Animal_Current_State_Rollup_Flow;
-    </flow>
+        <flow>A360_Animal_Current_State_Rollup_Flow</flow>
     </flowAccesses>
     <flowAccesses>
         <enabled>true</enabled>
-        <flow>
-A360_Episode_Current_State_Trigger_Flow;
-    </flow>
+        <flow>A360_Episode_Current_State_Trigger_Flow</flow>
     </flowAccesses>
     <flowAccesses>
         <enabled>true</enabled>
-        <flow>
-A360_Location_Stay_Current_State_Trigger_Flow;
-    </flow>
+        <flow>A360_Location_Stay_Current_State_Trigger_Flow</flow>
     </flowAccesses>
     <flowAccesses>
         <enabled>true</enabled>
-        <flow>
-A360_Intake_Flow;
-    </flow>
+        <flow>A360_Intake_Flow</flow>
     </flowAccesses>
     <flowAccesses>
         <enabled>true</enabled>
-        <flow>
-A360_Move_Animal_Flow;
-    </flow>
+        <flow>A360_Move_Animal_Flow</flow>
     </flowAccesses>
     <flowAccesses>
         <enabled>true</enabled>
-        <flow>
-A360_Close_Episode_Flow;
-    </flow>
+        <flow>A360_Close_Episode_Flow</flow>
     </flowAccesses>
     <flowAccesses>
         <enabled>true</enabled>
-        <flow>
-A360_Welfare_Assessment_Flow;
-    </flow>
+        <flow>A360_Welfare_Assessment_Flow</flow>
     </flowAccesses>
     <flowAccesses>
         <enabled>true</enabled>
-        <flow>
-A360_Assessment_Risk_Evaluation_Flow;
-    </flow>
+        <flow>A360_Assessment_Risk_Evaluation_Flow</flow>
     </flowAccesses>
     <flowAccesses>
         <enabled>true</enabled>
-        <flow>
-A360_Create_Care_Plan_Flow;
-    </flow>
+        <flow>A360_Create_Care_Plan_Flow</flow>
     </flowAccesses>
     <flowAccesses>
         <enabled>true</enabled>
-        <flow>
-A360_Care_Plan_Auto_Create_Flow;
-    </flow>
+        <flow>A360_Care_Plan_Auto_Create_Flow</flow>
     </flowAccesses>
     <flowAccesses>
         <enabled>true</enabled>
-        <flow>
-A360_Review_Due_Reminder_Flow;
-    </flow>
+        <flow>A360_Review_Due_Reminder_Flow</flow>
     </flowAccesses>
     <label>Love 4 Animals Admin</label>
     <objectPermissions>

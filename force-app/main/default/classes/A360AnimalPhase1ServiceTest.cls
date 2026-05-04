@@ -295,4 +295,161 @@ private class A360AnimalPhase1ServiceTest {
     ];
     System.assertEquals(animals.size(), currentAnimalCount);
   }
+
+  @isTest
+  static void testRollupInvocableAndNoEpisodeStatuses() {
+    Animal__c exitedAnimal = buildAnimal('Exited');
+    Animal__c deceasedAnimal = buildAnimal('Deceased');
+    deceasedAnimal.Is_Deceased__c = true;
+    deceasedAnimal.Date_of_Death__c = Date.newInstance(2026, 4, 2);
+    insert new List<Animal__c>{ exitedAnimal, deceasedAnimal };
+
+    A360AnimalRollupService.rollupAnimals(null);
+    A360AnimalRollupService.rollupAnimals(new Set<Id>());
+
+    A360AnimalRollupService.Request nullRequest = null;
+    A360AnimalRollupService.Request animalRequest = new A360AnimalRollupService.Request();
+    animalRequest.animalId = exitedAnimal.Id;
+    A360AnimalRollupService.Request episodeRequest = new A360AnimalRollupService.Request();
+    Animal_Episode__c closedEpisode = buildEpisode(
+      deceasedAnimal.Id,
+      Datetime.newInstance(2026, 4, 1, 9, 0, 0),
+      false
+    );
+    insert closedEpisode;
+    episodeRequest.episodeId = closedEpisode.Id;
+
+    Test.startTest();
+    A360AnimalRollupService.rollup(
+      new List<A360AnimalRollupService.Request>{
+        nullRequest,
+        animalRequest,
+        episodeRequest
+      }
+    );
+    Test.stopTest();
+
+    Map<Id, Animal__c> animalsById = new Map<Id, Animal__c>(
+      [
+        SELECT Current_Status__c, Current_Episode__c
+        FROM Animal__c
+        WHERE Id IN :new Set<Id>{ exitedAnimal.Id, deceasedAnimal.Id }
+      ]
+    );
+    System.assertEquals(
+      'Exited Care',
+      animalsById.get(exitedAnimal.Id).Current_Status__c
+    );
+    System.assertEquals(
+      'Deceased',
+      animalsById.get(deceasedAnimal.Id).Current_Status__c
+    );
+    System.assertEquals(
+      null,
+      animalsById.get(exitedAnimal.Id).Current_Episode__c
+    );
+  }
+
+  @isTest
+  static void testIntegrityServiceDirectBranches() {
+    Animal__c animal = buildAnimal('Direct Integrity');
+    insert animal;
+
+    A360AnimalIntegrityService.validateIdentifiers(
+      new List<Animal_Identifier__c>{
+        new Animal_Identifier__c(Is_Primary__c = false)
+      },
+      null
+    );
+
+    List<Animal_Identifier__c> duplicateIdentifiers = new List<Animal_Identifier__c>{
+      new Animal_Identifier__c(
+        Animal__c = animal.Id,
+        Identifier_Type__c = 'Microchip',
+        Identifier_Value__c = 'MC-DIRECT-1',
+        Is_Primary__c = true
+      ),
+      new Animal_Identifier__c(
+        Animal__c = animal.Id,
+        Identifier_Type__c = 'Shelter ID',
+        Identifier_Value__c = 'SH-DIRECT-1',
+        Is_Primary__c = true
+      )
+    };
+    A360AnimalIntegrityService.validateIdentifiers(duplicateIdentifiers, null);
+    System.assertEquals(true, duplicateIdentifiers[0].hasErrors());
+    System.assertEquals(true, duplicateIdentifiers[1].hasErrors());
+
+    A360AnimalIntegrityService.validateEpisodes(
+      new List<Animal_Episode__c>{
+        new Animal_Episode__c(Is_Current__c = false)
+      },
+      null
+    );
+
+    List<Animal_Episode__c> duplicateEpisodes = new List<Animal_Episode__c>{
+      buildEpisode(animal.Id, Datetime.newInstance(2026, 5, 1, 9, 0, 0), true),
+      buildEpisode(animal.Id, Datetime.newInstance(2026, 5, 2, 9, 0, 0), true)
+    };
+    A360AnimalIntegrityService.validateEpisodes(duplicateEpisodes, null);
+    System.assertEquals(true, duplicateEpisodes[0].hasErrors());
+    System.assertEquals(true, duplicateEpisodes[1].hasErrors());
+
+    A360AnimalIntegrityService.validateLocationStays(
+      new List<Animal_Location_Stay__c>{ new Animal_Location_Stay__c() },
+      null
+    );
+
+    Animal_Episode__c episode = buildEpisode(
+      animal.Id,
+      Datetime.newInstance(2026, 6, 1, 9, 0, 0),
+      false
+    );
+    insert episode;
+
+    List<Animal_Location_Stay__c> duplicateCurrentStays = new List<Animal_Location_Stay__c>{
+      buildStay(
+        episode.Id,
+        null,
+        Datetime.newInstance(2026, 6, 1, 10, 0, 0),
+        null,
+        true
+      ),
+      buildStay(
+        episode.Id,
+        null,
+        Datetime.newInstance(2026, 6, 1, 11, 0, 0),
+        null,
+        true
+      )
+    };
+    A360AnimalIntegrityService.validateLocationStays(
+      duplicateCurrentStays,
+      null
+    );
+    System.assertEquals(true, duplicateCurrentStays[0].hasErrors());
+    System.assertEquals(true, duplicateCurrentStays[1].hasErrors());
+
+    List<Animal_Location_Stay__c> overlappingStays = new List<Animal_Location_Stay__c>{
+      buildStay(
+        episode.Id,
+        null,
+        Datetime.newInstance(2026, 6, 2, 10, 0, 0),
+        Datetime.newInstance(2026, 6, 2, 12, 0, 0),
+        false
+      ),
+      buildStay(
+        episode.Id,
+        null,
+        Datetime.newInstance(2026, 6, 2, 11, 0, 0),
+        Datetime.newInstance(2026, 6, 2, 13, 0, 0),
+        false
+      ),
+      buildStay(episode.Id, null, null, null, false)
+    };
+    A360AnimalIntegrityService.validateLocationStays(overlappingStays, null);
+    System.assertEquals(true, overlappingStays[0].hasErrors());
+    System.assertEquals(true, overlappingStays[1].hasErrors());
+    System.assertEquals(false, overlappingStays[2].hasErrors());
+  }
 }

@@ -29,6 +29,10 @@ public without sharing class A360AssessmentRiskService {
   @InvocableMethod(label='Evaluate Welfare Risk')
   public static List<Result> evaluate(List<Request> requests) {
     Set<Id> assessmentIds = new Set<Id>();
+    if (requests == null || requests.isEmpty()) {
+      return evaluateAssessments(assessmentIds);
+    }
+
     for (Request requestItem : requests) {
       if (requestItem != null && requestItem.assessmentId != null) {
         assessmentIds.add(requestItem.assessmentId);
