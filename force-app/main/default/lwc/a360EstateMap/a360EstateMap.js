@@ -263,22 +263,27 @@ export default class A360EstateMap extends LightningElement {
 
         const areaWidth = Number(area.width);
         const areaHeight = Number(area.height);
-        const compact = areaWidth < 16 || areaHeight < 14;
-        const columns = Math.max(1, Math.min(4, Math.floor(areaWidth / 9)));
+        const compact = areaWidth < 12 || areaHeight < 12;
+        const columns = Math.max(1, Math.min(4, Math.floor(areaWidth / 7)));
         const column = slot % columns;
         const row = Math.floor(slot / columns);
-        const tokenWidth = compact ? 5 : 10;
-        const tokenHeight = compact ? 6 : 8;
+        const tokenWidth = compact ? 4.6 : 6.2;
+        const tokenHeight = compact ? 5.2 : 8.1;
+        const labelBand = compact ? 5 : 8.2;
         const left =
           Number(area.x) +
           this.clamp(
-            1.2 + column * (tokenWidth + 1),
+            1.1 + column * (tokenWidth + 0.65),
             0,
             areaWidth - tokenWidth
           );
         const top =
           Number(area.y) +
-          this.clamp(2 + row * (tokenHeight + 1), 0, areaHeight - tokenHeight);
+          this.clamp(
+            labelBand + row * (tokenHeight + 0.9),
+            0,
+            areaHeight - tokenHeight
+          );
         const isMoving = animal.animalId === this.movingAnimalId;
 
         return {
@@ -301,8 +306,7 @@ export default class A360EstateMap extends LightningElement {
             top
           }),
           title: `${animal.animalName || "Animal"} - ${animal.species || "Unknown"}`,
-          moveLabel:
-            this.canMove && !this.editMode ? "Move" : animal.careStatus || ""
+          moveLabel: ""
         };
       })
       .filter(Boolean);
@@ -788,8 +792,7 @@ export default class A360EstateMap extends LightningElement {
   }
 
   speciesClass(species) {
-    const normalized = (species || "Other").toLowerCase().replace(/\s+/g, "-");
-    return `pet-${normalized}`;
+    return `pet-${this.normalizedSpecies(species)}`;
   }
 
   petVariantClass(animal) {
@@ -798,32 +801,148 @@ export default class A360EstateMap extends LightningElement {
 
   animalStyle(animal, dragPosition, homePosition) {
     const hash = this.hashAnimal(animal);
-    const hue = hash % 360;
-    const accentHue = (hue + 34) % 360;
+    const profile = this.petProfile(animal?.species, hash);
+    const hue = profile.hue;
+    const accentHue = profile.accentHue;
     const speed = 2.2 + (hash % 7) / 10;
-    const bodyWidth = 1.48 + (hash % 5) * 0.08;
-    const bodyHeight = 0.96 + (hash % 4) * 0.08;
-    const headWidth = 0.98 + (hash % 6) * 0.04;
-    const headHeight = 0.94 + (hash % 5) * 0.04;
-    const earHeight = 0.42 + (hash % 5) * 0.07;
-    const tailWidth = 0.48 + (hash % 5) * 0.07;
     const markSize = 0.16 + (hash % 4) * 0.05;
     const position = dragPosition || homePosition;
     return [
       `left:${position.left}%`,
       `top:${position.top}%`,
-      `--pet-main:hsl(${hue} 58% 54%)`,
-      `--pet-dark:hsl(${hue} 48% 27%)`,
-      `--pet-light:hsl(${accentHue} 78% 80%)`,
+      "display:inline-flex",
+      "flex-direction:column",
+      "align-items:center",
+      "justify-content:flex-start",
+      "min-width:4.55rem",
+      "max-width:5.2rem",
+      "gap:0",
+      "padding:0.14rem 0.18rem 0.2rem",
+      `--pet-main:hsl(${hue} ${profile.mainSaturation}% ${profile.mainLightness}%)`,
+      `--pet-dark:hsl(${hue} ${profile.darkSaturation}% ${profile.darkLightness}%)`,
+      `--pet-light:hsl(${accentHue} ${profile.lightSaturation}% ${profile.lightLightness}%)`,
       `--pet-speed:${speed}s`,
-      `--pet-body-width:${bodyWidth}rem`,
-      `--pet-body-height:${bodyHeight}rem`,
-      `--pet-head-width:${headWidth}rem`,
-      `--pet-head-height:${headHeight}rem`,
-      `--pet-ear-height:${earHeight}rem`,
-      `--pet-tail-width:${tailWidth}rem`,
+      `--pet-body-width:${profile.bodyWidth}rem`,
+      `--pet-body-height:${profile.bodyHeight}rem`,
+      `--pet-head-width:${profile.headWidth}rem`,
+      `--pet-head-height:${profile.headHeight}rem`,
+      `--pet-ear-height:${profile.earHeight}rem`,
+      `--pet-tail-width:${profile.tailWidth}rem`,
       `--pet-mark-size:${markSize}rem`
     ].join(";");
+  }
+
+  normalizedSpecies(species) {
+    return (species || "Other").toLowerCase().replace(/\s+/g, "-");
+  }
+
+  petProfile(species, hash) {
+    const speciesKey = this.normalizedSpecies(species);
+    const variation = ((hash % 9) - 4) * 4;
+    const profiles = {
+      dog: {
+        hue: 28,
+        accentHue: 42,
+        mainSaturation: 48,
+        mainLightness: 54,
+        darkSaturation: 54,
+        darkLightness: 27,
+        lightSaturation: 80,
+        lightLightness: 80,
+        bodyWidth: 1.76,
+        bodyHeight: 1.02,
+        headWidth: 1.08,
+        headHeight: 1.06,
+        earHeight: 0.58,
+        tailWidth: 0.72
+      },
+      cat: {
+        hue: 30,
+        accentHue: 16,
+        mainSaturation: 18,
+        mainLightness: 52,
+        darkSaturation: 26,
+        darkLightness: 24,
+        lightSaturation: 82,
+        lightLightness: 84,
+        bodyWidth: 1.58,
+        bodyHeight: 0.94,
+        headWidth: 1.02,
+        headHeight: 1.02,
+        earHeight: 0.52,
+        tailWidth: 0.86
+      },
+      rabbit: {
+        hue: 338,
+        accentHue: 20,
+        mainSaturation: 58,
+        mainLightness: 60,
+        darkSaturation: 48,
+        darkLightness: 30,
+        lightSaturation: 84,
+        lightLightness: 86,
+        bodyWidth: 1.7,
+        bodyHeight: 1.02,
+        headWidth: 0.94,
+        headHeight: 0.96,
+        earHeight: 1.1,
+        tailWidth: 0.42
+      },
+      bird: {
+        hue: 154,
+        accentHue: 42,
+        mainSaturation: 58,
+        mainLightness: 48,
+        darkSaturation: 62,
+        darkLightness: 24,
+        lightSaturation: 86,
+        lightLightness: 78,
+        bodyWidth: 1.4,
+        bodyHeight: 1.24,
+        headWidth: 0.86,
+        headHeight: 0.86,
+        earHeight: 0,
+        tailWidth: 0.64
+      },
+      "small-mammal": {
+        hue: 38,
+        accentHue: 28,
+        mainSaturation: 44,
+        mainLightness: 54,
+        darkSaturation: 48,
+        darkLightness: 25,
+        lightSaturation: 82,
+        lightLightness: 82,
+        bodyWidth: 1.44,
+        bodyHeight: 1.08,
+        headWidth: 0.9,
+        headHeight: 0.9,
+        earHeight: 0.36,
+        tailWidth: 0.24
+      },
+      other: {
+        hue: 266,
+        accentHue: 290,
+        mainSaturation: 48,
+        mainLightness: 54,
+        darkSaturation: 44,
+        darkLightness: 28,
+        lightSaturation: 80,
+        lightLightness: 84,
+        bodyWidth: 1.54,
+        bodyHeight: 1,
+        headWidth: 0.98,
+        headHeight: 0.98,
+        earHeight: 0.5,
+        tailWidth: 0.54
+      }
+    };
+    const profile = profiles[speciesKey] || profiles.other;
+    return {
+      ...profile,
+      hue: (profile.hue + variation + 360) % 360,
+      accentHue: (profile.accentHue + variation + 360) % 360
+    };
   }
 
   hashAnimal(animal) {

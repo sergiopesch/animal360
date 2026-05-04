@@ -190,15 +190,20 @@ h3 {
 }
 
 .area-label {
+  position: relative;
+  z-index: 1;
   max-width: 100%;
   overflow: hidden;
   font-size: 0.9rem;
   font-weight: 800;
   text-overflow: ellipsis;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.72);
   white-space: nowrap;
 }
 
 .area-zone {
+  position: relative;
+  z-index: 1;
   color: #475467;
   font-size: 0.68rem;
   font-weight: 700;
@@ -206,6 +211,8 @@ h3 {
 }
 
 .area-status {
+  position: relative;
+  z-index: 1;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.78);
   color: #344054;
@@ -243,6 +250,8 @@ h3 {
 }
 
 .occupancy {
+  position: relative;
+  z-index: 1;
   align-self: flex-end;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.8);
@@ -261,18 +270,20 @@ h3 {
   position: absolute;
   z-index: 3;
   display: inline-flex;
+  flex-direction: column;
   align-items: center;
-  min-width: 10.4rem;
-  max-width: 12.8rem;
-  border: 1px solid rgba(16, 24, 40, 0.08);
-  border-radius: 0.45rem;
-  background: rgba(255, 255, 255, 0.95);
+  justify-content: flex-start;
+  min-width: 4.55rem;
+  max-width: 5.2rem;
+  border: 1px solid color-mix(in srgb, var(--pet-dark) 28%, transparent);
+  border-radius: 999px 999px 0.55rem 0.55rem;
+  background: color-mix(in srgb, var(--pet-light) 34%, #ffffff);
   box-shadow:
-    0 0.55rem 1.15rem rgba(16, 24, 40, 0.15),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.8);
+    0 0.38rem 0.7rem rgba(16, 24, 40, 0.12),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.72);
   color: #182230;
-  gap: 0.4rem;
-  padding: 0.28rem 0.55rem 0.28rem 0.3rem;
+  gap: 0;
+  padding: 0.14rem 0.18rem 0.2rem;
   transform: translateY(0);
   transition:
     box-shadow 120ms ease,
@@ -291,34 +302,33 @@ h3 {
   animation: none;
   cursor: grabbing;
   box-shadow: 0 12px 22px rgba(16, 24, 40, 0.24);
-  transform: translateY(-0.2rem) scale(1.03);
+  transform: translateY(-0.28rem) scale(1.08);
   transition: none;
 }
 
 .animal-token.is-compact {
   min-width: auto;
   max-width: none;
-  width: 4.35rem;
+  width: 3.9rem;
   justify-content: center;
   padding: 0.18rem;
 }
 
-.animal-token.is-compact .animal-name,
 .animal-token.is-compact .move-label {
   display: none;
 }
 
 .animal-token.is-compact .pet-avatar {
-  width: 3.1rem;
-  height: 2.5rem;
+  width: 3rem;
+  height: 2.55rem;
 }
 
 .pet-avatar {
   position: relative;
   display: inline-block;
   flex: 0 0 auto;
-  width: 3.45rem;
-  height: 2.85rem;
+  width: 3.55rem;
+  height: 2.95rem;
 }
 
 .pet-dog {
@@ -427,33 +437,145 @@ h3 {
   transform: rotate(16deg);
 }
 
-.pet-rabbit .pet-ear {
-  top: -0.84rem;
-  height: 1rem;
+.pet-dog .pet-body {
+  border-radius: 0.5rem 0.55rem 0.42rem 0.48rem;
+}
+
+.pet-dog .pet-ear {
+  top: 0.05rem;
+  width: 0.34rem;
+  border-bottom: 0.09rem solid var(--pet-dark);
+  border-radius: 0.35rem;
+  transform-origin: top center;
+}
+
+.pet-dog .pet-ear-left {
+  left: 0.02rem;
+  transform: rotate(24deg);
+}
+
+.pet-dog .pet-ear-right {
+  right: 0.02rem;
+  transform: rotate(-24deg);
+}
+
+.pet-dog .pet-tail {
+  bottom: 1.35rem;
+  transform: rotate(30deg);
+}
+
+.pet-cat .pet-body {
+  border-radius: 0.72rem 0.5rem 0.5rem 0.72rem;
+}
+
+.pet-cat .pet-head {
+  border-radius: 999px;
 }
 
 .pet-cat .pet-ear {
-  border-radius: 0.05rem 0.24rem 0 0;
+  top: -0.24rem;
+  width: 0.48rem;
+  height: 0.48rem;
+  border-right: 0;
+  border-bottom: 0;
+  border-radius: 0.08rem 0.2rem 0.06rem 0.2rem;
+  transform: rotate(45deg);
+}
+
+.pet-cat .pet-ear-left {
+  left: 0.1rem;
+}
+
+.pet-cat .pet-ear-right {
+  right: 0.1rem;
 }
 
 .pet-cat .pet-tail {
-  bottom: 1.28rem;
-  height: 0.18rem;
-  transform: rotate(26deg);
+  bottom: 1.18rem;
+  left: 0.02rem;
+  width: var(--pet-tail-width, 0.86rem);
+  height: 0.54rem;
+  border-right: 0;
+  border-radius: 999px 0 0 999px;
+  transform: rotate(32deg);
 }
 
-.pet-bird .pet-tail {
-  width: 0.44rem;
-  height: 0.5rem;
-  transform: rotate(-22deg);
+.pet-rabbit .pet-body {
+  border-radius: 999px;
+}
+
+.pet-rabbit .pet-head {
+  border-radius: 999px;
+}
+
+.pet-rabbit .pet-ear {
+  top: -0.92rem;
+  width: 0.28rem;
+  height: var(--pet-ear-height, 1.1rem);
+  border-radius: 999px 999px 0.18rem 0.18rem;
+}
+
+.pet-rabbit .pet-ear-left {
+  left: 0.12rem;
+  transform: rotate(-8deg);
+}
+
+.pet-rabbit .pet-ear-right {
+  right: 0.12rem;
+  transform: rotate(10deg);
+}
+
+.pet-rabbit .pet-tail {
+  bottom: 0.84rem;
+  left: 0.16rem;
+  width: 0.46rem;
+  height: 0.46rem;
+  border-radius: 999px;
 }
 
 .pet-bird .pet-body {
+  left: 0.86rem;
+  border-radius: 60% 50% 54% 62%;
+}
+
+.pet-bird .pet-head {
+  right: 0.24rem;
+  bottom: 1.26rem;
   border-radius: 999px;
 }
 
+.pet-bird .pet-ear {
+  display: none;
+}
+
+.pet-bird .pet-tail {
+  bottom: 0.96rem;
+  left: 0.44rem;
+  width: var(--pet-tail-width, 0.64rem);
+  height: 0.46rem;
+  border-radius: 0.12rem 0 0 0.5rem;
+  transform: rotate(-22deg);
+}
+
+.pet-bird .pet-nose {
+  display: none;
+}
+
+.pet-small-mammal .pet-body,
 .pet-small-mammal .pet-head {
   border-radius: 999px;
+}
+
+.pet-small-mammal .pet-ear {
+  top: -0.14rem;
+  width: 0.3rem;
+  height: 0.3rem;
+  border-bottom: 0.09rem solid var(--pet-dark);
+  border-radius: 999px;
+}
+
+.pet-small-mammal .pet-tail {
+  display: none;
 }
 
 .pet-other .pet-body {
@@ -513,7 +635,10 @@ h3 {
 
 .pet-eye,
 .pet-nose,
-.pet-mark {
+.pet-mark,
+.pet-whisker,
+.pet-beak,
+.pet-wing {
   position: absolute;
   display: block;
   background: #101828;
@@ -553,6 +678,57 @@ h3 {
   border-radius: 999px;
 }
 
+.pet-whisker,
+.pet-beak,
+.pet-wing {
+  display: none;
+}
+
+.pet-cat .pet-whisker {
+  display: block;
+  right: 0.1rem;
+  width: 0.5rem;
+  height: 0.05rem;
+  border-radius: 999px;
+  background: var(--pet-dark);
+  opacity: 0.78;
+}
+
+.pet-cat .pet-whisker-left {
+  bottom: 0.42rem;
+  transform: rotate(12deg);
+}
+
+.pet-cat .pet-whisker-right {
+  bottom: 0.28rem;
+  transform: rotate(-12deg);
+}
+
+.pet-bird .pet-beak {
+  display: block;
+  right: -0.24rem;
+  bottom: 0.36rem;
+  width: 0;
+  height: 0;
+  border-top: 0.14rem solid transparent;
+  border-bottom: 0.14rem solid transparent;
+  border-left: 0.3rem solid #f79009;
+  background: transparent;
+}
+
+.pet-bird .pet-wing {
+  display: block;
+  left: 1.12rem;
+  bottom: 0.74rem;
+  width: 0.62rem;
+  height: 0.72rem;
+  border: 0.08rem solid var(--pet-dark);
+  border-radius: 999px 999px 999px 0.28rem;
+  background: var(--pet-light);
+  transform: rotate(-18deg);
+  animation: pet-wing-flutter 1.4s ease-in-out infinite;
+}
+
 .pet-leg {
   bottom: 0.26rem;
   width: 0.24rem;
@@ -573,22 +749,36 @@ h3 {
 
 .animal-name {
   overflow: hidden;
-  max-width: 6rem;
-  font-size: 0.78rem;
+  max-width: 4.7rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.82);
+  color: #182230;
+  font-size: 0.68rem;
   font-weight: 800;
+  line-height: 1.1;
+  margin-top: -0.16rem;
+  padding: 0.12rem 0.32rem;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .move-label {
+  display: none;
   border-radius: 999px;
-  background: #ecfdf3;
-  color: #027a48;
+  background: #ffffff;
+  color: var(--pet-dark);
   font-size: 0.6rem;
   font-weight: 800;
   line-height: 1;
   padding: 0.18rem 0.28rem;
   text-transform: uppercase;
+}
+
+.animal-token:hover .move-label,
+.animal-token:focus-visible .move-label,
+.animal-token.is-dragging .move-label {
+  display: inline-flex;
+  margin-top: 0.18rem;
 }
 
 .risk-critical,
@@ -790,6 +980,16 @@ h3 {
   }
 }
 
+@keyframes pet-wing-flutter {
+  0%,
+  100% {
+    transform: rotate(-18deg) scaleY(1);
+  }
+  50% {
+    transform: rotate(-30deg) scaleY(0.86);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animal-token,
   .map-area,
@@ -797,6 +997,7 @@ h3 {
   .pet-head,
   .pet-tail,
   .pet-eye,
+  .pet-wing,
   .pet-leg {
     animation: none;
     transition: none;
@@ -840,9 +1041,9 @@ h3 {
   }
 
   .animal-token {
-    min-width: 8.6rem;
-    max-width: 9.4rem;
-    padding-right: 0.38rem;
+    min-width: 4.55rem;
+    max-width: 5.2rem;
+    padding: 0.14rem 0.18rem 0.2rem;
   }
 
   .pet-avatar {
