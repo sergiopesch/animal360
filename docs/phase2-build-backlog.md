@@ -24,7 +24,8 @@
   - `docs/phase2-implementation-assumptions.md`
   - `docs/phase2-build-backlog.md`
 - Manifest:
-  - expand `manifest/package.xml` for `CustomMetadata`, `CustomPermission`, `Dashboard`, `DashboardFolder`, `LightningComponentBundle`, and `ListView`
+  - expand `manifest/package.xml` for `CustomMetadata`, `CustomPermission`, `LightningComponentBundle`, `PermissionSetGroup`, and explicit `Report` / `ReportFolder` entries
+  - keep `Dashboard`, `DashboardFolder`, and `ListView` out of the manifest until matching source metadata is committed
 - Apex:
   - welfare seed and service entry points
 - Validation:
@@ -134,7 +135,7 @@
 - Report metadata:
   - welfare report types
   - welfare starter reports
-  - dashboard folder and dashboards
+  - future dashboard folder and dashboards when dashboard metadata is added
 
 ### Batch 6: Assessment and risk automation
 

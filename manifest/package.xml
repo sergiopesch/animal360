@@ -30,14 +30,6 @@
     </types>
     <types>
         <members>*</members>
-        <name>Dashboard</name>
-    </types>
-    <types>
-        <members>*</members>
-        <name>DashboardFolder</name>
-    </types>
-    <types>
-        <members>*</members>
         <name>Flow</name>
     </types>
     <types>
@@ -58,10 +50,23 @@
     </types>
     <types>
         <members>*</members>
+        <name>PermissionSetGroup</name>
+    </types>
+    <types>
+        <members>Animal_360/Animals_Currently_In_Care</members>
+        <members>Animal_360/Assessments_Overdue_for_Review</members>
+        <members>Animal_360/Clinical_Events_by_Priority</members>
+        <members>Animal_360/High_and_Critical_Cases_Requiring_Action</members>
+        <members>Animal_360/Housing_Unit_Capacity</members>
+        <members>Animal_360/Interactions_by_Response_Pattern</members>
+        <members>Animal_360/Open_Care_Plans_by_Type</members>
+        <members>Animal_360/Open_Episodes</members>
+        <members>Animal_360/Welfare_Assessments_by_Concern_Level</members>
+        <members>Animal_360/Welfare_Trend_by_Animal</members>
         <name>Report</name>
     </types>
     <types>
-        <members>*</members>
+        <members>Animal_360</members>
         <name>ReportFolder</name>
     </types>
     <types>
