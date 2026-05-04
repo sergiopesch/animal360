@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<PermissionSetGroup xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description
+  >Animal360 assessor persona bundle for frontline assessment entry and review workflows.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Animal360 Assessor Group</label>
+    <permissionSets>Animal360_Assessor</permissionSets>
+    <status>Updated</status>
+</PermissionSetGroup>

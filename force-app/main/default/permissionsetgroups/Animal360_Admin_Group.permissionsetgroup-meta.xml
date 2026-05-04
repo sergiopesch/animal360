@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<PermissionSetGroup xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description
+  >Animal360 administrator persona bundle for complete solution setup, operations, and support access.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Animal360 Admin Group</label>
+    <permissionSets>Animal360_Admin</permissionSets>
+    <status>Updated</status>
+</PermissionSetGroup>

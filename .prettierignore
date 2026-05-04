@@ -9,3 +9,9 @@
 .vscode
 
 coverage/
+
+# Salesforce permission set flowAccesses contain flow developer names as text
+# nodes. The XML formatter can split those values onto separate lines, which
+# makes Metadata API deploys treat the newline/semicolon as part of the flow
+# name.
+force-app/main/default/permissionsets/*.permissionset-meta.xml

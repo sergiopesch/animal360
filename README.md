@@ -142,6 +142,7 @@ If you rerun these scripts, review the generated metadata before deploying or co
 
 Start here for implementation context:
 
+- `docs/animal360-architecture-data-model.md`
 - `docs/phase1-implementation-assumptions.md`
 - `docs/phase2-implementation-assumptions.md`
 - `docs/phase2-build-backlog.md`

@@ -251,6 +251,10 @@ public without sharing class A360CarePlanService {
       }
 
       for (ActionPayload actionPayload : actionPayloads) {
+        if (actionPayload == null) {
+          continue;
+        }
+
         Date actionDueDate = parseDate(actionPayload.dueDate);
         actionsToInsert.add(
           new Care_Plan_Action__c(
@@ -298,7 +302,17 @@ public without sharing class A360CarePlanService {
       actionJson,
       List<ActionPayload>.class
     );
-    return actionPayloads == null ? new List<ActionPayload>() : actionPayloads;
+    if (actionPayloads == null) {
+      return new List<ActionPayload>();
+    }
+
+    List<ActionPayload> sanitizedPayloads = new List<ActionPayload>();
+    for (ActionPayload actionPayload : actionPayloads) {
+      if (actionPayload != null) {
+        sanitizedPayloads.add(actionPayload);
+      }
+    }
+    return sanitizedPayloads;
   }
 
   private static List<ActionPayload> buildDefaultActions(

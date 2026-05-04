@@ -870,27 +870,19 @@
     </fieldPermissions>
     <flowAccesses>
         <enabled>true</enabled>
-        <flow>
-A360_Assessment_Risk_Evaluation_Flow;
-    </flow>
+        <flow>A360_Assessment_Risk_Evaluation_Flow</flow>
     </flowAccesses>
     <flowAccesses>
         <enabled>true</enabled>
-        <flow>
-A360_Create_Care_Plan_Flow;
-    </flow>
+        <flow>A360_Create_Care_Plan_Flow</flow>
     </flowAccesses>
     <flowAccesses>
         <enabled>true</enabled>
-        <flow>
-A360_Care_Plan_Auto_Create_Flow;
-    </flow>
+        <flow>A360_Care_Plan_Auto_Create_Flow</flow>
     </flowAccesses>
     <flowAccesses>
         <enabled>true</enabled>
-        <flow>
-A360_Review_Due_Reminder_Flow;
-    </flow>
+        <flow>A360_Review_Due_Reminder_Flow</flow>
     </flowAccesses>
     <label>Animal360 Clinical User</label>
     <objectPermissions>
@@ -900,7 +892,7 @@ A360_Review_Due_Reminder_Flow;
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Animal__c</object>
-        <viewAllRecords>true</viewAllRecords>
+        <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
         <allowCreate>false</allowCreate>
@@ -909,7 +901,7 @@ A360_Review_Due_Reminder_Flow;
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Animal_Identifier__c</object>
-        <viewAllRecords>true</viewAllRecords>
+        <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
         <allowCreate>false</allowCreate>
@@ -918,7 +910,7 @@ A360_Review_Due_Reminder_Flow;
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Animal_Relationship__c</object>
-        <viewAllRecords>true</viewAllRecords>
+        <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
         <allowCreate>false</allowCreate>
@@ -927,7 +919,7 @@ A360_Review_Due_Reminder_Flow;
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Animal_Episode__c</object>
-        <viewAllRecords>true</viewAllRecords>
+        <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
         <allowCreate>false</allowCreate>
@@ -936,7 +928,7 @@ A360_Review_Due_Reminder_Flow;
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Housing_Unit__c</object>
-        <viewAllRecords>true</viewAllRecords>
+        <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
         <allowCreate>false</allowCreate>
@@ -945,7 +937,7 @@ A360_Review_Due_Reminder_Flow;
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Animal_Location_Stay__c</object>
-        <viewAllRecords>true</viewAllRecords>
+        <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
         <allowCreate>false</allowCreate>
@@ -954,7 +946,7 @@ A360_Review_Due_Reminder_Flow;
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Intake_Event__c</object>
-        <viewAllRecords>true</viewAllRecords>
+        <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
         <allowCreate>false</allowCreate>
@@ -963,7 +955,7 @@ A360_Review_Due_Reminder_Flow;
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Outcome_Event__c</object>
-        <viewAllRecords>true</viewAllRecords>
+        <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
         <allowCreate>false</allowCreate>
@@ -972,7 +964,7 @@ A360_Review_Due_Reminder_Flow;
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Account</object>
-        <viewAllRecords>true</viewAllRecords>
+        <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
         <allowCreate>false</allowCreate>
@@ -981,7 +973,7 @@ A360_Review_Due_Reminder_Flow;
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Contact</object>
-        <viewAllRecords>true</viewAllRecords>
+        <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
         <allowCreate>false</allowCreate>
@@ -990,7 +982,7 @@ A360_Review_Due_Reminder_Flow;
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Case</object>
-        <viewAllRecords>true</viewAllRecords>
+        <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
         <allowCreate>false</allowCreate>
@@ -999,7 +991,7 @@ A360_Review_Due_Reminder_Flow;
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Assessment_Template__c</object>
-        <viewAllRecords>true</viewAllRecords>
+        <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
         <allowCreate>false</allowCreate>
@@ -1008,7 +1000,7 @@ A360_Review_Due_Reminder_Flow;
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Welfare_Assessment__c</object>
-        <viewAllRecords>true</viewAllRecords>
+        <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
         <allowCreate>false</allowCreate>
@@ -1017,7 +1009,7 @@ A360_Review_Due_Reminder_Flow;
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Welfare_Domain_Summary__c</object>
-        <viewAllRecords>true</viewAllRecords>
+        <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
         <allowCreate>false</allowCreate>
@@ -1026,7 +1018,7 @@ A360_Review_Due_Reminder_Flow;
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Welfare_Observation__c</object>
-        <viewAllRecords>true</viewAllRecords>
+        <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
         <allowCreate>false</allowCreate>
@@ -1035,7 +1027,7 @@ A360_Review_Due_Reminder_Flow;
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Care_Plan__c</object>
-        <viewAllRecords>true</viewAllRecords>
+        <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
         <allowCreate>true</allowCreate>
@@ -1044,7 +1036,7 @@ A360_Review_Due_Reminder_Flow;
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Care_Plan_Action__c</object>
-        <viewAllRecords>true</viewAllRecords>
+        <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
         <allowCreate>true</allowCreate>
@@ -1053,7 +1045,7 @@ A360_Review_Due_Reminder_Flow;
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Clinical_Event__c</object>
-        <viewAllRecords>true</viewAllRecords>
+        <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
         <allowCreate>false</allowCreate>
@@ -1062,7 +1054,7 @@ A360_Review_Due_Reminder_Flow;
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Human_Animal_Interaction__c</object>
-        <viewAllRecords>true</viewAllRecords>
+        <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <tabSettings>
         <tab>Animal__c</tab>
