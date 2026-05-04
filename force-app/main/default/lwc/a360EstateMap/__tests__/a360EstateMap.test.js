@@ -152,6 +152,36 @@ const MAP_CONTEXT = {
   ]
 };
 
+const SPECIES_CONTEXT = {
+  ...MAP_CONTEXT,
+  animals: [
+    {
+      ...MAP_CONTEXT.animals[0],
+      animalId: "a00J60000000003IAA",
+      animalName: "Miso",
+      species: "Cat",
+      welfareRisk: "Low",
+      areaId: MAP_CONTEXT.areas[1].id
+    },
+    {
+      ...MAP_CONTEXT.animals[0],
+      animalId: "a00J60000000004IAA",
+      animalName: "Pip",
+      species: "Rabbit",
+      welfareRisk: "Moderate",
+      areaId: MAP_CONTEXT.areas[0].id
+    },
+    {
+      ...MAP_CONTEXT.animals[0],
+      animalId: "a00J60000000005IAA",
+      animalName: "Kiwi",
+      species: "Bird",
+      welfareRisk: "High",
+      areaId: MAP_CONTEXT.areas[1].id
+    }
+  ]
+};
+
 function flushPromises() {
   return Promise.resolve();
 }
@@ -199,6 +229,33 @@ describe("c-a360-estate-map", () => {
     expect(tokens[0].getAttribute("style")).not.toEqual(
       tokens[1].getAttribute("style")
     );
+  });
+
+  it("renders compact species-specific animal markers without always-visible move text", async () => {
+    const element = createElement("c-a360-estate-map", {
+      is: A360EstateMap
+    });
+    document.body.appendChild(element);
+
+    getMapContextAdapter.emit(SPECIES_CONTEXT);
+    await flushPromises();
+
+    const tokens = [...element.shadowRoot.querySelectorAll(".animal-token")];
+    expect(tokens).toHaveLength(3);
+    expect(tokens.map((token) => token.className)).toEqual(
+      expect.arrayContaining([
+        expect.stringContaining("pet-cat"),
+        expect.stringContaining("pet-rabbit"),
+        expect.stringContaining("pet-bird")
+      ])
+    );
+    expect(tokens[0].getAttribute("style")).toContain("flex-direction:column");
+    element.shadowRoot.querySelectorAll(".move-label").forEach((label) => {
+      expect(label.textContent).toBe("");
+    });
+    expect(element.shadowRoot.querySelector(".pet-whisker")).not.toBeNull();
+    expect(element.shadowRoot.querySelector(".pet-beak")).not.toBeNull();
+    expect(element.shadowRoot.querySelector(".pet-wing")).not.toBeNull();
   });
 
   it("saves edited area layout from edit mode", async () => {
