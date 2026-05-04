@@ -2,13 +2,13 @@
 private class A360EstateMapServiceTest {
   @TestSetup
   static void setupData() {
-    Account site = new Account(Name = 'Love 4 Animals - North London Demo');
+    Account site = new Account(Name = 'Love 4 Animals - North London Rescue');
     insert site;
 
     List<Housing_Unit__c> housingUnits = new List<Housing_Unit__c>{
       new Housing_Unit__c(
         Name = 'Kennel A1',
-        Unit_Code__c = 'UK-DEMO-KEN-A1',
+        Unit_Code__c = 'UK-RESCUE-KEN-A1',
         Housing_Type__c = 'Kennel',
         Capacity__c = 2,
         Current_Occupancy__c = 1,
@@ -17,7 +17,7 @@ private class A360EstateMapServiceTest {
       ),
       new Housing_Unit__c(
         Name = 'Cattery Blue',
-        Unit_Code__c = 'UK-DEMO-CAT-BLUE',
+        Unit_Code__c = 'UK-RESCUE-CAT-BLUE',
         Housing_Type__c = 'Cattery',
         Capacity__c = 3,
         Current_Occupancy__c = 1,
@@ -28,12 +28,13 @@ private class A360EstateMapServiceTest {
     insert housingUnits;
 
     A360_Estate_Map__c estateMap = new A360_Estate_Map__c(
-      Name = 'North London Demo Estate',
-      Map_Code__c = 'UK_DEMO_NORTH_LONDON',
+      Name = 'North London Rescue Estate',
+      Map_Code__c = 'UK_RESCUE_NORTH_LONDON',
       Status__c = 'Published',
       Is_Default__c = true,
       Canvas_Width__c = 1200,
       Canvas_Height__c = 720,
+      Background_Style__c = 'Whiteboard',
       Site_Account__c = site.Id,
       Published_On__c = System.now()
     );
@@ -108,8 +109,9 @@ private class A360EstateMapServiceTest {
     );
     Test.stopTest();
 
-    System.assertEquals('North London Demo Estate', context.mapName);
+    System.assertEquals('North London Rescue Estate', context.mapName);
     System.assertEquals('Published', context.status);
+    System.assertEquals('Whiteboard', context.backgroundStyle);
     System.assertEquals(2, context.areas.size());
     System.assertEquals('Ready', context.areas[0].operationalStatus);
     System.assertEquals(1, context.animals.size());
@@ -124,7 +126,7 @@ private class A360EstateMapServiceTest {
     A360_Estate_Map__c estateMap = [
       SELECT Id
       FROM A360_Estate_Map__c
-      WHERE Map_Code__c = 'UK_DEMO_NORTH_LONDON'
+      WHERE Map_Code__c = 'UK_RESCUE_NORTH_LONDON'
       LIMIT 1
     ];
     A360_Map_Area__c area = [
@@ -168,6 +170,36 @@ private class A360EstateMapServiceTest {
       'Expected the resized area in the response.'
     );
     System.assertEquals('Published', publishedContext.status);
+    System.assertEquals(1, savedContext.areas.size());
+  }
+
+  @IsTest
+  static void saveMapSettingsUpdatesCanvas() {
+    A360EstateMapService.bypassEditPermission = true;
+    A360_Estate_Map__c estateMap = [
+      SELECT Id
+      FROM A360_Estate_Map__c
+      WHERE Map_Code__c = 'UK_RESCUE_NORTH_LONDON'
+      LIMIT 1
+    ];
+
+    A360EstateMapService.MapSettingsRequest settings = new A360EstateMapService.MapSettingsRequest();
+    settings.mapName = 'North London Rescue Board';
+    settings.canvasWidth = 1600;
+    settings.canvasHeight = 900;
+    settings.backgroundStyle = 'Garden';
+
+    Test.startTest();
+    A360EstateMapService.MapContext context = A360EstateMapService.saveMapSettings(
+      String.valueOf(estateMap.Id),
+      settings
+    );
+    Test.stopTest();
+
+    System.assertEquals('North London Rescue Board', context.mapName);
+    System.assertEquals(1600, context.canvasWidth);
+    System.assertEquals(900, context.canvasHeight);
+    System.assertEquals('Garden', context.backgroundStyle);
   }
 
   @IsTest
@@ -176,7 +208,7 @@ private class A360EstateMapServiceTest {
     A360_Estate_Map__c estateMap = [
       SELECT Id
       FROM A360_Estate_Map__c
-      WHERE Map_Code__c = 'UK_DEMO_NORTH_LONDON'
+      WHERE Map_Code__c = 'UK_RESCUE_NORTH_LONDON'
       LIMIT 1
     ];
 
@@ -207,7 +239,7 @@ private class A360EstateMapServiceTest {
     A360_Estate_Map__c estateMap = [
       SELECT Id
       FROM A360_Estate_Map__c
-      WHERE Map_Code__c = 'UK_DEMO_NORTH_LONDON'
+      WHERE Map_Code__c = 'UK_RESCUE_NORTH_LONDON'
       LIMIT 1
     ];
     A360_Map_Area__c targetArea = [
@@ -264,7 +296,7 @@ private class A360EstateMapServiceTest {
     A360_Estate_Map__c estateMap = [
       SELECT Id
       FROM A360_Estate_Map__c
-      WHERE Map_Code__c = 'UK_DEMO_NORTH_LONDON'
+      WHERE Map_Code__c = 'UK_RESCUE_NORTH_LONDON'
       LIMIT 1
     ];
     A360_Map_Area__c area = [
@@ -300,7 +332,7 @@ private class A360EstateMapServiceTest {
     A360_Estate_Map__c estateMap = [
       SELECT Id
       FROM A360_Estate_Map__c
-      WHERE Map_Code__c = 'UK_DEMO_NORTH_LONDON'
+      WHERE Map_Code__c = 'UK_RESCUE_NORTH_LONDON'
       LIMIT 1
     ];
     A360_Map_Area__c targetArea = [

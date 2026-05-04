@@ -42,7 +42,7 @@
       <template if:true={hasMap}>
         <div class={workspaceClass}>
           <section class="map-wrap" aria-label="Animal estate map">
-            <div class="map-canvas">
+            <div class={mapCanvasClass} style={mapCanvasStyle}>
               <svg
                 class="connection-layer"
                 viewBox="0 0 100 100"
@@ -77,6 +77,13 @@
                   <span class="area-zone">{area.zone}</span>
                   <span class={area.statusClass}>{area.statusLabel}</span>
                   <span class={area.occupancyClass}>{area.occupancyLabel}</span>
+                  <template if:true={editMode}>
+                    <span
+                      class="resize-handle"
+                      data-id={area.id}
+                      onpointerdown={handleAreaResizePointerDown}
+                    ></span>
+                  </template>
                 </button>
               </template>
 
@@ -101,6 +108,7 @@
                         <span class="pet-eye pet-eye-left"></span>
                         <span class="pet-eye pet-eye-right"></span>
                         <span class="pet-nose"></span>
+                        <span class="pet-mark"></span>
                       </span>
                     </span>
                     <span class="pet-leg pet-leg-left"></span>
@@ -125,69 +133,140 @@
                 ></lightning-button-icon>
               </div>
 
-              <template if:true={hasSelectedArea}>
+              <section class="editor-section">
+                <h4>Canvas</h4>
                 <lightning-input
-                  label="Label"
-                  value={selectedArea.label}
-                  data-field="label"
-                  onchange={handleFieldChange}
+                  label="Map Name"
+                  value={mapSettings.mapName}
+                  data-field="mapName"
+                  onchange={handleMapSettingChange}
                 ></lightning-input>
-                <lightning-input
-                  label="Zone"
-                  value={selectedArea.zone}
-                  data-field="zone"
-                  onchange={handleFieldChange}
-                ></lightning-input>
-                <lightning-combobox
-                  label="Area Status"
-                  value={selectedArea.operationalStatus}
-                  options={areaStatusOptions}
-                  data-field="operationalStatus"
-                  onchange={handleFieldChange}
-                ></lightning-combobox>
-                <lightning-combobox
-                  label="Housing Unit"
-                  value={selectedArea.housingUnitId}
-                  options={housingOptions}
-                  data-field="housingUnitId"
-                  onchange={handleFieldChange}
-                ></lightning-combobox>
                 <div class="grid">
                   <lightning-input
                     type="number"
-                    label="X"
-                    value={selectedArea.x}
-                    data-field="x"
-                    onchange={handleFieldChange}
-                  ></lightning-input>
-                  <lightning-input
-                    type="number"
-                    label="Y"
-                    value={selectedArea.y}
-                    data-field="y"
-                    onchange={handleFieldChange}
-                  ></lightning-input>
-                  <lightning-input
-                    type="number"
                     label="Width"
-                    value={selectedArea.width}
-                    data-field="width"
-                    onchange={handleFieldChange}
+                    value={mapSettings.canvasWidth}
+                    data-field="canvasWidth"
+                    min="800"
+                    max="2400"
+                    onchange={handleMapSettingChange}
                   ></lightning-input>
                   <lightning-input
                     type="number"
                     label="Height"
-                    value={selectedArea.height}
-                    data-field="height"
-                    onchange={handleFieldChange}
+                    value={mapSettings.canvasHeight}
+                    data-field="canvasHeight"
+                    min="480"
+                    max="1600"
+                    onchange={handleMapSettingChange}
                   ></lightning-input>
                 </div>
-                <lightning-input
-                  label="Fill Color"
-                  value={selectedArea.fillColor}
-                  data-field="fillColor"
-                  onchange={handleFieldChange}
-                ></lightning-input>
+                <lightning-combobox
+                  label="Background"
+                  value={mapSettings.backgroundStyle}
+                  options={backgroundOptions}
+                  data-field="backgroundStyle"
+                  onchange={handleMapSettingChange}
+                ></lightning-combobox>
+              </section>
+
+              <template if:true={hasSelectedArea}>
+                <section class="editor-section">
+                  <h4>Area</h4>
+                  <lightning-input
+                    label="Label"
+                    value={selectedArea.label}
+                    data-field="label"
+                    onchange={handleFieldChange}
+                  ></lightning-input>
+                  <lightning-input
+                    label="Zone"
+                    value={selectedArea.zone}
+                    data-field="zone"
+                    onchange={handleFieldChange}
+                  ></lightning-input>
+                  <lightning-combobox
+                    label="Shape"
+                    value={selectedArea.shape}
+                    options={areaShapeOptions}
+                    data-field="shape"
+                    onchange={handleFieldChange}
+                  ></lightning-combobox>
+                  <lightning-combobox
+                    label="Area Status"
+                    value={selectedArea.operationalStatus}
+                    options={areaStatusOptions}
+                    data-field="operationalStatus"
+                    onchange={handleFieldChange}
+                  ></lightning-combobox>
+                  <lightning-combobox
+                    label="Housing Unit"
+                    value={selectedArea.housingUnitId}
+                    options={housingOptions}
+                    data-field="housingUnitId"
+                    onchange={handleFieldChange}
+                  ></lightning-combobox>
+                  <div class="grid">
+                    <lightning-input
+                      type="number"
+                      label="X"
+                      value={selectedArea.x}
+                      data-field="x"
+                      onchange={handleFieldChange}
+                    ></lightning-input>
+                    <lightning-input
+                      type="number"
+                      label="Y"
+                      value={selectedArea.y}
+                      data-field="y"
+                      onchange={handleFieldChange}
+                    ></lightning-input>
+                    <lightning-input
+                      type="number"
+                      label="Width"
+                      value={selectedArea.width}
+                      data-field="width"
+                      onchange={handleFieldChange}
+                    ></lightning-input>
+                    <lightning-input
+                      type="number"
+                      label="Height"
+                      value={selectedArea.height}
+                      data-field="height"
+                      onchange={handleFieldChange}
+                    ></lightning-input>
+                  </div>
+                  <div class="grid">
+                    <lightning-input
+                      type="number"
+                      label="Rotation"
+                      value={selectedArea.rotation}
+                      data-field="rotation"
+                      onchange={handleFieldChange}
+                    ></lightning-input>
+                    <lightning-input
+                      label="Fill Color"
+                      value={selectedArea.fillColor}
+                      data-field="fillColor"
+                      onchange={handleFieldChange}
+                    ></lightning-input>
+                  </div>
+                  <div class="area-tools">
+                    <lightning-button
+                      label="Split Vertical"
+                      onclick={handleSplitVertical}
+                    ></lightning-button>
+                    <lightning-button
+                      label="Split Horizontal"
+                      onclick={handleSplitHorizontal}
+                    ></lightning-button>
+                    <lightning-button
+                      label="Remove"
+                      variant="destructive-text"
+                      onclick={handleRemoveArea}
+                    ></lightning-button>
+                  </div>
+                </section>
               </template>
 
               <div class="editor-actions">

@@ -61,7 +61,9 @@ h3 {
 .map-canvas {
   position: relative;
   overflow: hidden;
+  aspect-ratio: var(--canvas-ratio, 1200/720);
   min-height: 34rem;
+  min-height: var(--canvas-min-height, 34rem);
   border: 1px solid #c6d7ef;
   border-radius: 0.5rem;
   background:
@@ -76,6 +78,30 @@ h3 {
       rgba(235, 244, 255, 0.98)
     );
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.85);
+}
+
+.map-canvas.background-blueprint {
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.16) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.16) 1px, transparent 1px), #14345f;
+  background-size: 22px 22px;
+}
+
+.map-canvas.background-garden {
+  background:
+    radial-gradient(
+      circle at 80% 18%,
+      rgba(18, 183, 106, 0.18),
+      transparent 24%
+    ),
+    linear-gradient(135deg, #f7fff8, #e9f8ef 58%, #fff7ed);
+}
+
+.map-canvas.background-clinical {
+  background:
+    linear-gradient(90deg, rgba(180, 35, 24, 0.06) 1px, transparent 1px),
+    linear-gradient(rgba(12, 102, 228, 0.08) 1px, transparent 1px), #fbfdff;
+  background-size: 28px 28px;
 }
 
 .connection-layer {
@@ -120,6 +146,31 @@ h3 {
 
 .map-area.is-editable:active {
   cursor: grabbing;
+}
+
+.resize-handle {
+  position: absolute;
+  right: 0.18rem;
+  bottom: 0.18rem;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-right: 2px solid #1b5f97;
+  border-bottom: 2px solid #1b5f97;
+  border-radius: 0 0 0.18rem;
+  background: rgba(255, 255, 255, 0.72);
+  cursor: nwse-resize;
+  touch-action: none;
+}
+
+.map-area.shape-rectangle {
+  border-radius: 0.14rem;
+}
+
+.map-area.shape-ellipse {
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  text-align: center;
 }
 
 .map-area.is-drop-target {
@@ -305,8 +356,8 @@ h3 {
 .pet-body {
   left: 0.56rem;
   bottom: 0.42rem;
-  width: 1.66rem;
-  height: 1.08rem;
+  width: var(--pet-body-width, 1.66rem);
+  height: var(--pet-body-height, 1.08rem);
   border: 0.1rem solid var(--pet-dark);
   border-radius: 0.42rem;
 }
@@ -314,8 +365,8 @@ h3 {
 .pet-head {
   right: 0;
   bottom: 0.82rem;
-  width: 1.12rem;
-  height: 1.04rem;
+  width: var(--pet-head-width, 1.12rem);
+  height: var(--pet-head-height, 1.04rem);
   border: 0.1rem solid var(--pet-dark);
   border-radius: 0.36rem;
   animation: pet-look 3.4s steps(2, end) infinite;
@@ -324,7 +375,7 @@ h3 {
 .pet-tail {
   left: 0.12rem;
   bottom: 1.18rem;
-  width: 0.62rem;
+  width: var(--pet-tail-width, 0.62rem);
   height: 0.24rem;
   border: 0.1rem solid var(--pet-dark);
   border-radius: 999px 0 0 999px;
@@ -335,7 +386,7 @@ h3 {
 .pet-ear {
   top: -0.38rem;
   width: 0.34rem;
-  height: 0.54rem;
+  height: var(--pet-ear-height, 0.54rem);
   border: 0.09rem solid var(--pet-dark);
   border-bottom: 0;
   border-radius: 0.2rem 0.2rem 0 0;
@@ -383,16 +434,52 @@ h3 {
   transform: rotate(32deg);
 }
 
+.pet-variant-6 .pet-body {
+  border-radius: 0.7rem 0.3rem 0.48rem 0.32rem;
+}
+
+.pet-variant-7 .pet-tail {
+  bottom: 1.32rem;
+  transform: rotate(24deg);
+}
+
+.pet-variant-8 .pet-head {
+  transform: translateY(-0.08rem);
+}
+
+.pet-variant-9 .pet-ear {
+  width: 0.42rem;
+}
+
+.pet-variant-10 .pet-body {
+  transform: skewX(-6deg);
+}
+
+.pet-variant-11 .pet-face {
+  transform: translateX(-0.08rem);
+}
+
 .pet-face {
   position: absolute;
   inset: 0;
 }
 
 .pet-eye,
-.pet-nose {
+.pet-nose,
+.pet-mark {
   position: absolute;
   display: block;
   background: #101828;
+}
+
+.pet-mark {
+  top: 0.16rem;
+  left: 0.14rem;
+  width: var(--pet-mark-size, 0.2rem);
+  height: var(--pet-mark-size, 0.2rem);
+  border-radius: 999px;
+  background: var(--pet-light);
+  opacity: 0.88;
 }
 
 .pet-eye {
@@ -475,6 +562,29 @@ h3 {
   border-radius: 0.5rem;
   background: #ffffff;
   padding: 0.85rem;
+}
+
+.editor-section {
+  display: grid;
+  gap: 0.55rem;
+  border-top: 1px solid #eaecf0;
+  margin-top: 0.85rem;
+  padding-top: 0.85rem;
+}
+
+.editor-section h4 {
+  color: #344054;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.area-tools {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.45rem;
 }
 
 .operations-panel {

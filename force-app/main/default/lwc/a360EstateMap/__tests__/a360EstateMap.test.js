@@ -3,6 +3,7 @@ import { registerApexTestWireAdapter } from "@salesforce/sfdx-lwc-jest";
 import A360EstateMap from "c/a360EstateMap";
 import getMapContext from "@salesforce/apex/A360EstateMapService.getMapContext";
 import saveAreas from "@salesforce/apex/A360EstateMapService.saveAreas";
+import saveMapSettings from "@salesforce/apex/A360EstateMapService.saveMapSettings";
 import publishMap from "@salesforce/apex/A360EstateMapService.publishMap";
 import moveAnimal from "@salesforce/apex/A360EstateMapService.moveAnimal";
 import updateAreaStatus from "@salesforce/apex/A360EstateMapService.updateAreaStatus";
@@ -19,6 +20,14 @@ jest.mock(
 
 jest.mock(
   "@salesforce/apex/A360EstateMapService.saveAreas",
+  () => ({
+    default: jest.fn()
+  }),
+  { virtual: true }
+);
+
+jest.mock(
+  "@salesforce/apex/A360EstateMapService.saveMapSettings",
   () => ({
     default: jest.fn()
   }),
@@ -63,9 +72,12 @@ jest.mock(
 
 const MAP_CONTEXT = {
   mapId: "a20J60000000001IAA",
-  mapName: "North London Demo Estate",
-  mapCode: "UK_DEMO_NORTH_LONDON",
+  mapName: "North London Rescue Estate",
+  mapCode: "UK_RESCUE_NORTH_LONDON",
   status: "Published",
+  backgroundStyle: "Whiteboard",
+  canvasWidth: 1200,
+  canvasHeight: 720,
   canEdit: true,
   canMove: true,
   areas: [
@@ -121,6 +133,16 @@ const MAP_CONTEXT = {
       housingUnitId: "a10J60000000001IAA",
       areaId: "a21J60000000001IAA",
       slotIndex: 0
+    },
+    {
+      animalId: "a00J60000000002IAA",
+      animalName: "Maple",
+      species: "Dog",
+      welfareRisk: "Low",
+      careStatus: "Open",
+      housingUnitId: "a10J60000000001IAA",
+      areaId: "a21J60000000001IAA",
+      slotIndex: 1
     }
   ],
   housingOptions: [
@@ -174,16 +196,22 @@ describe("c-a360-estate-map", () => {
     await flushPromises();
 
     expect(element.shadowRoot.textContent).toContain(
-      "North London Demo Estate"
+      "North London Rescue Estate"
     );
     expect(element.shadowRoot.textContent).toContain("Kennel A1");
     expect(element.shadowRoot.textContent).toContain("Biscuit");
     expect(element.shadowRoot.textContent).toContain("Ready");
     expect(element.shadowRoot.querySelector(".animal-token")).not.toBeNull();
     expect(element.shadowRoot.querySelector(".pet-avatar")).not.toBeNull();
+    const tokens = element.shadowRoot.querySelectorAll(".animal-token");
+    expect(tokens).toHaveLength(2);
+    expect(tokens[0].getAttribute("style")).not.toEqual(
+      tokens[1].getAttribute("style")
+    );
   });
 
   it("saves edited area layout from edit mode", async () => {
+    saveMapSettings.mockResolvedValue(MAP_CONTEXT);
     saveAreas.mockResolvedValue(MAP_CONTEXT);
     const element = createElement("c-a360-estate-map", {
       is: A360EstateMap
@@ -208,9 +236,99 @@ describe("c-a360-estate-map", () => {
     await flushPromises();
 
     expect(saveAreas).toHaveBeenCalled();
+    expect(saveMapSettings).toHaveBeenCalledWith({
+      mapId: MAP_CONTEXT.mapId,
+      settings: expect.objectContaining({
+        mapName: "North London Rescue Estate",
+        backgroundStyle: "Whiteboard"
+      })
+    });
     expect(saveAreas.mock.calls[0][0].areas[0]).toMatchObject({
       label: "Kennel A1 Resized"
     });
+  });
+
+  it("splits a selected area and saves the new section", async () => {
+    const splitContext = {
+      ...MAP_CONTEXT,
+      areas: [
+        MAP_CONTEXT.areas[0],
+        MAP_CONTEXT.areas[1],
+        {
+          ...MAP_CONTEXT.areas[0],
+          id: "a21J60000000003IAA",
+          areaCode: "KEN-A1-B",
+          label: "Kennel A1 B",
+          housingUnitId: "",
+          x: 19,
+          width: 9,
+          displayOrder: 30
+        }
+      ]
+    };
+    saveMapSettings.mockResolvedValue(MAP_CONTEXT);
+    saveAreas.mockResolvedValue(splitContext);
+    const element = createElement("c-a360-estate-map", {
+      is: A360EstateMap
+    });
+    document.body.appendChild(element);
+
+    getMapContextAdapter.emit(MAP_CONTEXT);
+    await flushPromises();
+
+    findButton(element, "Edit").dispatchEvent(new CustomEvent("click"));
+    await flushPromises();
+
+    findButton(element, "Split Vertical").dispatchEvent(
+      new CustomEvent("click")
+    );
+    await flushPromises();
+    findButton(element, "Save Layout").dispatchEvent(new CustomEvent("click"));
+    await flushPromises();
+
+    expect(saveAreas.mock.calls[0][0].areas).toHaveLength(3);
+    expect(saveAreas.mock.calls[0][0].areas[2]).toMatchObject({
+      id: null,
+      label: "Kennel A1 B",
+      housingUnitId: null
+    });
+  });
+
+  it("resizes an area directly on the canvas", async () => {
+    saveMapSettings.mockResolvedValue(MAP_CONTEXT);
+    saveAreas.mockResolvedValue(MAP_CONTEXT);
+    const element = createElement("c-a360-estate-map", {
+      is: A360EstateMap
+    });
+    document.body.appendChild(element);
+
+    getMapContextAdapter.emit(MAP_CONTEXT);
+    await flushPromises();
+
+    findButton(element, "Edit").dispatchEvent(new CustomEvent("click"));
+    await flushPromises();
+
+    element.shadowRoot.querySelector(".map-canvas").getBoundingClientRect =
+      jest.fn(() => ({
+        left: 0,
+        top: 0,
+        right: 300,
+        bottom: 200,
+        width: 300,
+        height: 200
+      }));
+
+    const handle = element.shadowRoot.querySelector(".resize-handle");
+    handle.dispatchEvent(pointerEvent("pointerdown", 100, 100));
+    window.dispatchEvent(pointerEvent("pointermove", 160, 140));
+    window.dispatchEvent(pointerEvent("pointerup", 160, 140));
+    await flushPromises();
+
+    findButton(element, "Save Layout").dispatchEvent(new CustomEvent("click"));
+    await flushPromises();
+
+    expect(saveAreas.mock.calls[0][0].areas[0].width).toBeGreaterThan(18);
+    expect(saveAreas.mock.calls[0][0].areas[0].height).toBeGreaterThan(18);
   });
 
   it("updates the selected area cleaning status", async () => {

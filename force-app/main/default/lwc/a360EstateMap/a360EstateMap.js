@@ -2,6 +2,7 @@ import { LightningElement, track, wire } from "lwc";
 import { refreshApex } from "@salesforce/apex";
 import getMapContext from "@salesforce/apex/A360EstateMapService.getMapContext";
 import saveAreas from "@salesforce/apex/A360EstateMapService.saveAreas";
+import saveMapSettings from "@salesforce/apex/A360EstateMapService.saveMapSettings";
 import publishMap from "@salesforce/apex/A360EstateMapService.publishMap";
 import moveAnimal from "@salesforce/apex/A360EstateMapService.moveAnimal";
 import updateAreaStatus from "@salesforce/apex/A360EstateMapService.updateAreaStatus";
@@ -12,6 +13,7 @@ const GRID_SIZE = 1;
 export default class A360EstateMap extends LightningElement {
   @track context;
   @track draftAreas = [];
+  @track mapSettings = {};
   @track selectedAreaId;
 
   wiredContext;
@@ -20,6 +22,7 @@ export default class A360EstateMap extends LightningElement {
   riskFilter = "All";
   speciesFilter = "All";
   dragState;
+  resizeState;
   animalDragState;
   movingAnimalId;
   dropTargetAreaId;
@@ -32,6 +35,7 @@ export default class A360EstateMap extends LightningElement {
     if (data) {
       this.context = data;
       this.draftAreas = this.cloneAreas(data.areas);
+      this.mapSettings = this.cloneMapSettings(data);
       this.selectedAreaId = this.draftAreas[0]?.id;
     } else if (error) {
       this.showToast("Map unavailable", this.reduceError(error), "error");
@@ -57,11 +61,35 @@ export default class A360EstateMap extends LightningElement {
   }
 
   get mapTitle() {
-    return this.context?.mapName || "Animal360 Estate Map";
+    return (
+      this.mapSettings?.mapName ||
+      this.context?.mapName ||
+      "Animal360 Estate Map"
+    );
   }
 
   get mapStatusLabel() {
     return this.context?.status || "No map";
+  }
+
+  get mapCanvasClass() {
+    return `map-canvas background-${this.backgroundClassToken(
+      this.mapSettings?.backgroundStyle || this.context?.backgroundStyle
+    )}`;
+  }
+
+  get mapCanvasStyle() {
+    const width = Number(
+      this.mapSettings?.canvasWidth || this.context?.canvasWidth || 1200
+    );
+    const height = Number(
+      this.mapSettings?.canvasHeight || this.context?.canvasHeight || 720
+    );
+    const minHeight = this.clamp(height / 18, 28, 46);
+    return [
+      `--canvas-ratio:${width}/${height}`,
+      `--canvas-min-height:${minHeight}rem`
+    ].join(";");
   }
 
   get modeLabel() {
@@ -93,7 +121,9 @@ export default class A360EstateMap extends LightningElement {
       const operationalStatus = area.operationalStatus || "Ready";
       return {
         ...area,
-        className: `map-area ${selected ? "is-selected" : ""} ${
+        className: `map-area ${this.shapeClass(area.shape)} ${
+          selected ? "is-selected" : ""
+        } ${
           this.editMode ? "is-editable" : ""
         } ${dropTarget ? "is-drop-target" : ""} ${this.areaStatusClass(
           operationalStatus
@@ -139,7 +169,7 @@ export default class A360EstateMap extends LightningElement {
     if (!this.selectedAreaId) {
       return [];
     }
-    return this.filteredAnimals
+    return (this.context?.animals || [])
       .filter((animal) => animal.areaId === this.selectedAreaId)
       .map((animal) => ({
         id: animal.animalId,
@@ -156,6 +186,23 @@ export default class A360EstateMap extends LightningElement {
       { label: "Ready", value: "Ready" },
       { label: "Cleaning", value: "Cleaning" },
       { label: "Closed", value: "Closed" }
+    ];
+  }
+
+  get areaShapeOptions() {
+    return [
+      { label: "Rounded", value: "Rounded Rectangle" },
+      { label: "Rectangle", value: "Rectangle" },
+      { label: "Ellipse", value: "Ellipse" }
+    ];
+  }
+
+  get backgroundOptions() {
+    return [
+      { label: "Whiteboard", value: "Whiteboard" },
+      { label: "Blueprint", value: "Blueprint" },
+      { label: "Garden", value: "Garden" },
+      { label: "Clinical", value: "Clinical" }
     ];
   }
 
@@ -336,6 +383,55 @@ export default class A360EstateMap extends LightningElement {
     this.dragState = null;
   };
 
+  handleAreaResizePointerDown(event) {
+    if (!this.editMode) {
+      return;
+    }
+    event.preventDefault();
+    event.stopPropagation();
+    const areaId = event.currentTarget.dataset.id;
+    const area = this.draftAreas.find((candidate) => candidate.id === areaId);
+    const mapElement = this.template.querySelector(".map-canvas");
+    if (!area || !mapElement) {
+      return;
+    }
+    this.selectedAreaId = areaId;
+    this.resizeState = {
+      areaId,
+      startClientX: event.clientX,
+      startClientY: event.clientY,
+      startWidth: Number(area.width),
+      startHeight: Number(area.height),
+      bounds: mapElement.getBoundingClientRect()
+    };
+    window.addEventListener("pointermove", this.handleAreaResizePointerMove);
+    window.addEventListener("pointerup", this.handleAreaResizePointerUp);
+  }
+
+  handleAreaResizePointerMove = (event) => {
+    if (!this.resizeState) {
+      return;
+    }
+    const dx =
+      ((event.clientX - this.resizeState.startClientX) /
+        this.resizeState.bounds.width) *
+      100;
+    const dy =
+      ((event.clientY - this.resizeState.startClientY) /
+        this.resizeState.bounds.height) *
+      100;
+    this.updateArea(this.resizeState.areaId, {
+      width: this.snap(this.resizeState.startWidth + dx),
+      height: this.snap(this.resizeState.startHeight + dy)
+    });
+  };
+
+  handleAreaResizePointerUp = () => {
+    window.removeEventListener("pointermove", this.handleAreaResizePointerMove);
+    window.removeEventListener("pointerup", this.handleAreaResizePointerUp);
+    this.resizeState = null;
+  };
+
   handleAnimalPointerDown(event) {
     if (!this.canMove || this.editMode || this.isSaving) {
       return;
@@ -473,6 +569,18 @@ export default class A360EstateMap extends LightningElement {
     this.updateArea(this.selectedAreaId, { [field]: value });
   }
 
+  handleMapSettingChange(event) {
+    const field = event.currentTarget.dataset.field;
+    let value = event.detail?.value ?? event.target.value;
+    if (["canvasWidth", "canvasHeight"].includes(field)) {
+      value = Number(value);
+    }
+    this.mapSettings = {
+      ...this.mapSettings,
+      [field]: value
+    };
+  }
+
   handleAddArea() {
     const nextNumber = this.draftAreas.length + 1;
     this.draftAreas = [
@@ -497,9 +605,43 @@ export default class A360EstateMap extends LightningElement {
     this.selectedAreaId = this.draftAreas[this.draftAreas.length - 1].id;
   }
 
+  handleRemoveArea() {
+    if (!this.selectedAreaId || this.draftAreas.length <= 1) {
+      return;
+    }
+    if (this.selectedAreaAnimals.length > 0) {
+      this.showToast(
+        "Area still occupied",
+        "Move animals out before removing this area.",
+        "warning"
+      );
+      return;
+    }
+    const removedIndex = this.draftAreas.findIndex(
+      (area) => area.id === this.selectedAreaId
+    );
+    this.draftAreas = this.draftAreas.filter(
+      (area) => area.id !== this.selectedAreaId
+    );
+    const nextIndex = Math.min(removedIndex, this.draftAreas.length - 1);
+    this.selectedAreaId = this.draftAreas[nextIndex]?.id;
+  }
+
+  handleSplitVertical() {
+    this.splitSelectedArea("vertical");
+  }
+
+  handleSplitHorizontal() {
+    this.splitSelectedArea("horizontal");
+  }
+
   async handleSave() {
     this.isSaving = true;
     try {
+      await saveMapSettings({
+        mapId: this.context.mapId,
+        settings: this.mapSettings
+      });
       const request = this.draftAreas.map((area, index) => ({
         id: area.id?.startsWith("draft-") ? null : area.id,
         areaCode: area.areaCode,
@@ -522,6 +664,7 @@ export default class A360EstateMap extends LightningElement {
       });
       this.context = savedContext;
       this.draftAreas = this.cloneAreas(savedContext.areas);
+      this.mapSettings = this.cloneMapSettings(savedContext);
       await refreshApex(this.wiredContext);
       this.showToast("Map saved", "Estate layout changes are live.", "success");
     } catch (error) {
@@ -537,6 +680,7 @@ export default class A360EstateMap extends LightningElement {
       const publishedContext = await publishMap({ mapId: this.context.mapId });
       this.context = publishedContext;
       this.draftAreas = this.cloneAreas(publishedContext.areas);
+      this.mapSettings = this.cloneMapSettings(publishedContext);
       await refreshApex(this.wiredContext);
       this.showToast(
         "Map published",
@@ -550,18 +694,67 @@ export default class A360EstateMap extends LightningElement {
     }
   }
 
+  splitSelectedArea(direction) {
+    const area = this.selectedArea;
+    if (!area) {
+      return;
+    }
+
+    const isVertical = direction === "vertical";
+    const newArea = {
+      ...area,
+      id: `draft-${Date.now()}`,
+      areaCode: `${area.areaCode || "AREA"}-${isVertical ? "B" : "S"}`.slice(
+        0,
+        60
+      ),
+      label: `${area.label || "Area"} ${isVertical ? "B" : "South"}`.slice(
+        0,
+        80
+      ),
+      housingUnitId: "",
+      housingUnitName: "",
+      currentOccupancy: 0,
+      capacity: null,
+      displayOrder: (this.draftAreas.length + 1) * 10
+    };
+
+    const updates = {};
+    if (isVertical) {
+      const splitWidth = this.snap(Number(area.width) / 2);
+      updates.width = this.clamp(splitWidth, 3, 100);
+      newArea.x = this.clamp(Number(area.x) + updates.width, 0, 98);
+      newArea.width = this.clamp(Number(area.width) - updates.width, 3, 100);
+    } else {
+      const splitHeight = this.snap(Number(area.height) / 2);
+      updates.height = this.clamp(splitHeight, 3, 100);
+      newArea.y = this.clamp(Number(area.y) + updates.height, 0, 98);
+      newArea.height = this.clamp(Number(area.height) - updates.height, 3, 100);
+    }
+
+    this.updateArea(area.id, updates);
+    this.draftAreas = [...this.draftAreas, newArea];
+    this.selectedAreaId = newArea.id;
+  }
+
   updateArea(areaId, changes) {
     this.draftAreas = this.draftAreas.map((area) => {
       if (area.id !== areaId) {
         return area;
       }
+      const requestedWidth = changes.width ?? area.width;
+      const requestedHeight = changes.height ?? area.height;
+      const width = this.clamp(requestedWidth, 3, 100 - Number(area.x));
+      const height = this.clamp(requestedHeight, 3, 100 - Number(area.y));
+      const x = this.clamp(changes.x ?? area.x, 0, 100 - width);
+      const y = this.clamp(changes.y ?? area.y, 0, 100 - height);
       return {
         ...area,
         ...changes,
-        x: this.clamp(changes.x ?? area.x, 0, 98),
-        y: this.clamp(changes.y ?? area.y, 0, 98),
-        width: this.clamp(changes.width ?? area.width, 3, 100),
-        height: this.clamp(changes.height ?? area.height, 3, 100)
+        x,
+        y,
+        width,
+        height
       };
     });
   }
@@ -570,13 +763,22 @@ export default class A360EstateMap extends LightningElement {
     return (areas || []).map((area) => ({ ...area }));
   }
 
+  cloneMapSettings(context) {
+    return {
+      mapName: context?.mapName || "Animal360 Estate Whiteboard",
+      canvasWidth: context?.canvasWidth || 1200,
+      canvasHeight: context?.canvasHeight || 720,
+      backgroundStyle: context?.backgroundStyle || "Whiteboard"
+    };
+  }
+
   speciesClass(species) {
     const normalized = (species || "Other").toLowerCase().replace(/\s+/g, "-");
     return `pet-${normalized}`;
   }
 
   petVariantClass(animal) {
-    return `pet-variant-${this.hashAnimal(animal) % 6}`;
+    return `pet-variant-${this.hashAnimal(animal) % 12}`;
   }
 
   animalStyle(animal, dragPosition, homePosition) {
@@ -584,6 +786,13 @@ export default class A360EstateMap extends LightningElement {
     const hue = hash % 360;
     const accentHue = (hue + 34) % 360;
     const speed = 2.2 + (hash % 7) / 10;
+    const bodyWidth = 1.48 + (hash % 5) * 0.08;
+    const bodyHeight = 0.96 + (hash % 4) * 0.08;
+    const headWidth = 0.98 + (hash % 6) * 0.04;
+    const headHeight = 0.94 + (hash % 5) * 0.04;
+    const earHeight = 0.42 + (hash % 5) * 0.07;
+    const tailWidth = 0.48 + (hash % 5) * 0.07;
+    const markSize = 0.16 + (hash % 4) * 0.05;
     const position = dragPosition || homePosition;
     return [
       `left:${position.left}%`,
@@ -591,7 +800,14 @@ export default class A360EstateMap extends LightningElement {
       `--pet-main:hsl(${hue} 58% 54%)`,
       `--pet-dark:hsl(${hue} 48% 27%)`,
       `--pet-light:hsl(${accentHue} 78% 80%)`,
-      `--pet-speed:${speed}s`
+      `--pet-speed:${speed}s`,
+      `--pet-body-width:${bodyWidth}rem`,
+      `--pet-body-height:${bodyHeight}rem`,
+      `--pet-head-width:${headWidth}rem`,
+      `--pet-head-height:${headHeight}rem`,
+      `--pet-ear-height:${earHeight}rem`,
+      `--pet-tail-width:${tailWidth}rem`,
+      `--pet-mark-size:${markSize}rem`
     ].join(";");
   }
 
@@ -605,6 +821,16 @@ export default class A360EstateMap extends LightningElement {
 
   areaStatusClass(status) {
     return `status-${(status || "Ready").toLowerCase()}`;
+  }
+
+  shapeClass(shape) {
+    return `shape-${(shape || "Rounded Rectangle")
+      .toLowerCase()
+      .replace(/\s+/g, "-")}`;
+  }
+
+  backgroundClassToken(backgroundStyle) {
+    return (backgroundStyle || "Whiteboard").toLowerCase().replace(/\s+/g, "-");
   }
 
   riskClass(risk) {

@@ -22,6 +22,9 @@ public with sharing class A360EstateMapService {
     public String status;
 
     @AuraEnabled
+    public String backgroundStyle;
+
+    @AuraEnabled
     public Decimal canvasWidth;
 
     @AuraEnabled
@@ -203,6 +206,20 @@ public with sharing class A360EstateMapService {
     public Integer displayOrder;
   }
 
+  public class MapSettingsRequest {
+    @AuraEnabled
+    public String mapName;
+
+    @AuraEnabled
+    public Decimal canvasWidth;
+
+    @AuraEnabled
+    public Decimal canvasHeight;
+
+    @AuraEnabled
+    public String backgroundStyle;
+  }
+
   @AuraEnabled(cacheable=true)
   public static MapContext getMapContext(String mapId) {
     enforceReadable();
@@ -220,6 +237,9 @@ public with sharing class A360EstateMapService {
     context.mapName = mapRecord.Name;
     context.mapCode = mapRecord.Map_Code__c;
     context.status = mapRecord.Status__c;
+    context.backgroundStyle = String.isBlank(mapRecord.Background_Style__c)
+      ? 'Whiteboard'
+      : mapRecord.Background_Style__c;
     context.canvasWidth = mapRecord.Canvas_Width__c == null
       ? 1200
       : mapRecord.Canvas_Width__c;
@@ -288,7 +308,7 @@ public with sharing class A360EstateMapService {
     Id estateMapId = (Id) mapId;
     Map<Id, A360_Map_Area__c> existingAreas = new Map<Id, A360_Map_Area__c>();
     for (A360_Map_Area__c existingArea : [
-      SELECT Id, Estate_Map__c
+      SELECT Id, Estate_Map__c, Is_Active__c
       FROM A360_Map_Area__c
       WHERE Estate_Map__c = :estateMapId
     ]) {
@@ -296,6 +316,7 @@ public with sharing class A360EstateMapService {
     }
 
     List<A360_Map_Area__c> recordsToSave = new List<A360_Map_Area__c>();
+    Set<Id> submittedAreaIds = new Set<Id>();
     Integer index = 0;
     for (
       AreaSaveRequest requestItem : areas == null
@@ -341,6 +362,7 @@ public with sharing class A360EstateMapService {
           );
         }
         areaRecord.Id = areaId;
+        submittedAreaIds.add(areaId);
       }
       recordsToSave.add(areaRecord);
     }
@@ -348,7 +370,49 @@ public with sharing class A360EstateMapService {
     if (!recordsToSave.isEmpty()) {
       upsert recordsToSave;
     }
+    if (areas != null) {
+      List<A360_Map_Area__c> recordsToDeactivate = new List<A360_Map_Area__c>();
+      for (A360_Map_Area__c existingArea : existingAreas.values()) {
+        if (
+          existingArea.Is_Active__c == true &&
+          !submittedAreaIds.contains(existingArea.Id)
+        ) {
+          recordsToDeactivate.add(
+            new A360_Map_Area__c(Id = existingArea.Id, Is_Active__c = false)
+          );
+        }
+      }
+      if (!recordsToDeactivate.isEmpty()) {
+        update recordsToDeactivate;
+      }
+    }
 
+    return getMapContext(mapId);
+  }
+
+  @AuraEnabled
+  public static MapContext saveMapSettings(
+    String mapId,
+    MapSettingsRequest settings
+  ) {
+    enforceEdit();
+    enforceMapEdit();
+    if (String.isBlank(mapId)) {
+      throw new AuraHandledException('A map is required before saving canvas.');
+    }
+    if (settings == null) {
+      throw new AuraHandledException('Canvas settings are required.');
+    }
+
+    update new A360_Estate_Map__c(
+      Id = (Id) mapId,
+      Name = String.isBlank(settings.mapName)
+        ? 'Animal360 Estate Whiteboard'
+        : settings.mapName.left(80),
+      Canvas_Width__c = normalizeCanvasSize(settings.canvasWidth, 800, 2400),
+      Canvas_Height__c = normalizeCanvasSize(settings.canvasHeight, 480, 1600),
+      Background_Style__c = normalizeBackgroundStyle(settings.backgroundStyle)
+    );
     return getMapContext(mapId);
   }
 
@@ -514,6 +578,7 @@ public with sharing class A360EstateMapService {
           Name,
           Map_Code__c,
           Status__c,
+          Background_Style__c,
           Canvas_Width__c,
           Canvas_Height__c
         FROM A360_Estate_Map__c
@@ -524,7 +589,14 @@ public with sharing class A360EstateMapService {
     }
 
     List<A360_Estate_Map__c> defaultMaps = [
-      SELECT Id, Name, Map_Code__c, Status__c, Canvas_Width__c, Canvas_Height__c
+      SELECT
+        Id,
+        Name,
+        Map_Code__c,
+        Status__c,
+        Background_Style__c,
+        Canvas_Width__c,
+        Canvas_Height__c
       FROM A360_Estate_Map__c
       WHERE Status__c = 'Published' AND Is_Default__c = TRUE
       ORDER BY Published_On__c DESC NULLS LAST, LastModifiedDate DESC
@@ -535,7 +607,14 @@ public with sharing class A360EstateMapService {
     }
 
     List<A360_Estate_Map__c> fallbackMaps = [
-      SELECT Id, Name, Map_Code__c, Status__c, Canvas_Width__c, Canvas_Height__c
+      SELECT
+        Id,
+        Name,
+        Map_Code__c,
+        Status__c,
+        Background_Style__c,
+        Canvas_Width__c,
+        Canvas_Height__c
       FROM A360_Estate_Map__c
       WHERE Status__c IN ('Published', 'Draft')
       ORDER BY Status__c DESC, LastModifiedDate DESC
@@ -670,10 +749,19 @@ public with sharing class A360EstateMapService {
       );
     }
     if (
+      !Schema.sObjectType.A360_Estate_Map__c.isUpdateable() ||
       !Schema.sObjectType.A360_Map_Area__c.isCreateable() ||
       !Schema.sObjectType.A360_Map_Area__c.isUpdateable()
     ) {
       throw new AuraHandledException('Your profile cannot save map areas.');
+    }
+  }
+
+  private static void enforceMapEdit() {
+    if (!Schema.sObjectType.A360_Estate_Map__c.isUpdateable()) {
+      throw new AuraHandledException(
+        'Your profile cannot update map settings.'
+      );
     }
   }
 
@@ -752,6 +840,33 @@ public with sharing class A360EstateMapService {
     return candidate.startsWith('#')
       ? candidate.left(7)
       : '#' + candidate.left(6);
+  }
+
+  private static Decimal normalizeCanvasSize(
+    Decimal value,
+    Decimal minimum,
+    Decimal maximum
+  ) {
+    if (value == null) {
+      return minimum;
+    }
+    return Math.min(maximum, Math.max(minimum, value));
+  }
+
+  private static String normalizeBackgroundStyle(String value) {
+    if (String.isBlank(value)) {
+      return 'Whiteboard';
+    }
+    String candidate = value.trim();
+    if (
+      candidate == 'Whiteboard' ||
+      candidate == 'Blueprint' ||
+      candidate == 'Garden' ||
+      candidate == 'Clinical'
+    ) {
+      return candidate;
+    }
+    return 'Whiteboard';
   }
 
   private static String leftOrNull(String value, Integer maxLength) {
