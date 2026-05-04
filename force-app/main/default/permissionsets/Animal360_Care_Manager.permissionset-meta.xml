@@ -25,12 +25,20 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>A360EstateMapService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>A360ReviewReminderService</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <customPermissions>
         <enabled>true</enabled>
         <name>A360_Welfare_Escalation_Override</name>
+    </customPermissions>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>A360_Move_Animals</name>
     </customPermissions>
     <description
   >Operational access for Love 4 Animals care coordination, welfare tracking, and intervention workflows.</description>

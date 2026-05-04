@@ -4,6 +4,7 @@ import A360EstateMap from "c/a360EstateMap";
 import getMapContext from "@salesforce/apex/A360EstateMapService.getMapContext";
 import saveAreas from "@salesforce/apex/A360EstateMapService.saveAreas";
 import publishMap from "@salesforce/apex/A360EstateMapService.publishMap";
+import moveAnimal from "@salesforce/apex/A360EstateMapService.moveAnimal";
 
 const getMapContextAdapter = registerApexTestWireAdapter(getMapContext);
 
@@ -32,6 +33,14 @@ jest.mock(
 );
 
 jest.mock(
+  "@salesforce/apex/A360EstateMapService.moveAnimal",
+  () => ({
+    default: jest.fn()
+  }),
+  { virtual: true }
+);
+
+jest.mock(
   "lightning/platformShowToastEvent",
   () => ({
     ShowToastEvent: class ShowToastEvent extends CustomEvent {
@@ -49,6 +58,7 @@ const MAP_CONTEXT = {
   mapCode: "UK_DEMO_NORTH_LONDON",
   status: "Published",
   canEdit: true,
+  canMove: true,
   areas: [
     {
       id: "a21J60000000001IAA",
@@ -68,6 +78,25 @@ const MAP_CONTEXT = {
       capacity: 2,
       currentOccupancy: 1,
       displayOrder: 10
+    },
+    {
+      id: "a21J60000000002IAA",
+      areaCode: "CAT-BLUE",
+      label: "Cattery Blue",
+      zone: "Cattery",
+      shape: "Rounded Rectangle",
+      x: 44,
+      y: 22,
+      width: 20,
+      height: 16,
+      rotation: 0,
+      fillColor: "#dcfae6",
+      housingUnitId: "a10J60000000002IAA",
+      housingUnitName: "Cattery Blue",
+      housingType: "Cattery",
+      capacity: 3,
+      currentOccupancy: 0,
+      displayOrder: 20
     }
   ],
   connections: [],
@@ -89,6 +118,12 @@ const MAP_CONTEXT = {
       label: "Kennel A1",
       housingType: "Kennel",
       capacity: 2
+    },
+    {
+      id: "a10J60000000002IAA",
+      label: "Cattery Blue",
+      housingType: "Cattery",
+      capacity: 3
     }
   ]
 };
@@ -101,6 +136,13 @@ function findButton(element, label) {
   return [...element.shadowRoot.querySelectorAll("lightning-button")].find(
     (button) => button.label === label || button.getAttribute("label") === label
   );
+}
+
+function pointerEvent(type, clientX, clientY) {
+  const event = new CustomEvent(type, { bubbles: true, cancelable: true });
+  Object.defineProperty(event, "clientX", { value: clientX });
+  Object.defineProperty(event, "clientY", { value: clientY });
+  return event;
 }
 
 describe("c-a360-estate-map", () => {
@@ -126,6 +168,7 @@ describe("c-a360-estate-map", () => {
     expect(element.shadowRoot.textContent).toContain("Kennel A1");
     expect(element.shadowRoot.textContent).toContain("Biscuit");
     expect(element.shadowRoot.querySelector(".animal-token")).not.toBeNull();
+    expect(element.shadowRoot.querySelector(".pet-avatar")).not.toBeNull();
   });
 
   it("saves edited area layout from edit mode", async () => {
@@ -176,6 +219,56 @@ describe("c-a360-estate-map", () => {
 
     expect(publishMap).toHaveBeenCalledWith({
       mapId: MAP_CONTEXT.mapId
+    });
+  });
+
+  it("moves an animal to a target map area", async () => {
+    const movedContext = {
+      ...MAP_CONTEXT,
+      animals: [
+        {
+          ...MAP_CONTEXT.animals[0],
+          housingUnitId: "a10J60000000002IAA",
+          areaId: "a21J60000000002IAA"
+        }
+      ]
+    };
+    moveAnimal.mockResolvedValue(movedContext);
+
+    const element = createElement("c-a360-estate-map", {
+      is: A360EstateMap
+    });
+    document.body.appendChild(element);
+
+    getMapContextAdapter.emit(MAP_CONTEXT);
+    await flushPromises();
+
+    const areas = element.shadowRoot.querySelectorAll(".map-area");
+    areas[0].getBoundingClientRect = jest.fn(() => ({
+      left: 0,
+      top: 0,
+      right: 100,
+      bottom: 100
+    }));
+    areas[1].getBoundingClientRect = jest.fn(() => ({
+      left: 120,
+      top: 0,
+      right: 220,
+      bottom: 100
+    }));
+
+    element.shadowRoot
+      .querySelector(".animal-token")
+      .dispatchEvent(pointerEvent("pointerdown", 25, 25));
+    window.dispatchEvent(pointerEvent("pointermove", 150, 40));
+    window.dispatchEvent(pointerEvent("pointerup", 150, 40));
+    await flushPromises();
+    await flushPromises();
+
+    expect(moveAnimal).toHaveBeenCalledWith({
+      mapId: MAP_CONTEXT.mapId,
+      animalId: MAP_CONTEXT.animals[0].animalId,
+      targetAreaId: "a21J60000000002IAA"
     });
   });
 });

@@ -199,4 +199,61 @@ private class A360EstateMapServiceTest {
     }
     Test.stopTest();
   }
+
+  @IsTest
+  static void moveAnimalClosesCurrentStayAndCreatesDestinationStay() {
+    A360EstateMapService.bypassMovePermission = true;
+    A360_Estate_Map__c estateMap = [
+      SELECT Id
+      FROM A360_Estate_Map__c
+      WHERE Map_Code__c = 'UK_DEMO_NORTH_LONDON'
+      LIMIT 1
+    ];
+    A360_Map_Area__c targetArea = [
+      SELECT Id, Housing_Unit__c
+      FROM A360_Map_Area__c
+      WHERE Area_Code__c = 'CAT-BLUE'
+      LIMIT 1
+    ];
+    Animal__c animal = [
+      SELECT Id
+      FROM Animal__c
+      WHERE Display_Name__c = 'Biscuit'
+      LIMIT 1
+    ];
+
+    Test.startTest();
+    A360EstateMapService.MapContext movedContext = A360EstateMapService.moveAnimal(
+      String.valueOf(estateMap.Id),
+      String.valueOf(animal.Id),
+      String.valueOf(targetArea.Id)
+    );
+    Test.stopTest();
+
+    List<Animal_Location_Stay__c> currentStays = [
+      SELECT Housing_Unit__c
+      FROM Animal_Location_Stay__c
+      WHERE Animal_Episode__r.Animal__c = :animal.Id AND Is_Current__c = TRUE
+    ];
+    System.assertEquals(
+      1,
+      currentStays.size(),
+      'Expected one current stay after the move.'
+    );
+    System.assertEquals(
+      targetArea.Housing_Unit__c,
+      currentStays[0].Housing_Unit__c
+    );
+
+    Boolean tokenMoved = false;
+    for (A360EstateMapService.AnimalTokenDto token : movedContext.animals) {
+      if (token.animalName == 'Biscuit') {
+        tokenMoved = token.areaId == String.valueOf(targetArea.Id);
+      }
+    }
+    System.assert(
+      tokenMoved,
+      'Expected the board token to refresh onto the target area.'
+    );
+  }
 }

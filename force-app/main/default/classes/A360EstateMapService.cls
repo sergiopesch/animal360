@@ -1,8 +1,12 @@
 public with sharing class A360EstateMapService {
   private static final String MANAGE_MAP_PERMISSION = 'A360_Manage_Estate_Maps';
+  private static final String MOVE_ANIMALS_PERMISSION = 'A360_Move_Animals';
 
   @TestVisible
   private static Boolean bypassEditPermission = false;
+
+  @TestVisible
+  private static Boolean bypassMovePermission = false;
 
   public class MapContext {
     @AuraEnabled
@@ -25,6 +29,9 @@ public with sharing class A360EstateMapService {
 
     @AuraEnabled
     public Boolean canEdit;
+
+    @AuraEnabled
+    public Boolean canMove;
 
     @AuraEnabled
     public List<MapAreaDto> areas = new List<MapAreaDto>();
@@ -197,6 +204,7 @@ public with sharing class A360EstateMapService {
     A360_Estate_Map__c mapRecord = resolveMap(mapId);
     MapContext context = new MapContext();
     context.canEdit = FeatureManagement.checkPermission(MANAGE_MAP_PERMISSION);
+    context.canMove = canMoveAnimals();
 
     if (mapRecord == null) {
       return context;
@@ -365,6 +373,90 @@ public with sharing class A360EstateMapService {
     return getMapContext(mapId);
   }
 
+  @AuraEnabled
+  public static MapContext moveAnimal(
+    String mapId,
+    String animalId,
+    String targetAreaId
+  ) {
+    enforceMove();
+    if (String.isBlank(animalId) || String.isBlank(targetAreaId)) {
+      throw new AuraHandledException('An animal and destination are required.');
+    }
+
+    A360_Estate_Map__c mapRecord = resolveMap(mapId);
+    if (mapRecord == null) {
+      throw new AuraHandledException('A published estate map is required.');
+    }
+
+    List<A360_Map_Area__c> targetAreas = [
+      SELECT Id, Estate_Map__c, Housing_Unit__c
+      FROM A360_Map_Area__c
+      WHERE Id = :((Id) targetAreaId) AND Is_Active__c = TRUE
+      LIMIT 1
+    ];
+    if (targetAreas.isEmpty()) {
+      throw new AuraHandledException('Choose an active destination area.');
+    }
+
+    A360_Map_Area__c targetArea = targetAreas[0];
+    if (targetArea.Estate_Map__c != mapRecord.Id) {
+      throw new AuraHandledException('The destination is not on this map.');
+    }
+    if (targetArea.Housing_Unit__c == null) {
+      throw new AuraHandledException(
+        'Select a mapped housing unit before moving animals here.'
+      );
+    }
+
+    List<Animal_Episode__c> episodes = [
+      SELECT Id, Animal__c
+      FROM Animal_Episode__c
+      WHERE Animal__c = :((Id) animalId) AND Is_Current__c = TRUE
+      LIMIT 1
+    ];
+    if (episodes.isEmpty()) {
+      throw new AuraHandledException(
+        'This animal does not have a current care episode.'
+      );
+    }
+
+    Animal_Episode__c episode = episodes[0];
+    List<Animal_Location_Stay__c> currentStays = [
+      SELECT Id, Housing_Unit__c, Start_DateTime__c
+      FROM Animal_Location_Stay__c
+      WHERE Animal_Episode__c = :episode.Id AND Is_Current__c = TRUE
+      ORDER BY Start_DateTime__c DESC
+      LIMIT 10
+    ];
+
+    for (Animal_Location_Stay__c currentStay : currentStays) {
+      if (currentStay.Housing_Unit__c == targetArea.Housing_Unit__c) {
+        return getMapContext(String.valueOf(mapRecord.Id));
+      }
+    }
+
+    Datetime movedAt = System.now();
+    for (Animal_Location_Stay__c currentStay : currentStays) {
+      currentStay.Is_Current__c = false;
+      currentStay.End_DateTime__c = movedAt;
+    }
+    if (!currentStays.isEmpty()) {
+      update currentStays;
+    }
+
+    insert new Animal_Location_Stay__c(
+      Animal_Episode__c = episode.Id,
+      Housing_Unit__c = targetArea.Housing_Unit__c,
+      Start_DateTime__c = movedAt,
+      Is_Current__c = true,
+      Move_Reason__c = 'Routine Move'
+    );
+
+    A360AnimalRollupService.rollupAnimals(new Set<Id>{ episode.Animal__c });
+    return getMapContext(String.valueOf(mapRecord.Id));
+  }
+
   private static A360_Estate_Map__c resolveMap(String mapId) {
     if (!String.isBlank(mapId)) {
       List<A360_Estate_Map__c> requestedMaps = [
@@ -530,6 +622,26 @@ public with sharing class A360EstateMapService {
       !Schema.sObjectType.A360_Map_Area__c.isUpdateable()
     ) {
       throw new AuraHandledException('Your profile cannot save map areas.');
+    }
+  }
+
+  private static Boolean canMoveAnimals() {
+    return FeatureManagement.checkPermission(MOVE_ANIMALS_PERMISSION) ||
+      FeatureManagement.checkPermission(MANAGE_MAP_PERMISSION);
+  }
+
+  private static void enforceMove() {
+    if (!bypassMovePermission && !canMoveAnimals()) {
+      throw new AuraHandledException(
+        'You do not have permission to move animals on the estate map.'
+      );
+    }
+    if (
+      !Schema.sObjectType.Animal_Location_Stay__c.isCreateable() ||
+      !Schema.sObjectType.Animal_Location_Stay__c.isUpdateable() ||
+      !Schema.sObjectType.Animal_Episode__c.isAccessible()
+    ) {
+      throw new AuraHandledException('Your profile cannot move animals.');
     }
   }
 

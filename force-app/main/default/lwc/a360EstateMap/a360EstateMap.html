@@ -40,7 +40,7 @@
       </header>
 
       <template if:true={hasMap}>
-        <div class="workspace">
+        <div class={workspaceClass}>
           <section class="map-wrap" aria-label="Animal estate map">
             <div class="map-canvas">
               <svg
@@ -86,9 +86,27 @@
                   style={animal.style}
                   title={animal.title}
                   aria-label={animal.title}
+                  data-animal-id={animal.animalId}
+                  onpointerdown={handleAnimalPointerDown}
                 >
-                  <span class="animal-icon">{animal.icon}</span>
+                  <span class="pet-avatar" aria-hidden="true">
+                    <span class="pet-shadow"></span>
+                    <span class="pet-tail"></span>
+                    <span class="pet-body"></span>
+                    <span class="pet-head">
+                      <span class="pet-ear pet-ear-left"></span>
+                      <span class="pet-ear pet-ear-right"></span>
+                      <span class="pet-face">
+                        <span class="pet-eye pet-eye-left"></span>
+                        <span class="pet-eye pet-eye-right"></span>
+                        <span class="pet-nose"></span>
+                      </span>
+                    </span>
+                    <span class="pet-leg pet-leg-left"></span>
+                    <span class="pet-leg pet-leg-right"></span>
+                  </span>
                   <span class="animal-name">{animal.animalName}</span>
+                  <span class="move-label">{animal.moveLabel}</span>
                 </button>
               </template>
             </div>

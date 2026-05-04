@@ -3,6 +3,7 @@ import { refreshApex } from "@salesforce/apex";
 import getMapContext from "@salesforce/apex/A360EstateMapService.getMapContext";
 import saveAreas from "@salesforce/apex/A360EstateMapService.saveAreas";
 import publishMap from "@salesforce/apex/A360EstateMapService.publishMap";
+import moveAnimal from "@salesforce/apex/A360EstateMapService.moveAnimal";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 
 const GRID_SIZE = 1;
@@ -18,6 +19,9 @@ export default class A360EstateMap extends LightningElement {
   riskFilter = "All";
   speciesFilter = "All";
   dragState;
+  animalDragState;
+  movingAnimalId;
+  dropTargetAreaId;
 
   @wire(getMapContext, { mapId: null })
   wiredMapContext(value) {
@@ -40,6 +44,14 @@ export default class A360EstateMap extends LightningElement {
     return Boolean(this.context?.canEdit);
   }
 
+  get canMove() {
+    return Boolean(this.context?.canMove || this.context?.canEdit);
+  }
+
+  get workspaceClass() {
+    return this.editMode ? "workspace has-editor" : "workspace";
+  }
+
   get mapTitle() {
     return this.context?.mapName || "Animal360 Estate Map";
   }
@@ -49,7 +61,10 @@ export default class A360EstateMap extends LightningElement {
   }
 
   get modeLabel() {
-    return this.editMode ? "Editing" : "Live";
+    if (this.editMode) {
+      return "Editing layout";
+    }
+    return this.canMove ? "Move animals" : "Live";
   }
 
   get modeVariant() {
@@ -70,11 +85,12 @@ export default class A360EstateMap extends LightningElement {
       const occupancy = animalCounts[area.id] || 0;
       const capacity = Number(area.capacity || 0);
       const selected = area.id === this.selectedAreaId;
+      const dropTarget = area.id === this.dropTargetAreaId;
       return {
         ...area,
         className: `map-area ${selected ? "is-selected" : ""} ${
           this.editMode ? "is-editable" : ""
-        }`,
+        } ${dropTarget ? "is-drop-target" : ""}`,
         style: [
           `left:${area.x}%`,
           `top:${area.y}%`,
@@ -167,10 +183,20 @@ export default class A360EstateMap extends LightningElement {
         return {
           ...animal,
           key: `${animal.animalId}-${slot}`,
-          icon: this.speciesIcon(animal.species),
-          className: `animal-token ${this.riskClass(animal.welfareRisk)}`,
+          className: [
+            "animal-token",
+            "pet-token",
+            this.speciesClass(animal.species),
+            this.riskClass(animal.welfareRisk),
+            this.canMove && !this.editMode ? "is-draggable" : "",
+            animal.animalId === this.movingAnimalId ? "is-dragging" : ""
+          ]
+            .filter(Boolean)
+            .join(" "),
           style: `left:${left}%;top:${top}%`,
-          title: `${animal.animalName || "Animal"} - ${animal.species || "Unknown"}`
+          title: `${animal.animalName || "Animal"} - ${animal.species || "Unknown"}`,
+          moveLabel:
+            this.canMove && !this.editMode ? "Move" : animal.careStatus || ""
         };
       })
       .filter(Boolean);
@@ -262,6 +288,82 @@ export default class A360EstateMap extends LightningElement {
     window.removeEventListener("pointermove", this.handlePointerMove);
     window.removeEventListener("pointerup", this.handlePointerUp);
     this.dragState = null;
+  };
+
+  handleAnimalPointerDown(event) {
+    if (!this.canMove || this.editMode || this.isSaving) {
+      return;
+    }
+
+    const animalId = event.currentTarget.dataset.animalId;
+    const animal = this.filteredAnimals.find(
+      (candidate) => candidate.animalId === animalId
+    );
+    if (!animal) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+    this.movingAnimalId = animalId;
+    this.animalDragState = {
+      animalId,
+      sourceAreaId: animal.areaId
+    };
+    window.addEventListener("pointermove", this.handleAnimalPointerMove);
+    window.addEventListener("pointerup", this.handleAnimalPointerUp);
+  }
+
+  handleAnimalPointerMove = (event) => {
+    if (!this.animalDragState) {
+      return;
+    }
+    this.dropTargetAreaId = this.findAreaIdAtPoint(
+      event.clientX,
+      event.clientY
+    );
+  };
+
+  handleAnimalPointerUp = async (event) => {
+    window.removeEventListener("pointermove", this.handleAnimalPointerMove);
+    window.removeEventListener("pointerup", this.handleAnimalPointerUp);
+
+    const dragState = this.animalDragState;
+    const targetAreaId = this.findAreaIdAtPoint(event.clientX, event.clientY);
+    this.animalDragState = null;
+    this.dropTargetAreaId = null;
+
+    if (
+      !dragState ||
+      !targetAreaId ||
+      targetAreaId === dragState.sourceAreaId
+    ) {
+      this.movingAnimalId = null;
+      return;
+    }
+
+    this.isSaving = true;
+    try {
+      const movedContext = await moveAnimal({
+        mapId: this.context.mapId,
+        animalId: dragState.animalId,
+        targetAreaId
+      });
+      this.context = movedContext;
+      this.draftAreas = this.cloneAreas(movedContext.areas);
+      this.selectedAreaId = targetAreaId;
+      await refreshApex(this.wiredContext);
+      this.showToast(
+        "Animal moved",
+        "The live location stay was updated.",
+        "success"
+      );
+    } catch (error) {
+      this.showToast("Move failed", this.reduceError(error), "error");
+    } finally {
+      this.isSaving = false;
+      this.movingAnimalId = null;
+    }
   };
 
   handleFieldChange(event) {
@@ -371,15 +473,9 @@ export default class A360EstateMap extends LightningElement {
     return (areas || []).map((area) => ({ ...area }));
   }
 
-  speciesIcon(species) {
-    const icons = {
-      Dog: "🐶",
-      Cat: "🐱",
-      Rabbit: "🐰",
-      Bird: "🐦",
-      "Small Mammal": "🐹"
-    };
-    return icons[species] || "🐾";
+  speciesClass(species) {
+    const normalized = (species || "Other").toLowerCase().replace(/\s+/g, "-");
+    return `pet-${normalized}`;
   }
 
   riskClass(risk) {
@@ -396,6 +492,20 @@ export default class A360EstateMap extends LightningElement {
       return min;
     }
     return Math.min(max, Math.max(min, numeric));
+  }
+
+  findAreaIdAtPoint(clientX, clientY) {
+    const areas = [...this.template.querySelectorAll(".map-area")];
+    const target = areas.find((area) => {
+      const bounds = area.getBoundingClientRect();
+      return (
+        clientX >= bounds.left &&
+        clientX <= bounds.right &&
+        clientY >= bounds.top &&
+        clientY <= bounds.bottom
+      );
+    });
+    return target?.dataset.id;
   }
 
   showToast(title, message, variant) {
