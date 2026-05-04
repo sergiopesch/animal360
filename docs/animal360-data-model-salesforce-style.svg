@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="2320" height="1400" viewBox="0 0 2320 1400" role="img" aria-labelledby="title desc">
   <title id="title">Salesforce Animal360 Data Model</title>
-  <desc id="desc">Salesforce-style Animal360 data model diagram showing standard CRM objects, Person Accounts, Animal360 custom objects, master-detail relationships, lookups, and assessment configuration.</desc>
+  <desc id="desc">Salesforce-style Animal360 data model diagram showing standard CRM objects, Person Accounts, Animal360 custom objects, Case context lookups, master-detail relationships, lookup relationships, and assessment configuration.</desc>
   <defs>
     <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
       <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#1f2937" flood-opacity="0.16"/>
@@ -32,9 +32,7 @@
       .lookup { fill: none; stroke: #5b6472; stroke-width: 2.2; stroke-dasharray: 9 8; marker-end: url(#arrow-dash); }
       .config { fill: none; stroke: #6b7280; stroke-width: 2.2; stroke-dasharray: 2 8; marker-end: url(#arrow-dot); }
       .managed { fill: none; stroke: #3f4856; stroke-width: 2; stroke-dasharray: 3 5; marker-end: url(#arrow-solid); }
-      .label { font: 13px Arial, Helvetica, sans-serif; fill: #4b5563; }
       .legend { font: 16px Arial, Helvetica, sans-serif; fill: #374151; }
-      .pill { fill: #ffffff; stroke: #d1d5db; stroke-width: 1; }
     </style>
   </defs>
 
@@ -56,6 +54,38 @@
   <text class="section-title" x="1262" y="160">Welfare Evidence and Action</text>
   <text class="section-title" x="1792" y="160">Assessment Configuration</text>
 
+  <!-- Relationships are drawn before object cards so connectors never cover labels. -->
+  <path class="managed" d="M204 352 V562"/>
+  <path class="line" d="M310 400 H342 V613 H320"/>
+  <path class="lookup" d="M204 780 V664"/>
+  <path class="lookup" d="M342 318 H392 V518 H444"/>
+  <path class="lookup" d="M316 622 H388 V568 H444"/>
+  <path class="lookup" d="M316 842 H374 V600 H444"/>
+  <path class="lookup" d="M316 884 H720 V550 H818"/>
+
+  <path class="line" d="M565 332 V482"/>
+  <path class="line" d="M822 550 H674"/>
+  <path class="lookup" d="M565 618 V738"/>
+  <path class="lookup" d="M670 596 H714 V792 H664"/>
+
+  <path class="line" d="M902 342 V470"/>
+  <path class="line" d="M902 764 V620"/>
+  <path class="line" d="M1090 522 H1068"/>
+  <path class="lookup" d="M1193 470 V340"/>
+  <path class="line" d="M1340 532 H1068"/>
+  <path class="line" d="M1340 832 H1268 V604 H1068"/>
+  <path class="lookup" d="M902 986 V620"/>
+  <path class="lookup" d="M1148 986 V620 H1068"/>
+
+  <path class="line" d="M1590 462 H1568"/>
+  <path class="line" d="M1590 616 H1568"/>
+  <path class="lookup" d="M1452 782 V594"/>
+  <path class="line" d="M1590 832 H1568"/>
+
+  <path class="line" d="M1992 332 V454"/>
+  <path class="line" d="M1992 550 V662"/>
+  <path class="config" d="M1882 292 H1800 V532 H1568"/>
+
   <g id="account">
     <rect class="std" x="66" y="206" width="276" height="250" rx="8"/>
     <text class="obj" x="204" y="242">Account</text>
@@ -75,38 +105,22 @@
     <text class="field" x="204" y="646">clinicians, participants</text>
   </g>
 
-  <path class="managed" d="M204 352 V566"/>
-  <text class="label" x="218" y="462">PersonContactId</text>
-  <path class="line" d="M310 400 H342 V613 H316"/>
-  <text class="label" x="286" y="540">business contacts</text>
-
   <g id="case">
-    <rect class="std" x="92" y="870" width="224" height="86" rx="8"/>
-    <text class="obj" x="204" y="908">Case</text>
-    <text class="field" x="204" y="932">welfare or operational issue</text>
-  </g>
-  <g id="case-note">
-    <rect class="pill" x="66" y="988" width="276" height="102" rx="8"/>
-    <text class="field" x="204" y="1018">Animal360 lookup fields:</text>
-    <text class="field" x="204" y="1038">Animal, Episode,</text>
-    <text class="field" x="204" y="1058">Housing Unit,</text>
-    <text class="field" x="204" y="1078">Assessment, Clinical Event</text>
-  </g>
-
-  <g id="pa-note">
-    <rect class="pill" x="66" y="704" width="276" height="98" rx="8"/>
-    <text class="field" x="204" y="735">Person Accounts are Account</text>
-    <text class="field" x="204" y="755">records with a Salesforce</text>
-    <text class="field" x="204" y="775">managed Contact through</text>
-    <text class="field" x="204" y="795">Account.PersonContactId</text>
+    <rect class="std" x="92" y="780" width="224" height="190" rx="8"/>
+    <text class="obj" x="204" y="818">Case</text>
+    <text class="field" x="204" y="844">standard service object</text>
+    <text class="tiny" x="204" y="874">AccountId / ContactId</text>
+    <text class="tiny" x="204" y="900">A360_Animal__c</text>
+    <text class="tiny" x="204" y="920">A360_Episode__c</text>
+    <text class="tiny" x="204" y="940">A360_Housing_Unit__c</text>
   </g>
 
   <g id="animal">
-    <rect class="custom" x="448" y="486" width="222" height="128" rx="8"/>
+    <rect class="custom" x="448" y="486" width="222" height="132" rx="8"/>
     <text class="obj" x="559" y="526">Animal</text>
     <text class="field" x="559" y="552">identity record</text>
-    <text class="tiny" x="559" y="576">lookups: Account, Contact</text>
-    <text class="tiny" x="559" y="594">current Episode, Housing Unit</text>
+    <text class="tiny" x="559" y="578">Responsible Account</text>
+    <text class="tiny" x="559" y="596">Responsible Contact</text>
   </g>
   <g id="identifier">
     <rect class="custom" x="470" y="250" width="190" height="82" rx="8"/>
@@ -121,58 +135,58 @@
   </g>
 
   <g id="episode">
-    <rect class="focus" x="822" y="474" width="242" height="142" rx="10"/>
+    <rect class="focus" x="822" y="474" width="242" height="146" rx="10"/>
     <text class="obj" x="943" y="522">Animal</text>
     <text class="obj" x="943" y="550">Episode</text>
     <text class="field" x="943" y="576">time-bounded care context</text>
-    <text class="tiny" x="943" y="596">lookups: Account, Contact,</text>
-    <text class="tiny" x="943" y="612">current Location Stay</text>
+    <text class="tiny" x="943" y="598">Outcome Account / Contact</text>
+    <text class="tiny" x="943" y="614">Current Location Stay</text>
   </g>
   <g id="intake">
     <rect class="custom" x="804" y="250" width="196" height="92" rx="8"/>
     <text class="obj" x="902" y="284">Intake</text>
     <text class="obj" x="902" y="308">Event</text>
-    <text class="tiny" x="902" y="328">lookups: Account, Contact</text>
+    <text class="tiny" x="902" y="328">Account / Contact</text>
   </g>
   <g id="outcome">
     <rect class="custom" x="804" y="764" width="196" height="92" rx="8"/>
     <text class="obj" x="902" y="798">Outcome</text>
     <text class="obj" x="902" y="822">Event</text>
-    <text class="tiny" x="902" y="842">destination Account, Contact</text>
+    <text class="tiny" x="902" y="842">Account / Contact</text>
   </g>
   <g id="housing">
     <rect class="custom" x="1050" y="250" width="196" height="86" rx="8"/>
     <text class="obj" x="1148" y="284">Housing</text>
     <text class="obj" x="1148" y="308">Unit</text>
-    <text class="tiny" x="1148" y="326">lookup: Site Account</text>
+    <text class="tiny" x="1148" y="326">Site Account</text>
   </g>
   <g id="stay">
     <rect class="custom" x="1094" y="474" width="198" height="92" rx="8"/>
     <text class="obj" x="1193" y="510">Animal Location</text>
     <text class="obj" x="1193" y="536">Stay</text>
-    <text class="tiny" x="1193" y="554">lookup: Housing Unit</text>
+    <text class="tiny" x="1193" y="554">Housing Unit</text>
   </g>
   <g id="clinical">
     <rect class="custom" x="800" y="990" width="204" height="104" rx="8"/>
     <text class="obj" x="902" y="1024">Clinical</text>
     <text class="obj" x="902" y="1048">Event</text>
-    <text class="tiny" x="902" y="1068">lookups: Animal, Episode,</text>
-    <text class="tiny" x="902" y="1086">Contact, Case</text>
+    <text class="tiny" x="902" y="1068">Animal / Episode</text>
+    <text class="tiny" x="902" y="1086">Contact / Case</text>
   </g>
   <g id="interaction">
     <rect class="custom" x="1038" y="990" width="220" height="104" rx="8"/>
     <text class="obj" x="1148" y="1024">Human Animal</text>
     <text class="obj" x="1148" y="1048">Interaction</text>
-    <text class="tiny" x="1148" y="1068">lookups: Animal, Episode,</text>
+    <text class="tiny" x="1148" y="1068">Animal / Episode</text>
     <text class="tiny" x="1148" y="1086">Interaction Contact</text>
   </g>
 
   <g id="assessment">
-    <rect class="custom" x="1340" y="474" width="224" height="116" rx="8"/>
+    <rect class="custom" x="1340" y="474" width="224" height="120" rx="8"/>
     <text class="obj" x="1452" y="514">Welfare</text>
     <text class="obj" x="1452" y="542">Assessment</text>
-    <text class="tiny" x="1452" y="564">lookups: Animal, Template,</text>
-    <text class="tiny" x="1452" y="582">Assessor, Case</text>
+    <text class="tiny" x="1452" y="566">Animal / Template</text>
+    <text class="tiny" x="1452" y="584">Assessor / Case</text>
   </g>
   <g id="observation">
     <rect class="custom" x="1594" y="418" width="150" height="88" rx="8"/>
@@ -188,7 +202,7 @@
   <g id="care-plan">
     <rect class="custom" x="1340" y="786" width="224" height="92" rx="8"/>
     <text class="obj" x="1452" y="824">Care Plan</text>
-    <text class="tiny" x="1452" y="850">lookup: Primary Assessment</text>
+    <text class="tiny" x="1452" y="850">Primary Assessment</text>
   </g>
   <g id="care-action">
     <rect class="custom" x="1594" y="786" width="150" height="92" rx="8"/>
@@ -211,34 +225,6 @@
     <text class="obj" x="1992" y="702">Template Indicator</text>
     <text class="obj" x="1992" y="728">Assignment</text>
   </g>
-
-  <path class="lookup" d="M342 286 H394 V520 H448"/>
-  <text class="label" x="352" y="496">CRM lookups</text>
-  <path class="lookup" d="M316 613 H384 V568 H448"/>
-
-  <path class="line" d="M565 332 V486"/>
-  <path class="line" d="M670 550 H822"/>
-  <path class="lookup" d="M565 614 V742"/>
-  <path class="lookup" d="M670 590 H714 V810 H660"/>
-
-  <path class="line" d="M943 474 V342"/>
-  <path class="line" d="M943 616 V764"/>
-  <path class="line" d="M1064 526 H1094"/>
-  <path class="lookup" d="M1148 336 V474"/>
-  <path class="line" d="M1064 578 H1286 V532 H1340"/>
-  <path class="lookup" d="M943 616 V990"/>
-  <path class="lookup" d="M1064 602 H1148 V990"/>
-  <path class="line" d="M1000 616 V832 H1340"/>
-
-  <path class="line" d="M1564 506 H1594"/>
-  <path class="line" d="M1452 590 V616 H1594"/>
-  <path class="lookup" d="M1452 590 V786"/>
-  <path class="line" d="M1564 832 H1594"/>
-
-  <path class="line" d="M1992 332 V458"/>
-  <path class="line" d="M1992 550 V666"/>
-  <path class="config" d="M1882 291 H1800 V532 H1564"/>
-  <text class="label" x="1662" y="518">drives runtime assessments</text>
 
   <g transform="translate(52 1280)">
     <rect class="std" x="0" y="0" width="58" height="38" rx="6" filter="none"/>
