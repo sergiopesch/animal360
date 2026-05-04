@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Canvas_Height__c</fullName>
+    <defaultValue>720</defaultValue>
+    <description
+  >Logical canvas height used for SVG viewBox rendering.</description>
+    <label>Canvas Height</label>
+    <precision>5</precision>
+    <scale>0</scale>
+    <type>Number</type>
+</CustomField>

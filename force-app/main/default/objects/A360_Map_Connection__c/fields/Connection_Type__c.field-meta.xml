@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Connection_Type__c</fullName>
+    <description>Type of connection between spaces.</description>
+    <label>Connection Type</label>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Path</fullName>
+                <default>true</default>
+                <label>Path</label>
+            </value>
+            <value>
+                <fullName>Gate</fullName>
+                <default>false</default>
+                <label>Gate</label>
+            </value>
+            <value>
+                <fullName>Corridor</fullName>
+                <default>false</default>
+                <label>Corridor</label>
+            </value>
+            <value>
+                <fullName>Shared Fence</fullName>
+                <default>false</default>
+                <label>Shared Fence</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

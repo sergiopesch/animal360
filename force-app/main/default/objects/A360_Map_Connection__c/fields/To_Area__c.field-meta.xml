@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>To_Area__c</fullName>
+    <description>Ending map area for this connection.</description>
+    <label>To Area</label>
+    <referenceTo>A360_Map_Area__c</referenceTo>
+    <relationshipLabel>Connections To Area</relationshipLabel>
+    <relationshipName>Connections_To_Area</relationshipName>
+    <type>Lookup</type>
+</CustomField>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Fill_Color__c</fullName>
+    <description>Hex color used for area fill in the map renderer.</description>
+    <label>Fill Color</label>
+    <length>7</length>
+    <type>Text</type>
+</CustomField>

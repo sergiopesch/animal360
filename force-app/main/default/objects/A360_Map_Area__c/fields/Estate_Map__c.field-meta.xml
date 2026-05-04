@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Estate_Map__c</fullName>
+    <description>Estate map that owns this visual area.</description>
+    <label>Estate Map</label>
+    <referenceTo>A360_Estate_Map__c</referenceTo>
+    <relationshipLabel>Map Areas</relationshipLabel>
+    <relationshipName>Map_Areas</relationshipName>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    <type>MasterDetail</type>
+</CustomField>

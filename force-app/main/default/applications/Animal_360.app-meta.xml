@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
-    <defaultLandingTab>Animal__c</defaultLandingTab>
+    <defaultLandingTab>Animal360_Estate_Whiteboard</defaultLandingTab>
     <description
   >Love 4 Animals application for intake, welfare assessment, care planning, and clinical operations in London.</description>
     <formFactors>Large</formFactors>
@@ -8,6 +8,8 @@
     <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
     <label>Love 4 Animals</label>
     <navType>Standard</navType>
+    <tabs>Animal360_Estate_Whiteboard</tabs>
+    <tabs>A360_Estate_Map__c</tabs>
     <tabs>Animal__c</tabs>
     <tabs>Animal_Episode__c</tabs>
     <tabs>Housing_Unit__c</tabs>

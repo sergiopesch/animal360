@@ -34,6 +34,10 @@
     </types>
     <types>
         <members>*</members>
+        <name>FlexiPage</name>
+    </types>
+    <types>
+        <members>*</members>
         <name>GlobalValueSet</name>
     </types>
     <types>

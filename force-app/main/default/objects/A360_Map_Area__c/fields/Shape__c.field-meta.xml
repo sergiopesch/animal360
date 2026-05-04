@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Shape__c</fullName>
+    <description>Shape used by the map renderer.</description>
+    <label>Shape</label>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Rounded Rectangle</fullName>
+                <default>true</default>
+                <label>Rounded Rectangle</label>
+            </value>
+            <value>
+                <fullName>Rectangle</fullName>
+                <default>false</default>
+                <label>Rectangle</label>
+            </value>
+            <value>
+                <fullName>Ellipse</fullName>
+                <default>false</default>
+                <label>Ellipse</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

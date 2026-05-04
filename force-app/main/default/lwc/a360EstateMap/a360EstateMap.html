@@ -1,0 +1,196 @@
+<template>
+  <lightning-card>
+    <div class="shell">
+      <header class="toolbar">
+        <div>
+          <p class="eyebrow">Animal360 Estate Whiteboard</p>
+          <h2>{mapTitle}</h2>
+          <div class="status-row">
+            <lightning-badge label={mapStatusLabel}></lightning-badge>
+            <lightning-badge
+              label={modeLabel}
+              class={modeVariant}
+            ></lightning-badge>
+            <span>{totalsLabel}</span>
+          </div>
+        </div>
+
+        <div class="toolbar-actions">
+          <lightning-combobox
+            variant="label-hidden"
+            label="Species"
+            value={speciesFilter}
+            options={speciesOptions}
+            onchange={handleSpeciesFilter}
+          ></lightning-combobox>
+          <lightning-combobox
+            variant="label-hidden"
+            label="Risk"
+            value={riskFilter}
+            options={riskOptions}
+            onchange={handleRiskFilter}
+          ></lightning-combobox>
+          <template if:true={canEdit}>
+            <lightning-button
+              label={toggleEditLabel}
+              onclick={handleToggleEdit}
+            ></lightning-button>
+          </template>
+        </div>
+      </header>
+
+      <template if:true={hasMap}>
+        <div class="workspace">
+          <section class="map-wrap" aria-label="Animal estate map">
+            <div class="map-canvas">
+              <svg
+                class="connection-layer"
+                viewBox="0 0 100 100"
+                preserveAspectRatio="none"
+                aria-hidden="true"
+              >
+                <template for:each={connectionLines} for:item="line">
+                  <line
+                    key={line.id}
+                    x1={line.x1}
+                    y1={line.y1}
+                    x2={line.x2}
+                    y2={line.y2}
+                    stroke={line.stroke}
+                    stroke-width="0.45"
+                    stroke-linecap="round"
+                    stroke-dasharray="1.5 1"
+                  ></line>
+                </template>
+              </svg>
+
+              <template for:each={mapAreas} for:item="area">
+                <button
+                  key={area.id}
+                  class={area.className}
+                  style={area.style}
+                  data-id={area.id}
+                  onpointerdown={handleAreaPointerDown}
+                  title={area.label}
+                >
+                  <span class="area-label">{area.label}</span>
+                  <span class="area-zone">{area.zone}</span>
+                  <span class={area.occupancyClass}>{area.occupancyLabel}</span>
+                </button>
+              </template>
+
+              <template for:each={animalTokens} for:item="animal">
+                <button
+                  key={animal.key}
+                  class={animal.className}
+                  style={animal.style}
+                  title={animal.title}
+                  aria-label={animal.title}
+                >
+                  <span class="animal-icon">{animal.icon}</span>
+                  <span class="animal-name">{animal.animalName}</span>
+                </button>
+              </template>
+            </div>
+          </section>
+
+          <template if:true={editMode}>
+            <aside class="editor">
+              <div class="editor-header">
+                <h3>{selectedAreaName}</h3>
+                <lightning-button-icon
+                  icon-name="utility:add"
+                  alternative-text="Add area"
+                  title="Add area"
+                  onclick={handleAddArea}
+                ></lightning-button-icon>
+              </div>
+
+              <template if:true={hasSelectedArea}>
+                <lightning-input
+                  label="Label"
+                  value={selectedArea.label}
+                  data-field="label"
+                  onchange={handleFieldChange}
+                ></lightning-input>
+                <lightning-input
+                  label="Zone"
+                  value={selectedArea.zone}
+                  data-field="zone"
+                  onchange={handleFieldChange}
+                ></lightning-input>
+                <lightning-combobox
+                  label="Housing Unit"
+                  value={selectedArea.housingUnitId}
+                  options={housingOptions}
+                  data-field="housingUnitId"
+                  onchange={handleFieldChange}
+                ></lightning-combobox>
+                <div class="grid">
+                  <lightning-input
+                    type="number"
+                    label="X"
+                    value={selectedArea.x}
+                    data-field="x"
+                    onchange={handleFieldChange}
+                  ></lightning-input>
+                  <lightning-input
+                    type="number"
+                    label="Y"
+                    value={selectedArea.y}
+                    data-field="y"
+                    onchange={handleFieldChange}
+                  ></lightning-input>
+                  <lightning-input
+                    type="number"
+                    label="Width"
+                    value={selectedArea.width}
+                    data-field="width"
+                    onchange={handleFieldChange}
+                  ></lightning-input>
+                  <lightning-input
+                    type="number"
+                    label="Height"
+                    value={selectedArea.height}
+                    data-field="height"
+                    onchange={handleFieldChange}
+                  ></lightning-input>
+                </div>
+                <lightning-input
+                  label="Fill Color"
+                  value={selectedArea.fillColor}
+                  data-field="fillColor"
+                  onchange={handleFieldChange}
+                ></lightning-input>
+              </template>
+
+              <div class="editor-actions">
+                <lightning-button
+                  label="Save Layout"
+                  variant="brand"
+                  disabled={isSaving}
+                  onclick={handleSave}
+                ></lightning-button>
+                <lightning-button
+                  label="Publish"
+                  disabled={isSaving}
+                  onclick={handlePublish}
+                ></lightning-button>
+              </div>
+            </aside>
+          </template>
+        </div>
+      </template>
+
+      <template if:false={hasMap}>
+        <div class="empty-state">
+          <h3>No estate map found</h3>
+          <p>
+            Create and publish an Animal360 estate map to show live animal
+            locations.
+          </p>
+        </div>
+      </template>
+    </div>
+  </lightning-card>
+</template>
