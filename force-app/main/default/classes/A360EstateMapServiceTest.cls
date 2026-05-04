@@ -111,6 +111,7 @@ private class A360EstateMapServiceTest {
     System.assertEquals('North London Demo Estate', context.mapName);
     System.assertEquals('Published', context.status);
     System.assertEquals(2, context.areas.size());
+    System.assertEquals('Ready', context.areas[0].operationalStatus);
     System.assertEquals(1, context.animals.size());
     System.assertEquals('Biscuit', context.animals[0].animalName);
     System.assertEquals('Dog', context.animals[0].species);
@@ -255,5 +256,81 @@ private class A360EstateMapServiceTest {
       tokenMoved,
       'Expected the board token to refresh onto the target area.'
     );
+  }
+
+  @IsTest
+  static void updateAreaStatusMarksAreaForCleaning() {
+    A360EstateMapService.bypassMovePermission = true;
+    A360_Estate_Map__c estateMap = [
+      SELECT Id
+      FROM A360_Estate_Map__c
+      WHERE Map_Code__c = 'UK_DEMO_NORTH_LONDON'
+      LIMIT 1
+    ];
+    A360_Map_Area__c area = [
+      SELECT Id
+      FROM A360_Map_Area__c
+      WHERE Area_Code__c = 'KEN-A1'
+      LIMIT 1
+    ];
+
+    Test.startTest();
+    A360EstateMapService.MapContext context = A360EstateMapService.updateAreaStatus(
+      String.valueOf(estateMap.Id),
+      String.valueOf(area.Id),
+      'Cleaning'
+    );
+    Test.stopTest();
+
+    Boolean foundCleaningArea = false;
+    for (A360EstateMapService.MapAreaDto mapArea : context.areas) {
+      if (mapArea.id == String.valueOf(area.Id)) {
+        foundCleaningArea = mapArea.operationalStatus == 'Cleaning';
+      }
+    }
+    System.assert(
+      foundCleaningArea,
+      'Expected area to be marked for cleaning.'
+    );
+  }
+
+  @IsTest
+  static void moveAnimalRejectsCleaningDestination() {
+    A360EstateMapService.bypassMovePermission = true;
+    A360_Estate_Map__c estateMap = [
+      SELECT Id
+      FROM A360_Estate_Map__c
+      WHERE Map_Code__c = 'UK_DEMO_NORTH_LONDON'
+      LIMIT 1
+    ];
+    A360_Map_Area__c targetArea = [
+      SELECT Id
+      FROM A360_Map_Area__c
+      WHERE Area_Code__c = 'CAT-BLUE'
+      LIMIT 1
+    ];
+    update new A360_Map_Area__c(
+      Id = targetArea.Id,
+      Operational_Status__c = 'Cleaning'
+    );
+    Animal__c animal = [
+      SELECT Id
+      FROM Animal__c
+      WHERE Display_Name__c = 'Biscuit'
+      LIMIT 1
+    ];
+
+    Test.startTest();
+    try {
+      A360EstateMapService.moveAnimal(
+        String.valueOf(estateMap.Id),
+        String.valueOf(animal.Id),
+        String.valueOf(targetArea.Id)
+      );
+      System.assert(false, 'Expected cleaning destination rejection.');
+    } catch (AuraHandledException expected) {
+      System.assertNotEquals(null, expected);
+    }
+    Test.stopTest();
   }
 }

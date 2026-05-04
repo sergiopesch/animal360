@@ -75,6 +75,7 @@
                 >
                   <span class="area-label">{area.label}</span>
                   <span class="area-zone">{area.zone}</span>
+                  <span class={area.statusClass}>{area.statusLabel}</span>
                   <span class={area.occupancyClass}>{area.occupancyLabel}</span>
                 </button>
               </template>
@@ -138,6 +139,13 @@
                   onchange={handleFieldChange}
                 ></lightning-input>
                 <lightning-combobox
+                  label="Area Status"
+                  value={selectedArea.operationalStatus}
+                  options={areaStatusOptions}
+                  data-field="operationalStatus"
+                  onchange={handleFieldChange}
+                ></lightning-combobox>
+                <lightning-combobox
                   label="Housing Unit"
                   value={selectedArea.housingUnitId}
                   options={housingOptions}
@@ -195,6 +203,39 @@
                   onclick={handlePublish}
                 ></lightning-button>
               </div>
+            </aside>
+          </template>
+
+          <template if:true={showOperationsPanel}>
+            <aside class="editor operations-panel">
+              <div class="editor-header">
+                <h3>{selectedAreaName}</h3>
+                <lightning-badge label={selectedAreaStatus}></lightning-badge>
+              </div>
+
+              <template if:true={hasSelectedArea}>
+                <lightning-combobox
+                  label="Area Status"
+                  value={selectedAreaStatus}
+                  options={areaStatusOptions}
+                  disabled={isSaving}
+                  onchange={handleAreaStatusChange}
+                ></lightning-combobox>
+
+                <div class="area-roster">
+                  <span class="area-roster-count"
+                    >{selectedAreaAnimalCount}</span
+                  >
+                  <template
+                    for:each={selectedAreaAnimals}
+                    for:item="areaAnimal"
+                  >
+                    <span key={areaAnimal.id} class="area-roster-item">
+                      {areaAnimal.label}
+                    </span>
+                  </template>
+                </div>
+              </template>
             </aside>
           </template>
         </div>

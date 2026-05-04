@@ -4,6 +4,7 @@ import getMapContext from "@salesforce/apex/A360EstateMapService.getMapContext";
 import saveAreas from "@salesforce/apex/A360EstateMapService.saveAreas";
 import publishMap from "@salesforce/apex/A360EstateMapService.publishMap";
 import moveAnimal from "@salesforce/apex/A360EstateMapService.moveAnimal";
+import updateAreaStatus from "@salesforce/apex/A360EstateMapService.updateAreaStatus";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 
 const GRID_SIZE = 1;
@@ -22,6 +23,7 @@ export default class A360EstateMap extends LightningElement {
   animalDragState;
   movingAnimalId;
   dropTargetAreaId;
+  dragPosition;
 
   @wire(getMapContext, { mapId: null })
   wiredMapContext(value) {
@@ -49,7 +51,9 @@ export default class A360EstateMap extends LightningElement {
   }
 
   get workspaceClass() {
-    return this.editMode ? "workspace has-editor" : "workspace";
+    return this.editMode || this.showOperationsPanel
+      ? "workspace has-editor"
+      : "workspace";
   }
 
   get mapTitle() {
@@ -86,11 +90,14 @@ export default class A360EstateMap extends LightningElement {
       const capacity = Number(area.capacity || 0);
       const selected = area.id === this.selectedAreaId;
       const dropTarget = area.id === this.dropTargetAreaId;
+      const operationalStatus = area.operationalStatus || "Ready";
       return {
         ...area,
         className: `map-area ${selected ? "is-selected" : ""} ${
           this.editMode ? "is-editable" : ""
-        } ${dropTarget ? "is-drop-target" : ""}`,
+        } ${dropTarget ? "is-drop-target" : ""} ${this.areaStatusClass(
+          operationalStatus
+        )}`,
         style: [
           `left:${area.x}%`,
           `top:${area.y}%`,
@@ -99,6 +106,8 @@ export default class A360EstateMap extends LightningElement {
           `--area-fill:${area.fillColor || "#d8e6fe"}`,
           `transform:rotate(${area.rotation || 0}deg)`
         ].join(";"),
+        statusClass: `area-status ${this.areaStatusClass(operationalStatus)}`,
+        statusLabel: operationalStatus,
         occupancyLabel: `${occupancy}/${capacity || "?"}`,
         occupancyClass:
           capacity && occupancy >= capacity ? "occupancy is-full" : "occupancy"
@@ -116,6 +125,38 @@ export default class A360EstateMap extends LightningElement {
 
   get hasSelectedArea() {
     return Boolean(this.selectedArea);
+  }
+
+  get showOperationsPanel() {
+    return this.canMove && !this.editMode;
+  }
+
+  get selectedAreaStatus() {
+    return this.selectedArea?.operationalStatus || "Ready";
+  }
+
+  get selectedAreaAnimals() {
+    if (!this.selectedAreaId) {
+      return [];
+    }
+    return this.filteredAnimals
+      .filter((animal) => animal.areaId === this.selectedAreaId)
+      .map((animal) => ({
+        id: animal.animalId,
+        label: `${animal.animalName} (${animal.species || "Unknown"})`
+      }));
+  }
+
+  get selectedAreaAnimalCount() {
+    return `${this.selectedAreaAnimals.length} animals`;
+  }
+
+  get areaStatusOptions() {
+    return [
+      { label: "Ready", value: "Ready" },
+      { label: "Cleaning", value: "Cleaning" },
+      { label: "Closed", value: "Closed" }
+    ];
   }
 
   get housingOptions() {
@@ -179,6 +220,7 @@ export default class A360EstateMap extends LightningElement {
           Number(area.x) + Math.min(Number(area.width) - 5, 2 + column * 5);
         const top =
           Number(area.y) + Math.min(Number(area.height) - 7, 35 + row * 8);
+        const isMoving = animal.animalId === this.movingAnimalId;
 
         return {
           ...animal,
@@ -187,13 +229,17 @@ export default class A360EstateMap extends LightningElement {
             "animal-token",
             "pet-token",
             this.speciesClass(animal.species),
+            this.petVariantClass(animal),
             this.riskClass(animal.welfareRisk),
             this.canMove && !this.editMode ? "is-draggable" : "",
-            animal.animalId === this.movingAnimalId ? "is-dragging" : ""
+            isMoving ? "is-dragging" : ""
           ]
             .filter(Boolean)
             .join(" "),
-          style: `left:${left}%;top:${top}%`,
+          style: this.animalStyle(animal, isMoving ? this.dragPosition : null, {
+            left,
+            top
+          }),
           title: `${animal.animalName || "Animal"} - ${animal.species || "Unknown"}`,
           moveLabel:
             this.canMove && !this.editMode ? "Move" : animal.careStatus || ""
@@ -305,10 +351,33 @@ export default class A360EstateMap extends LightningElement {
 
     event.preventDefault();
     event.stopPropagation();
+    const mapElement = this.template.querySelector(".map-canvas");
+    const tokenBounds = event.currentTarget.getBoundingClientRect();
+    const mapBounds = mapElement?.getBoundingClientRect();
+    if (!mapBounds) {
+      return;
+    }
+
+    const startLeft =
+      ((tokenBounds.left - mapBounds.left) / mapBounds.width) * 100;
+    const startTop =
+      ((tokenBounds.top - mapBounds.top) / mapBounds.height) * 100;
+    const offsetX =
+      ((event.clientX - tokenBounds.left) / mapBounds.width) * 100;
+    const offsetY =
+      ((event.clientY - tokenBounds.top) / mapBounds.height) * 100;
+
     this.movingAnimalId = animalId;
     this.animalDragState = {
       animalId,
-      sourceAreaId: animal.areaId
+      sourceAreaId: animal.areaId,
+      mapBounds,
+      offsetX,
+      offsetY
+    };
+    this.dragPosition = {
+      left: this.clamp(startLeft, 0, 98),
+      top: this.clamp(startTop, 0, 98)
     };
     window.addEventListener("pointermove", this.handleAnimalPointerMove);
     window.addEventListener("pointerup", this.handleAnimalPointerUp);
@@ -318,6 +387,7 @@ export default class A360EstateMap extends LightningElement {
     if (!this.animalDragState) {
       return;
     }
+    this.dragPosition = this.positionFromPointer(event);
     this.dropTargetAreaId = this.findAreaIdAtPoint(
       event.clientX,
       event.clientY
@@ -339,6 +409,7 @@ export default class A360EstateMap extends LightningElement {
       targetAreaId === dragState.sourceAreaId
     ) {
       this.movingAnimalId = null;
+      this.dragPosition = null;
       return;
     }
 
@@ -363,8 +434,32 @@ export default class A360EstateMap extends LightningElement {
     } finally {
       this.isSaving = false;
       this.movingAnimalId = null;
+      this.dragPosition = null;
     }
   };
+
+  async handleAreaStatusChange(event) {
+    if (!this.selectedAreaId || this.isSaving) {
+      return;
+    }
+
+    this.isSaving = true;
+    try {
+      const updatedContext = await updateAreaStatus({
+        mapId: this.context.mapId,
+        areaId: this.selectedAreaId,
+        operationalStatus: event.detail.value
+      });
+      this.context = updatedContext;
+      this.draftAreas = this.cloneAreas(updatedContext.areas);
+      await refreshApex(this.wiredContext);
+      this.showToast("Area updated", "The area status was updated.", "success");
+    } catch (error) {
+      this.showToast("Status update failed", this.reduceError(error), "error");
+    } finally {
+      this.isSaving = false;
+    }
+  }
 
   handleFieldChange(event) {
     if (!this.selectedArea) {
@@ -394,6 +489,7 @@ export default class A360EstateMap extends LightningElement {
         height: 14,
         rotation: 0,
         fillColor: "#e8f5e9",
+        operationalStatus: "Ready",
         housingUnitId: "",
         displayOrder: nextNumber * 10
       }
@@ -410,6 +506,7 @@ export default class A360EstateMap extends LightningElement {
         label: area.label,
         zone: area.zone,
         shape: area.shape,
+        operationalStatus: area.operationalStatus || "Ready",
         x: Number(area.x),
         y: Number(area.y),
         width: Number(area.width),
@@ -478,6 +575,38 @@ export default class A360EstateMap extends LightningElement {
     return `pet-${normalized}`;
   }
 
+  petVariantClass(animal) {
+    return `pet-variant-${this.hashAnimal(animal) % 6}`;
+  }
+
+  animalStyle(animal, dragPosition, homePosition) {
+    const hash = this.hashAnimal(animal);
+    const hue = hash % 360;
+    const accentHue = (hue + 34) % 360;
+    const speed = 2.2 + (hash % 7) / 10;
+    const position = dragPosition || homePosition;
+    return [
+      `left:${position.left}%`,
+      `top:${position.top}%`,
+      `--pet-main:hsl(${hue} 58% 54%)`,
+      `--pet-dark:hsl(${hue} 48% 27%)`,
+      `--pet-light:hsl(${accentHue} 78% 80%)`,
+      `--pet-speed:${speed}s`
+    ].join(";");
+  }
+
+  hashAnimal(animal) {
+    const value = `${animal?.animalId || ""}${animal?.animalName || ""}`;
+    return [...value].reduce(
+      (total, character) => total + character.charCodeAt(0),
+      0
+    );
+  }
+
+  areaStatusClass(status) {
+    return `status-${(status || "Ready").toLowerCase()}`;
+  }
+
   riskClass(risk) {
     return risk ? `risk-${risk.toLowerCase()}` : "risk-low";
   }
@@ -506,6 +635,22 @@ export default class A360EstateMap extends LightningElement {
       );
     });
     return target?.dataset.id;
+  }
+
+  positionFromPointer(event) {
+    const dragState = this.animalDragState;
+    const left =
+      ((event.clientX - dragState.mapBounds.left) / dragState.mapBounds.width) *
+        100 -
+      dragState.offsetX;
+    const top =
+      ((event.clientY - dragState.mapBounds.top) / dragState.mapBounds.height) *
+        100 -
+      dragState.offsetY;
+    return {
+      left: this.clamp(left, 0, 98),
+      top: this.clamp(top, 0, 96)
+    };
   }
 
   showToast(title, message, variant) {

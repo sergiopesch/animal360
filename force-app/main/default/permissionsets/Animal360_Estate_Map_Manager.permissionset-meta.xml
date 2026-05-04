@@ -91,6 +91,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>A360_Map_Area__c.Operational_Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>A360_Map_Area__c.Rotation__c</field>
         <readable>true</readable>
     </fieldPermissions>

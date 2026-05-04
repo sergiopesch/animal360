@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Operational availability for an estate map area.</description>
+    <fullName>Operational_Status__c</fullName>
+    <label>Operational Status</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Ready</fullName>
+                <default>true</default>
+                <label>Ready</label>
+            </value>
+            <value>
+                <fullName>Cleaning</fullName>
+                <default>false</default>
+                <label>Cleaning</label>
+            </value>
+            <value>
+                <fullName>Closed</fullName>
+                <default>false</default>
+                <label>Closed</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

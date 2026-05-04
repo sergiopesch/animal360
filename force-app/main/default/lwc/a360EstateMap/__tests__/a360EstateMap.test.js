@@ -5,6 +5,7 @@ import getMapContext from "@salesforce/apex/A360EstateMapService.getMapContext";
 import saveAreas from "@salesforce/apex/A360EstateMapService.saveAreas";
 import publishMap from "@salesforce/apex/A360EstateMapService.publishMap";
 import moveAnimal from "@salesforce/apex/A360EstateMapService.moveAnimal";
+import updateAreaStatus from "@salesforce/apex/A360EstateMapService.updateAreaStatus";
 
 const getMapContextAdapter = registerApexTestWireAdapter(getMapContext);
 
@@ -34,6 +35,14 @@ jest.mock(
 
 jest.mock(
   "@salesforce/apex/A360EstateMapService.moveAnimal",
+  () => ({
+    default: jest.fn()
+  }),
+  { virtual: true }
+);
+
+jest.mock(
+  "@salesforce/apex/A360EstateMapService.updateAreaStatus",
   () => ({
     default: jest.fn()
   }),
@@ -77,6 +86,7 @@ const MAP_CONTEXT = {
       housingType: "Kennel",
       capacity: 2,
       currentOccupancy: 1,
+      operationalStatus: "Ready",
       displayOrder: 10
     },
     {
@@ -96,6 +106,7 @@ const MAP_CONTEXT = {
       housingType: "Cattery",
       capacity: 3,
       currentOccupancy: 0,
+      operationalStatus: "Ready",
       displayOrder: 20
     }
   ],
@@ -167,6 +178,7 @@ describe("c-a360-estate-map", () => {
     );
     expect(element.shadowRoot.textContent).toContain("Kennel A1");
     expect(element.shadowRoot.textContent).toContain("Biscuit");
+    expect(element.shadowRoot.textContent).toContain("Ready");
     expect(element.shadowRoot.querySelector(".animal-token")).not.toBeNull();
     expect(element.shadowRoot.querySelector(".pet-avatar")).not.toBeNull();
   });
@@ -198,6 +210,41 @@ describe("c-a360-estate-map", () => {
     expect(saveAreas).toHaveBeenCalled();
     expect(saveAreas.mock.calls[0][0].areas[0]).toMatchObject({
       label: "Kennel A1 Resized"
+    });
+  });
+
+  it("updates the selected area cleaning status", async () => {
+    const cleaningContext = {
+      ...MAP_CONTEXT,
+      areas: [
+        {
+          ...MAP_CONTEXT.areas[0],
+          operationalStatus: "Cleaning"
+        },
+        MAP_CONTEXT.areas[1]
+      ]
+    };
+    updateAreaStatus.mockResolvedValue(cleaningContext);
+    const element = createElement("c-a360-estate-map", {
+      is: A360EstateMap
+    });
+    document.body.appendChild(element);
+
+    getMapContextAdapter.emit(MAP_CONTEXT);
+    await flushPromises();
+
+    const statusInput = element.shadowRoot.querySelector(
+      ".operations-panel lightning-combobox"
+    );
+    statusInput.dispatchEvent(
+      new CustomEvent("change", { detail: { value: "Cleaning" } })
+    );
+    await flushPromises();
+
+    expect(updateAreaStatus).toHaveBeenCalledWith({
+      mapId: MAP_CONTEXT.mapId,
+      areaId: MAP_CONTEXT.areas[0].id,
+      operationalStatus: "Cleaning"
     });
   });
 
@@ -244,6 +291,15 @@ describe("c-a360-estate-map", () => {
     await flushPromises();
 
     const areas = element.shadowRoot.querySelectorAll(".map-area");
+    element.shadowRoot.querySelector(".map-canvas").getBoundingClientRect =
+      jest.fn(() => ({
+        left: 0,
+        top: 0,
+        right: 240,
+        bottom: 160,
+        width: 240,
+        height: 160
+      }));
     areas[0].getBoundingClientRect = jest.fn(() => ({
       left: 0,
       top: 0,
@@ -256,11 +312,22 @@ describe("c-a360-estate-map", () => {
       right: 220,
       bottom: 100
     }));
+    const token = element.shadowRoot.querySelector(".animal-token");
+    token.getBoundingClientRect = jest.fn(() => ({
+      left: 20,
+      top: 20,
+      right: 100,
+      bottom: 70,
+      width: 80,
+      height: 50
+    }));
 
-    element.shadowRoot
-      .querySelector(".animal-token")
-      .dispatchEvent(pointerEvent("pointerdown", 25, 25));
+    token.dispatchEvent(pointerEvent("pointerdown", 25, 25));
     window.dispatchEvent(pointerEvent("pointermove", 150, 40));
+    await flushPromises();
+    expect(token.className).toContain("is-dragging");
+    expect(token.getAttribute("style")).toContain("left:");
+
     window.dispatchEvent(pointerEvent("pointerup", 150, 40));
     await flushPromises();
     await flushPromises();

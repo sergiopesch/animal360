@@ -60,6 +60,9 @@ public with sharing class A360EstateMapService {
     public String zone;
 
     @AuraEnabled
+    public String operationalStatus;
+
+    @AuraEnabled
     public String shape;
 
     @AuraEnabled
@@ -170,6 +173,9 @@ public with sharing class A360EstateMapService {
     public String zone;
 
     @AuraEnabled
+    public String operationalStatus;
+
+    @AuraEnabled
     public String shape;
 
     @AuraEnabled
@@ -228,6 +234,7 @@ public with sharing class A360EstateMapService {
         Area_Code__c,
         Label__c,
         Zone__c,
+        Operational_Status__c,
         Shape__c,
         X_Pct__c,
         Y_Pct__c,
@@ -305,6 +312,9 @@ public with sharing class A360EstateMapService {
           : requestItem.areaCode.left(60),
         Label__c = leftOrNull(requestItem.label, 80),
         Zone__c = leftOrNull(requestItem.zone, 80),
+        Operational_Status__c = normalizeOperationalStatus(
+          requestItem.operationalStatus
+        ),
         Shape__c = String.isBlank(requestItem.shape)
           ? 'Rounded Rectangle'
           : requestItem.shape,
@@ -390,7 +400,7 @@ public with sharing class A360EstateMapService {
     }
 
     List<A360_Map_Area__c> targetAreas = [
-      SELECT Id, Estate_Map__c, Housing_Unit__c
+      SELECT Id, Estate_Map__c, Housing_Unit__c, Operational_Status__c
       FROM A360_Map_Area__c
       WHERE Id = :((Id) targetAreaId) AND Is_Active__c = TRUE
       LIMIT 1
@@ -406,6 +416,11 @@ public with sharing class A360EstateMapService {
     if (targetArea.Housing_Unit__c == null) {
       throw new AuraHandledException(
         'Select a mapped housing unit before moving animals here.'
+      );
+    }
+    if (!isReadyForAnimals(targetArea.Operational_Status__c)) {
+      throw new AuraHandledException(
+        'This destination is not ready for animals.'
       );
     }
 
@@ -454,6 +469,40 @@ public with sharing class A360EstateMapService {
     );
 
     A360AnimalRollupService.rollupAnimals(new Set<Id>{ episode.Animal__c });
+    return getMapContext(String.valueOf(mapRecord.Id));
+  }
+
+  @AuraEnabled
+  public static MapContext updateAreaStatus(
+    String mapId,
+    String areaId,
+    String operationalStatus
+  ) {
+    enforceMove();
+    enforceAreaStatusEdit();
+    if (String.isBlank(areaId)) {
+      throw new AuraHandledException('An area is required.');
+    }
+
+    A360_Estate_Map__c mapRecord = resolveMap(mapId);
+    if (mapRecord == null) {
+      throw new AuraHandledException('A published estate map is required.');
+    }
+
+    List<A360_Map_Area__c> areas = [
+      SELECT Id, Estate_Map__c
+      FROM A360_Map_Area__c
+      WHERE Id = :((Id) areaId) AND Is_Active__c = TRUE
+      LIMIT 1
+    ];
+    if (areas.isEmpty() || areas[0].Estate_Map__c != mapRecord.Id) {
+      throw new AuraHandledException('The selected area is not on this map.');
+    }
+
+    update new A360_Map_Area__c(
+      Id = areas[0].Id,
+      Operational_Status__c = normalizeOperationalStatus(operationalStatus)
+    );
     return getMapContext(String.valueOf(mapRecord.Id));
   }
 
@@ -562,6 +611,9 @@ public with sharing class A360EstateMapService {
       ? areaRecord.Name
       : areaRecord.Label__c;
     area.zone = areaRecord.Zone__c;
+    area.operationalStatus = String.isBlank(areaRecord.Operational_Status__c)
+      ? 'Ready'
+      : areaRecord.Operational_Status__c;
     area.shape = areaRecord.Shape__c;
     area.x = areaRecord.X_Pct__c == null ? 0 : areaRecord.X_Pct__c;
     area.y = areaRecord.Y_Pct__c == null ? 0 : areaRecord.Y_Pct__c;
@@ -645,6 +697,12 @@ public with sharing class A360EstateMapService {
     }
   }
 
+  private static void enforceAreaStatusEdit() {
+    if (!Schema.sObjectType.A360_Map_Area__c.isUpdateable()) {
+      throw new AuraHandledException('Your profile cannot update area status.');
+    }
+  }
+
   private static void validateArea(AreaSaveRequest requestItem) {
     if (requestItem == null) {
       throw new AuraHandledException('Map area details are required.');
@@ -670,6 +728,20 @@ public with sharing class A360EstateMapService {
 
   private static Boolean isPercent(Decimal value) {
     return value != null && value >= 0 && value <= 100;
+  }
+
+  private static Boolean isReadyForAnimals(String operationalStatus) {
+    return String.isBlank(operationalStatus) || operationalStatus == 'Ready';
+  }
+
+  private static String normalizeOperationalStatus(String value) {
+    if (String.isBlank(value)) {
+      return 'Ready';
+    }
+    if (value == 'Cleaning' || value == 'Closed') {
+      return value;
+    }
+    return 'Ready';
   }
 
   private static String normalizeColor(String value) {
