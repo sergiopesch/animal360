@@ -1,8 +1,6 @@
 import { LightningElement, track, wire } from "lwc";
-import { refreshApex } from "@salesforce/apex";
 import getMapContext from "@salesforce/apex/A360EstateMapService.getMapContext";
-import saveAreas from "@salesforce/apex/A360EstateMapService.saveAreas";
-import saveMapSettings from "@salesforce/apex/A360EstateMapService.saveMapSettings";
+import saveMapConfiguration from "@salesforce/apex/A360EstateMapService.saveMapConfiguration";
 import publishMap from "@salesforce/apex/A360EstateMapService.publishMap";
 import moveAnimal from "@salesforce/apex/A360EstateMapService.moveAnimal";
 import updateAreaStatus from "@salesforce/apex/A360EstateMapService.updateAreaStatus";
@@ -16,7 +14,6 @@ export default class A360EstateMap extends LightningElement {
   @track mapSettings = {};
   @track selectedAreaId;
 
-  wiredContext;
   editMode = false;
   isSaving = false;
   riskFilter = "All";
@@ -30,7 +27,6 @@ export default class A360EstateMap extends LightningElement {
 
   @wire(getMapContext, { mapId: null })
   wiredMapContext(value) {
-    this.wiredContext = value;
     const { data, error } = value;
     if (data) {
       this.context = data;
@@ -55,9 +51,13 @@ export default class A360EstateMap extends LightningElement {
   }
 
   get workspaceClass() {
-    return this.editMode || this.showOperationsPanel
-      ? "workspace has-editor"
-      : "workspace";
+    return [
+      "workspace",
+      this.editMode || this.showOperationsPanel ? "has-editor" : "",
+      this.isSaving ? "is-updating" : ""
+    ]
+      .filter(Boolean)
+      .join(" ");
   }
 
   get mapTitle() {
@@ -261,12 +261,24 @@ export default class A360EstateMap extends LightningElement {
         const slot = areaSlots[animal.areaId] || 0;
         areaSlots[animal.areaId] = slot + 1;
 
-        const column = slot % 4;
-        const row = Math.floor(slot / 4);
+        const areaWidth = Number(area.width);
+        const areaHeight = Number(area.height);
+        const compact = areaWidth < 16 || areaHeight < 14;
+        const columns = Math.max(1, Math.min(4, Math.floor(areaWidth / 9)));
+        const column = slot % columns;
+        const row = Math.floor(slot / columns);
+        const tokenWidth = compact ? 5 : 10;
+        const tokenHeight = compact ? 6 : 8;
         const left =
-          Number(area.x) + Math.min(Number(area.width) - 5, 2 + column * 5);
+          Number(area.x) +
+          this.clamp(
+            1.2 + column * (tokenWidth + 1),
+            0,
+            areaWidth - tokenWidth
+          );
         const top =
-          Number(area.y) + Math.min(Number(area.height) - 7, 35 + row * 8);
+          Number(area.y) +
+          this.clamp(2 + row * (tokenHeight + 1), 0, areaHeight - tokenHeight);
         const isMoving = animal.animalId === this.movingAnimalId;
 
         return {
@@ -279,6 +291,7 @@ export default class A360EstateMap extends LightningElement {
             this.petVariantClass(animal),
             this.riskClass(animal.welfareRisk),
             this.canMove && !this.editMode ? "is-draggable" : "",
+            compact ? "is-compact" : "",
             isMoving ? "is-dragging" : ""
           ]
             .filter(Boolean)
@@ -518,8 +531,8 @@ export default class A360EstateMap extends LightningElement {
       });
       this.context = movedContext;
       this.draftAreas = this.cloneAreas(movedContext.areas);
+      this.mapSettings = this.cloneMapSettings(movedContext);
       this.selectedAreaId = targetAreaId;
-      await refreshApex(this.wiredContext);
       this.showToast(
         "Animal moved",
         "The live location stay was updated.",
@@ -548,7 +561,6 @@ export default class A360EstateMap extends LightningElement {
       });
       this.context = updatedContext;
       this.draftAreas = this.cloneAreas(updatedContext.areas);
-      await refreshApex(this.wiredContext);
       this.showToast("Area updated", "The area status was updated.", "success");
     } catch (error) {
       this.showToast("Status update failed", this.reduceError(error), "error");
@@ -638,10 +650,6 @@ export default class A360EstateMap extends LightningElement {
   async handleSave() {
     this.isSaving = true;
     try {
-      await saveMapSettings({
-        mapId: this.context.mapId,
-        settings: this.mapSettings
-      });
       const request = this.draftAreas.map((area, index) => ({
         id: area.id?.startsWith("draft-") ? null : area.id,
         areaCode: area.areaCode,
@@ -658,14 +666,14 @@ export default class A360EstateMap extends LightningElement {
         housingUnitId: area.housingUnitId || null,
         displayOrder: area.displayOrder || (index + 1) * 10
       }));
-      const savedContext = await saveAreas({
+      const savedContext = await saveMapConfiguration({
         mapId: this.context.mapId,
+        settings: this.mapSettings,
         areas: request
       });
       this.context = savedContext;
       this.draftAreas = this.cloneAreas(savedContext.areas);
       this.mapSettings = this.cloneMapSettings(savedContext);
-      await refreshApex(this.wiredContext);
       this.showToast("Map saved", "Estate layout changes are live.", "success");
     } catch (error) {
       this.showToast("Save failed", this.reduceError(error), "error");
@@ -681,7 +689,6 @@ export default class A360EstateMap extends LightningElement {
       this.context = publishedContext;
       this.draftAreas = this.cloneAreas(publishedContext.areas);
       this.mapSettings = this.cloneMapSettings(publishedContext);
-      await refreshApex(this.wiredContext);
       this.showToast(
         "Map published",
         "This map is now the default home-page map.",
@@ -722,14 +729,22 @@ export default class A360EstateMap extends LightningElement {
     const updates = {};
     if (isVertical) {
       const splitWidth = this.snap(Number(area.width) / 2);
-      updates.width = this.clamp(splitWidth, 3, 100);
-      newArea.x = this.clamp(Number(area.x) + updates.width, 0, 98);
-      newArea.width = this.clamp(Number(area.width) - updates.width, 3, 100);
+      updates.width = this.clamp(splitWidth, 3, Number(area.width) - 3);
+      newArea.x = this.clamp(Number(area.x) + updates.width, 0, 97);
+      newArea.width = this.clamp(
+        Number(area.width) - updates.width,
+        3,
+        100 - newArea.x
+      );
     } else {
       const splitHeight = this.snap(Number(area.height) / 2);
-      updates.height = this.clamp(splitHeight, 3, 100);
-      newArea.y = this.clamp(Number(area.y) + updates.height, 0, 98);
-      newArea.height = this.clamp(Number(area.height) - updates.height, 3, 100);
+      updates.height = this.clamp(splitHeight, 3, Number(area.height) - 3);
+      newArea.y = this.clamp(Number(area.y) + updates.height, 0, 97);
+      newArea.height = this.clamp(
+        Number(area.height) - updates.height,
+        3,
+        100 - newArea.y
+      );
     }
 
     this.updateArea(area.id, updates);

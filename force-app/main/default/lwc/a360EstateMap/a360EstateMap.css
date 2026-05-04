@@ -1,9 +1,9 @@
 .shell {
   padding: 1rem;
   background:
-    linear-gradient(90deg, rgba(11, 92, 171, 0.06) 1px, transparent 1px),
-    linear-gradient(rgba(11, 92, 171, 0.06) 1px, transparent 1px), #f8fbff;
-  background-size: 24px 24px;
+    linear-gradient(90deg, rgba(16, 24, 40, 0.04) 1px, transparent 1px),
+    linear-gradient(rgba(16, 24, 40, 0.04) 1px, transparent 1px), #f7faf8;
+  background-size: 22px 22px;
 }
 
 .toolbar {
@@ -12,6 +12,11 @@
   justify-content: space-between;
   gap: 1rem;
   margin-bottom: 1rem;
+  border: 1px solid #d9e2dd;
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 0.5rem 1.4rem rgba(16, 24, 40, 0.08);
+  padding: 0.95rem;
 }
 
 .eyebrow {
@@ -51,7 +56,7 @@ h3 {
 }
 
 .workspace.has-editor {
-  grid-template-columns: minmax(0, 1fr) 19rem;
+  grid-template-columns: minmax(0, 1fr) minmax(20rem, 24rem);
 }
 
 .map-wrap {
@@ -64,20 +69,19 @@ h3 {
   aspect-ratio: var(--canvas-ratio, 1200/720);
   min-height: 34rem;
   min-height: var(--canvas-min-height, 34rem);
-  border: 1px solid #c6d7ef;
+  border: 1px solid #cfd9d3;
   border-radius: 0.5rem;
   background:
-    radial-gradient(
-      circle at 15% 15%,
-      rgba(36, 115, 207, 0.1),
-      transparent 18%
-    ),
-    linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.95),
-      rgba(235, 244, 255, 0.98)
-    );
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.85);
+    linear-gradient(90deg, rgba(15, 23, 42, 0.055) 1px, transparent 1px),
+    linear-gradient(rgba(15, 23, 42, 0.055) 1px, transparent 1px),
+    linear-gradient(135deg, #fcfefd, #eef7f1);
+  background-size:
+    24px 24px,
+    24px 24px,
+    auto;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.85),
+    0 1.4rem 2.2rem rgba(16, 24, 40, 0.1);
 }
 
 .map-canvas.background-blueprint {
@@ -119,25 +123,30 @@ h3 {
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
-  border: 2px solid rgba(37, 99, 235, 0.34);
+  border: 1px solid rgba(64, 89, 72, 0.24);
   border-radius: 0.5rem;
   background: var(--area-fill);
   color: #182230;
   cursor: pointer;
   min-width: 3rem;
   min-height: 3rem;
-  padding: 0.45rem;
+  padding: 0.5rem;
   text-align: left;
   transition:
     border-color 120ms ease,
     box-shadow 120ms ease,
     transform 120ms ease;
+  box-shadow:
+    inset 0 0 0 999px rgba(255, 255, 255, 0.3),
+    0 0.5rem 1.2rem rgba(16, 24, 40, 0.08);
 }
 
 .map-area:hover,
 .map-area.is-selected {
-  border-color: #1b5f97;
-  box-shadow: 0 0 0 3px rgba(27, 95, 151, 0.16);
+  border-color: #2e7d59;
+  box-shadow:
+    0 0 0 3px rgba(46, 125, 89, 0.16),
+    0 0.7rem 1.5rem rgba(16, 24, 40, 0.12);
 }
 
 .map-area.is-editable {
@@ -154,8 +163,8 @@ h3 {
   bottom: 0.18rem;
   width: 0.7rem;
   height: 0.7rem;
-  border-right: 2px solid #1b5f97;
-  border-bottom: 2px solid #1b5f97;
+  border-right: 2px solid #2e7d59;
+  border-bottom: 2px solid #2e7d59;
   border-radius: 0 0 0.18rem;
   background: rgba(255, 255, 255, 0.72);
   cursor: nwse-resize;
@@ -253,15 +262,17 @@ h3 {
   z-index: 3;
   display: inline-flex;
   align-items: center;
-  min-width: 9.8rem;
-  max-width: 12rem;
-  border: 0;
+  min-width: 10.4rem;
+  max-width: 12.8rem;
+  border: 1px solid rgba(16, 24, 40, 0.08);
   border-radius: 0.45rem;
-  background: #ffffff;
-  box-shadow: 0 6px 14px rgba(16, 24, 40, 0.16);
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow:
+    0 0.55rem 1.15rem rgba(16, 24, 40, 0.15),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.8);
   color: #182230;
-  gap: 0.32rem;
-  padding: 0.24rem 0.5rem 0.24rem 0.26rem;
+  gap: 0.4rem;
+  padding: 0.28rem 0.55rem 0.28rem 0.3rem;
   transform: translateY(0);
   transition:
     box-shadow 120ms ease,
@@ -284,16 +295,30 @@ h3 {
   transition: none;
 }
 
+.animal-token.is-compact {
+  min-width: auto;
+  max-width: none;
+  width: 4.35rem;
+  justify-content: center;
+  padding: 0.18rem;
+}
+
+.animal-token.is-compact .animal-name,
+.animal-token.is-compact .move-label {
+  display: none;
+}
+
+.animal-token.is-compact .pet-avatar {
+  width: 3.1rem;
+  height: 2.5rem;
+}
+
 .pet-avatar {
-  --pet-main: #9b6a43;
-  --pet-dark: #5f3f2a;
-  --pet-light: #f2c39b;
   position: relative;
   display: inline-block;
   flex: 0 0 auto;
-  width: 3rem;
-  height: 2.42rem;
-  image-rendering: pixelated;
+  width: 3.45rem;
+  height: 2.85rem;
 }
 
 .pet-dog {
@@ -337,7 +362,7 @@ h3 {
   right: 0.18rem;
   bottom: -0.1rem;
   left: 0.26rem;
-  height: 0.42rem;
+  height: 0.38rem;
   border-radius: 999px;
   background: rgba(16, 24, 40, 0.16);
   animation: pet-shadow-pulse 2.8s ease-in-out infinite;
@@ -354,17 +379,17 @@ h3 {
 }
 
 .pet-body {
-  left: 0.56rem;
-  bottom: 0.42rem;
+  left: 0.6rem;
+  bottom: 0.46rem;
   width: var(--pet-body-width, 1.66rem);
   height: var(--pet-body-height, 1.08rem);
   border: 0.1rem solid var(--pet-dark);
-  border-radius: 0.42rem;
+  border-radius: 0.48rem;
 }
 
 .pet-head {
   right: 0;
-  bottom: 0.82rem;
+  bottom: 0.9rem;
   width: var(--pet-head-width, 1.12rem);
   height: var(--pet-head-height, 1.04rem);
   border: 0.1rem solid var(--pet-dark);
@@ -373,8 +398,8 @@ h3 {
 }
 
 .pet-tail {
-  left: 0.12rem;
-  bottom: 1.18rem;
+  left: 0.08rem;
+  bottom: 1.25rem;
   width: var(--pet-tail-width, 0.62rem);
   height: 0.24rem;
   border: 0.1rem solid var(--pet-dark);
@@ -407,10 +432,32 @@ h3 {
   height: 1rem;
 }
 
+.pet-cat .pet-ear {
+  border-radius: 0.05rem 0.24rem 0 0;
+}
+
+.pet-cat .pet-tail {
+  bottom: 1.28rem;
+  height: 0.18rem;
+  transform: rotate(26deg);
+}
+
 .pet-bird .pet-tail {
   width: 0.44rem;
   height: 0.5rem;
   transform: rotate(-22deg);
+}
+
+.pet-bird .pet-body {
+  border-radius: 999px;
+}
+
+.pet-small-mammal .pet-head {
+  border-radius: 999px;
+}
+
+.pet-other .pet-body {
+  border-style: dashed;
 }
 
 .pet-variant-1 .pet-body {
@@ -526,7 +573,7 @@ h3 {
 
 .animal-name {
   overflow: hidden;
-  max-width: 5.5rem;
+  max-width: 6rem;
   font-size: 0.78rem;
   font-weight: 800;
   text-overflow: ellipsis;
@@ -561,7 +608,15 @@ h3 {
   border: 1px solid #d0d5dd;
   border-radius: 0.5rem;
   background: #ffffff;
+  box-shadow: 0 0.75rem 1.6rem rgba(16, 24, 40, 0.08);
   padding: 0.85rem;
+}
+
+.workspace.has-editor .editor {
+  position: sticky;
+  top: 0.75rem;
+  max-height: calc(100vh - 2rem);
+  overflow: auto;
 }
 
 .editor-section {
@@ -635,6 +690,22 @@ h3 {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.5rem;
+}
+
+.canvas-saving {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  z-index: 8;
+  border: 1px solid #d0d5dd;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 0.45rem 1rem rgba(16, 24, 40, 0.16);
+  color: #344054;
+  font-size: 0.72rem;
+  font-weight: 900;
+  padding: 0.4rem 0.7rem;
+  text-transform: uppercase;
 }
 
 .empty-state {
@@ -732,11 +803,30 @@ h3 {
   }
 }
 
+@media (max-width: 76rem) {
+  .workspace.has-editor {
+    grid-template-columns: 1fr;
+  }
+
+  .workspace.has-editor .editor {
+    position: static;
+    max-height: none;
+  }
+}
+
 @media (max-width: 52rem) {
+  .shell {
+    padding: 0.65rem;
+  }
+
   .toolbar,
   .workspace {
     grid-template-columns: 1fr;
     display: grid;
+  }
+
+  .toolbar {
+    padding: 0.7rem;
   }
 
   .toolbar-actions {
@@ -745,6 +835,26 @@ h3 {
   }
 
   .map-canvas {
+    aspect-ratio: auto;
     min-height: 28rem;
+  }
+
+  .animal-token {
+    min-width: 8.6rem;
+    max-width: 9.4rem;
+    padding-right: 0.38rem;
+  }
+
+  .pet-avatar {
+    width: 3rem;
+    height: 2.5rem;
+  }
+
+  .animal-name {
+    max-width: 4.6rem;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
   }
 }

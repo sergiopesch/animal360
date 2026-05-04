@@ -118,6 +118,10 @@
                   <span class="move-label">{animal.moveLabel}</span>
                 </button>
               </template>
+
+              <template if:true={isSaving}>
+                <div class="canvas-saving" role="status">Updating</div>
+              </template>
             </div>
           </section>
 

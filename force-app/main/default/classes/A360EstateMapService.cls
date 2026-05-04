@@ -305,7 +305,45 @@ public with sharing class A360EstateMapService {
       throw new AuraHandledException('A map is required before saving areas.');
     }
 
+    saveAreaRecords((Id) mapId, areas);
+    return getMapContext(mapId);
+  }
+
+  @AuraEnabled
+  public static MapContext saveMapSettings(
+    String mapId,
+    MapSettingsRequest settings
+  ) {
+    enforceEdit();
+    enforceMapEdit();
+    if (String.isBlank(mapId)) {
+      throw new AuraHandledException('A map is required before saving canvas.');
+    }
+    saveMapSettingsRecord((Id) mapId, settings);
+    return getMapContext(mapId);
+  }
+
+  @AuraEnabled
+  public static MapContext saveMapConfiguration(
+    String mapId,
+    MapSettingsRequest settings,
+    List<AreaSaveRequest> areas
+  ) {
+    enforceEdit();
+    if (String.isBlank(mapId)) {
+      throw new AuraHandledException('A map is required before saving layout.');
+    }
+
     Id estateMapId = (Id) mapId;
+    saveMapSettingsRecord(estateMapId, settings);
+    saveAreaRecords(estateMapId, areas);
+    return getMapContext(mapId);
+  }
+
+  private static void saveAreaRecords(
+    Id estateMapId,
+    List<AreaSaveRequest> areas
+  ) {
     Map<Id, A360_Map_Area__c> existingAreas = new Map<Id, A360_Map_Area__c>();
     for (A360_Map_Area__c existingArea : [
       SELECT Id, Estate_Map__c, Is_Active__c
@@ -386,26 +424,18 @@ public with sharing class A360EstateMapService {
         update recordsToDeactivate;
       }
     }
-
-    return getMapContext(mapId);
   }
 
-  @AuraEnabled
-  public static MapContext saveMapSettings(
-    String mapId,
+  private static void saveMapSettingsRecord(
+    Id estateMapId,
     MapSettingsRequest settings
   ) {
-    enforceEdit();
-    enforceMapEdit();
-    if (String.isBlank(mapId)) {
-      throw new AuraHandledException('A map is required before saving canvas.');
-    }
     if (settings == null) {
       throw new AuraHandledException('Canvas settings are required.');
     }
 
     update new A360_Estate_Map__c(
-      Id = (Id) mapId,
+      Id = estateMapId,
       Name = String.isBlank(settings.mapName)
         ? 'Animal360 Estate Whiteboard'
         : settings.mapName.left(80),
@@ -413,7 +443,6 @@ public with sharing class A360EstateMapService {
       Canvas_Height__c = normalizeCanvasSize(settings.canvasHeight, 480, 1600),
       Background_Style__c = normalizeBackgroundStyle(settings.backgroundStyle)
     );
-    return getMapContext(mapId);
   }
 
   @AuraEnabled

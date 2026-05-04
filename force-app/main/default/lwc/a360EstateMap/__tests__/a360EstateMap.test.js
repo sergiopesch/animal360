@@ -2,8 +2,7 @@ import { createElement } from "lwc";
 import { registerApexTestWireAdapter } from "@salesforce/sfdx-lwc-jest";
 import A360EstateMap from "c/a360EstateMap";
 import getMapContext from "@salesforce/apex/A360EstateMapService.getMapContext";
-import saveAreas from "@salesforce/apex/A360EstateMapService.saveAreas";
-import saveMapSettings from "@salesforce/apex/A360EstateMapService.saveMapSettings";
+import saveMapConfiguration from "@salesforce/apex/A360EstateMapService.saveMapConfiguration";
 import publishMap from "@salesforce/apex/A360EstateMapService.publishMap";
 import moveAnimal from "@salesforce/apex/A360EstateMapService.moveAnimal";
 import updateAreaStatus from "@salesforce/apex/A360EstateMapService.updateAreaStatus";
@@ -19,15 +18,7 @@ jest.mock(
 );
 
 jest.mock(
-  "@salesforce/apex/A360EstateMapService.saveAreas",
-  () => ({
-    default: jest.fn()
-  }),
-  { virtual: true }
-);
-
-jest.mock(
-  "@salesforce/apex/A360EstateMapService.saveMapSettings",
+  "@salesforce/apex/A360EstateMapService.saveMapConfiguration",
   () => ({
     default: jest.fn()
   }),
@@ -211,8 +202,7 @@ describe("c-a360-estate-map", () => {
   });
 
   it("saves edited area layout from edit mode", async () => {
-    saveMapSettings.mockResolvedValue(MAP_CONTEXT);
-    saveAreas.mockResolvedValue(MAP_CONTEXT);
+    saveMapConfiguration.mockResolvedValue(MAP_CONTEXT);
     const element = createElement("c-a360-estate-map", {
       is: A360EstateMap
     });
@@ -235,15 +225,15 @@ describe("c-a360-estate-map", () => {
     findButton(element, "Save Layout").dispatchEvent(new CustomEvent("click"));
     await flushPromises();
 
-    expect(saveAreas).toHaveBeenCalled();
-    expect(saveMapSettings).toHaveBeenCalledWith({
+    expect(saveMapConfiguration).toHaveBeenCalledWith({
       mapId: MAP_CONTEXT.mapId,
       settings: expect.objectContaining({
         mapName: "North London Rescue Estate",
         backgroundStyle: "Whiteboard"
-      })
+      }),
+      areas: expect.any(Array)
     });
-    expect(saveAreas.mock.calls[0][0].areas[0]).toMatchObject({
+    expect(saveMapConfiguration.mock.calls[0][0].areas[0]).toMatchObject({
       label: "Kennel A1 Resized"
     });
   });
@@ -266,8 +256,7 @@ describe("c-a360-estate-map", () => {
         }
       ]
     };
-    saveMapSettings.mockResolvedValue(MAP_CONTEXT);
-    saveAreas.mockResolvedValue(splitContext);
+    saveMapConfiguration.mockResolvedValue(splitContext);
     const element = createElement("c-a360-estate-map", {
       is: A360EstateMap
     });
@@ -286,8 +275,8 @@ describe("c-a360-estate-map", () => {
     findButton(element, "Save Layout").dispatchEvent(new CustomEvent("click"));
     await flushPromises();
 
-    expect(saveAreas.mock.calls[0][0].areas).toHaveLength(3);
-    expect(saveAreas.mock.calls[0][0].areas[2]).toMatchObject({
+    expect(saveMapConfiguration.mock.calls[0][0].areas).toHaveLength(3);
+    expect(saveMapConfiguration.mock.calls[0][0].areas[2]).toMatchObject({
       id: null,
       label: "Kennel A1 B",
       housingUnitId: null
@@ -295,8 +284,7 @@ describe("c-a360-estate-map", () => {
   });
 
   it("resizes an area directly on the canvas", async () => {
-    saveMapSettings.mockResolvedValue(MAP_CONTEXT);
-    saveAreas.mockResolvedValue(MAP_CONTEXT);
+    saveMapConfiguration.mockResolvedValue(MAP_CONTEXT);
     const element = createElement("c-a360-estate-map", {
       is: A360EstateMap
     });
@@ -327,8 +315,12 @@ describe("c-a360-estate-map", () => {
     findButton(element, "Save Layout").dispatchEvent(new CustomEvent("click"));
     await flushPromises();
 
-    expect(saveAreas.mock.calls[0][0].areas[0].width).toBeGreaterThan(18);
-    expect(saveAreas.mock.calls[0][0].areas[0].height).toBeGreaterThan(18);
+    expect(
+      saveMapConfiguration.mock.calls[0][0].areas[0].width
+    ).toBeGreaterThan(18);
+    expect(
+      saveMapConfiguration.mock.calls[0][0].areas[0].height
+    ).toBeGreaterThan(18);
   });
 
   it("updates the selected area cleaning status", async () => {

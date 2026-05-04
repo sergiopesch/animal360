@@ -203,6 +203,65 @@ private class A360EstateMapServiceTest {
   }
 
   @IsTest
+  static void saveMapConfigurationUpdatesCanvasAndAreasTogether() {
+    A360EstateMapService.bypassEditPermission = true;
+    A360_Estate_Map__c estateMap = [
+      SELECT Id
+      FROM A360_Estate_Map__c
+      WHERE Map_Code__c = 'UK_RESCUE_NORTH_LONDON'
+      LIMIT 1
+    ];
+    A360_Map_Area__c area = [
+      SELECT Id, Area_Code__c
+      FROM A360_Map_Area__c
+      WHERE Area_Code__c = 'KEN-A1'
+      LIMIT 1
+    ];
+
+    A360EstateMapService.MapSettingsRequest settings = new A360EstateMapService.MapSettingsRequest();
+    settings.mapName = 'North London Rescue Live Board';
+    settings.canvasWidth = 1500;
+    settings.canvasHeight = 840;
+    settings.backgroundStyle = 'Clinical';
+
+    A360EstateMapService.AreaSaveRequest requestItem = new A360EstateMapService.AreaSaveRequest();
+    requestItem.id = String.valueOf(area.Id);
+    requestItem.areaCode = area.Area_Code__c;
+    requestItem.label = 'Kennel A1 Live';
+    requestItem.zone = 'Kennels';
+    requestItem.shape = 'Rectangle';
+    requestItem.operationalStatus = 'Ready';
+    requestItem.x = 15;
+    requestItem.y = 25;
+    requestItem.width = 24;
+    requestItem.height = 18;
+    requestItem.rotation = 0;
+    requestItem.fillColor = '#e3fcef';
+    requestItem.displayOrder = 10;
+
+    Test.startTest();
+    A360EstateMapService.MapContext context = A360EstateMapService.saveMapConfiguration(
+      String.valueOf(estateMap.Id),
+      settings,
+      new List<A360EstateMapService.AreaSaveRequest>{ requestItem }
+    );
+    Test.stopTest();
+
+    System.assertEquals('North London Rescue Live Board', context.mapName);
+    System.assertEquals('Clinical', context.backgroundStyle);
+    System.assertEquals(1500, context.canvasWidth);
+    Boolean foundArea = false;
+    for (A360EstateMapService.MapAreaDto mapArea : context.areas) {
+      if (mapArea.id == String.valueOf(area.Id)) {
+        foundArea =
+          mapArea.label == 'Kennel A1 Live' &&
+          mapArea.shape == 'Rectangle';
+      }
+    }
+    System.assert(foundArea, 'Expected combined save to update area layout.');
+  }
+
+  @IsTest
   static void saveAreasRejectsInvalidPercentages() {
     A360EstateMapService.bypassEditPermission = true;
     A360_Estate_Map__c estateMap = [
