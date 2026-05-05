@@ -18,6 +18,7 @@ This repository combines two operational capability areas:
   - housing and location-stay tracking
   - intake, move, and closeout workflows
   - shared current-state rollups
+  - estate whiteboard with visual housing areas, animal tags, drag-to-move, and add-animal placement
 - **Welfare evidence and intervention planning**
   - metadata-driven assessment template configuration
   - runtime welfare assessment capture
@@ -50,12 +51,21 @@ Primary flow entry points:
 
 Primary Apex services:
 
+- `A360EstateMapService`
 - `A360AssessmentTemplateService`
 - `A360AssessmentPersistenceService`
 - `A360AssessmentRiskService`
 - `A360CarePlanService`
 - `A360ReviewReminderService`
 - `A360AnimalRollupService`
+
+Primary Lightning surfaces:
+
+- `Animal360_Estate_Whiteboard`: app page for the estate map and live animal placement
+- `A360_Animal_Record_Page`: Animal record page with visual snapshot sidebar
+- `c:a360EstateMap`: operational whiteboard component
+- `c:a360AnimalVisualPanel`: animal record visual summary panel
+- `c:a360WelfareAssessmentEntry`: welfare assessment screen component
 
 ## Requirements
 
@@ -108,6 +118,13 @@ npm test
 npm run prettier:verify
 ```
 
+Estate whiteboard focused checks:
+
+```bash
+npm test -- --runTestsByPath force-app/main/default/lwc/a360EstateMap/__tests__/a360EstateMap.test.js
+sf apex run test -o animal360 --class-names A360EstateMapServiceTest --result-format human --code-coverage --wait 30
+```
+
 Focused welfare-services Apex regression:
 
 ```bash
@@ -118,6 +135,18 @@ Example narrow deploy during development:
 
 ```bash
 sf project deploy start -o animal360 --source-dir force-app/main/default/lwc/a360WelfareAssessmentEntry
+```
+
+Estate whiteboard narrow deploy:
+
+```bash
+sf project deploy start -o animal360 \
+  --source-dir force-app/main/default/classes/A360EstateMapService.cls \
+  --source-dir force-app/main/default/classes/A360EstateMapServiceTest.cls \
+  --source-dir force-app/main/default/lwc/a360EstateMap \
+  --source-dir force-app/main/default/lwc/a360AnimalVisualPanel \
+  --source-dir force-app/main/default/flexipages/A360_Animal_Record_Page.flexipage-meta.xml \
+  --source-dir force-app/main/default/objects/Animal__c
 ```
 
 Current repository workflow notes:

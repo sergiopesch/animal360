@@ -25,6 +25,31 @@
   >Clinical-event and follow-up access for Love 4 Animals treatment and recovery workflows.</description>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Animal__c.Primary_Image_URL__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Animal__c.Profile_Image__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Animal__c.Welfare_Visual_Rating__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Animal__c.Lifecycle_Visual_Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Animal__c.Care_Visual_Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Account.A360_Animal_360_Notes__c</field>
         <readable>true</readable>
     </fieldPermissions>

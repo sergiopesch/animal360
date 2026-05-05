@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Primary_Image_URL__c</fullName>
+    <description
+  >Stores the primary image URL used to visually identify an animal in Animal360 cards, tags, and care workflows.</description>
+    <inlineHelpText
+  >Paste an HTTPS image URL that staff can use to visually identify the animal.</inlineHelpText>
+    <label>Primary Image URL</label>
+    <type>Url</type>
+</CustomField>

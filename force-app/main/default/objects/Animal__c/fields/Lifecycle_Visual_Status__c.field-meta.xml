@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Lifecycle_Visual_Status__c</fullName>
+    <description
+  >Provides a visual lifecycle status indicator derived from the animal's current status.</description>
+    <formula>CASE(
+  TEXT(Current_Status__c),
+  "Pending Intake", "Amber - Pending intake",
+  "In Care", "Green - In care",
+  "Exited Care", "Blue - Exited care",
+  "Deceased", "Grey - Deceased",
+  "Grey - Not set"
+)</formula>
+    <formulaTreatBlanksAs>BlankAsBlank</formulaTreatBlanksAs>
+    <inlineHelpText
+  >Derived automatically from Current Status for quick operational context.</inlineHelpText>
+    <label>Lifecycle Signal</label>
+    <type>Text</type>
+</CustomField>

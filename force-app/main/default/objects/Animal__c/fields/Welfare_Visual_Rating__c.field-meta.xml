@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Welfare_Visual_Rating__c</fullName>
+    <description
+  >Provides a visual star-style welfare risk indicator derived from the animal's current welfare risk.</description>
+    <formula>CASE(
+  TEXT(Current_Welfare_Risk__c),
+  "Critical", IMAGE("/img/samples/flag_red.gif", "Critical", 16, 16) &amp; " ***** Critical",
+  "High", IMAGE("/img/samples/flag_red.gif", "High", 16, 16) &amp; " **** High",
+  "Moderate", IMAGE("/img/samples/flag_yellow.gif", "Moderate", 16, 16) &amp; " *** Moderate",
+  "Low", IMAGE("/img/samples/flag_green.gif", "Low", 16, 16) &amp; " * Low",
+  "Grey - Not rated"
+)</formula>
+    <formulaTreatBlanksAs>BlankAsBlank</formulaTreatBlanksAs>
+    <inlineHelpText
+  >Derived automatically from Current Welfare Risk for quick visual triage.</inlineHelpText>
+    <label>Welfare Rating</label>
+    <type>Text</type>
+</CustomField>

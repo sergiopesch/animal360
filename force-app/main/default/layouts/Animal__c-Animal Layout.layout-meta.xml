@@ -2,6 +2,37 @@
 <Layout xmlns="http://soap.sforce.com/2006/04/metadata">
     <layoutSections>
         <customLabel>true</customLabel>
+        <label>Visual Profile</label>
+        <layoutColumns>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Profile_Image__c</field>
+            </layoutItems>
+            <layoutItems>
+                <field>Primary_Image_URL__c</field>
+            </layoutItems>
+        </layoutColumns>
+        <layoutColumns>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Welfare_Visual_Rating__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Lifecycle_Visual_Status__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Care_Visual_Status__c</field>
+            </layoutItems>
+            <layoutItems>
+                <field>Current_Housing_Unit__c</field>
+            </layoutItems>
+        </layoutColumns>
+        <style>TwoColumnsTopToBottom</style>
+    </layoutSections>
+    <layoutSections>
+        <customLabel>true</customLabel>
         <label>Animal Details</label>
         <layoutColumns>
             <layoutItems>
@@ -55,9 +86,6 @@
             </layoutItems>
             <layoutItems>
                 <field>Current_Episode__c</field>
-            </layoutItems>
-            <layoutItems>
-                <field>Current_Housing_Unit__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>

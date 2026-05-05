@@ -7,9 +7,13 @@
 .sfdx/
 .localdevserver/
 deploy-options.json
+tmp-retrieve/
 
 # LWC VSCode autocomplete
 **/lwc/jsconfig.json
+
+# Local generated data-seeding assets
+generated/animal-profile-images/
 
 # LWC Jest coverage reports
 coverage/

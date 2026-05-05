@@ -78,6 +78,7 @@ private class A360EstateMapServiceTest {
     Animal__c dog = new Animal__c(
       Display_Name__c = 'Biscuit',
       Species__c = 'Dog',
+      Primary_Image_URL__c = 'https://example.com/animal360/biscuit.jpg',
       Current_Welfare_Risk__c = 'Moderate',
       Estimated_Age_Months__c = 36
     );
@@ -99,6 +100,23 @@ private class A360EstateMapServiceTest {
       Is_Current__c = true,
       Move_Reason__c = 'Routine Move'
     );
+
+    Animal__c rabbit = new Animal__c(
+      Display_Name__c = 'Scout',
+      Species__c = 'Rabbit',
+      Primary_Image_URL__c = 'https://example.com/animal360/scout.jpg',
+      Current_Welfare_Risk__c = 'Low',
+      Estimated_Age_Months__c = 14
+    );
+    insert rabbit;
+
+    insert new Animal_Episode__c(
+      Animal__c = rabbit.Id,
+      Episode_Type__c = 'Intake',
+      Episode_Status__c = 'Open',
+      Intake_DateTime__c = System.now().addHours(-4),
+      Is_Current__c = true
+    );
   }
 
   @IsTest
@@ -117,6 +135,10 @@ private class A360EstateMapServiceTest {
     System.assertEquals(1, context.animals.size());
     System.assertEquals('Biscuit', context.animals[0].animalName);
     System.assertEquals('Dog', context.animals[0].species);
+    System.assertEquals(
+      'https://example.com/animal360/biscuit.jpg',
+      context.animals[0].primaryImageUrl
+    );
     System.assert(!context.housingOptions.isEmpty());
   }
 
@@ -423,5 +445,89 @@ private class A360EstateMapServiceTest {
       System.assertNotEquals(null, expected);
     }
     Test.stopTest();
+  }
+
+  @IsTest
+  static void searchAnimalsForAreaReturnsOffBoardAnimals() {
+    A360EstateMapService.bypassMovePermission = true;
+    A360_Estate_Map__c estateMap = [
+      SELECT Id
+      FROM A360_Estate_Map__c
+      WHERE Map_Code__c = 'UK_RESCUE_NORTH_LONDON'
+      LIMIT 1
+    ];
+    A360_Map_Area__c targetArea = [
+      SELECT Id
+      FROM A360_Map_Area__c
+      WHERE Area_Code__c = 'CAT-BLUE'
+      LIMIT 1
+    ];
+
+    Test.startTest();
+    List<A360EstateMapService.AnimalSearchResultDto> results = A360EstateMapService.searchAnimalsForArea(
+      String.valueOf(estateMap.Id),
+      String.valueOf(targetArea.Id),
+      'Scout'
+    );
+    Test.stopTest();
+
+    Assert.areEqual(1, results.size(), 'Scout should be available to add.');
+    Assert.areEqual('Scout', results[0].animalName, 'Expected Scout result.');
+    Assert.isFalse(results[0].isOnBoard, 'Scout should not already be mapped.');
+  }
+
+  @IsTest
+  static void moveAnimalCreatesStayWhenAnimalIsNotOnBoard() {
+    A360EstateMapService.bypassMovePermission = true;
+    A360_Estate_Map__c estateMap = [
+      SELECT Id
+      FROM A360_Estate_Map__c
+      WHERE Map_Code__c = 'UK_RESCUE_NORTH_LONDON'
+      LIMIT 1
+    ];
+    A360_Map_Area__c targetArea = [
+      SELECT Id, Housing_Unit__c
+      FROM A360_Map_Area__c
+      WHERE Area_Code__c = 'CAT-BLUE'
+      LIMIT 1
+    ];
+    Animal__c animal = [
+      SELECT Id
+      FROM Animal__c
+      WHERE Display_Name__c = 'Scout'
+      LIMIT 1
+    ];
+
+    Test.startTest();
+    A360EstateMapService.MapContext movedContext = A360EstateMapService.moveAnimal(
+      String.valueOf(estateMap.Id),
+      String.valueOf(animal.Id),
+      String.valueOf(targetArea.Id)
+    );
+    Test.stopTest();
+
+    List<Animal_Location_Stay__c> currentStays = [
+      SELECT Housing_Unit__c
+      FROM Animal_Location_Stay__c
+      WHERE Animal_Episode__r.Animal__c = :animal.Id AND Is_Current__c = TRUE
+    ];
+    Assert.areEqual(
+      1,
+      currentStays.size(),
+      'Expected a new current stay for the off-board animal.'
+    );
+    Assert.areEqual(
+      targetArea.Housing_Unit__c,
+      currentStays[0].Housing_Unit__c,
+      'Expected Scout to be assigned to the target housing unit.'
+    );
+
+    Boolean tokenAdded = false;
+    for (A360EstateMapService.AnimalTokenDto token : movedContext.animals) {
+      if (token.animalName == 'Scout') {
+        tokenAdded = token.areaId == String.valueOf(targetArea.Id);
+      }
+    }
+    Assert.isTrue(tokenAdded, 'Expected Scout to appear on the board.');
   }
 }

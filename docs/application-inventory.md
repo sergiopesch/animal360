@@ -32,21 +32,22 @@ Primary repository paths:
 Important traceability note:
 
 - A large share of the XML metadata is generated from the `.mjs` scripts above.
-- Apex classes, triggers, and the LWC bundle are the clearest handwritten runtime assets.
+- Apex classes, triggers, FlexiPages, and LWC bundles are the clearest handwritten runtime assets.
 - Runtime template records are seeded from packaged custom metadata via `A360AssessmentTemplateService`.
 
 ## Inventory Summary
 
 Current repository inventory at a glance:
 
-- 18 runtime custom objects
+- 21 runtime custom objects
 - 9 custom metadata type definitions
 - 53 custom metadata records
-- 5 permission sets
-- 2 custom permissions
+- 7 permission sets
+- 4 custom permissions
 - 11 flows
 - 6 triggers
-- 1 Lightning Web Component bundle
+- 3 Lightning Web Component bundles
+- 2 FlexiPages
 - 14 global value sets
 - 8 report types
 - 10 reports in the `Animal_360` folder
@@ -60,6 +61,9 @@ Current repository inventory at a glance:
 
 Core operational objects:
 
+- `A360_Estate_Map__c`
+- `A360_Map_Area__c`
+- `A360_Map_Connection__c`
 - `Animal__c`
 - `Animal_Episode__c`
 - `Animal_Identifier__c`
@@ -105,13 +109,15 @@ Welfare, template, and intervention objects:
 
 Source: `force-app/main/default/permissionsets`
 
-| API name                  | Description                                                                 | Notable access scope                                                                                                                    | Custom permissions granted                                             | Flow access                                                                                                                              |
-| ------------------------- | --------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| `Animal360_Admin`         | Administrative access for Love 4 Animals operational and welfare workflows. | Full CRUD plus broad admin access across the application metadata and runtime objects.                                                  | `A360_Manage_Assessment_Templates`, `A360_Welfare_Escalation_Override` | All application flows                                                                                                                    |
-| `Animal360_Care_Manager`  | Operational access for care, welfare, and intervention workflows.           | CRUD on core operational, welfare, care-plan, and interaction records; read-only on template/config and clinical event objects.         | `A360_Welfare_Escalation_Override`                                     | Intake, move, close, rollup, welfare assessment, risk evaluation, care plan, auto-create, reminder                                       |
-| `Animal360_Clinical_User` | Clinical-event and follow-up access for clinical workflows.                 | Edit access focused on `Clinical_Event__c` and `Care_Plan_Action__c`; most other app records are read-only.                             | None                                                                   | `A360_Assessment_Risk_Evaluation_Flow`, `A360_Create_Care_Plan_Flow`, `A360_Care_Plan_Auto_Create_Flow`, `A360_Review_Due_Reminder_Flow` |
-| `Animal360_Assessor`      | Assessment-entry access for welfare evidence capture.                       | Create and edit access for welfare assessments, domain summaries, observations, and interactions; most other app records are read-only. | None                                                                   | `A360_Welfare_Assessment_Flow`, `A360_Assessment_Risk_Evaluation_Flow`                                                                   |
-| `Animal360_Read_Only`     | Read-only reporting and lookup access for Love 4 Animals data.              | Read-only and reporting-focused access across Love 4 Animals operational and welfare records.                                           | None                                                                   | None                                                                                                                                     |
+| API name                       | Description                                                                 | Notable access scope                                                                                                                    | Custom permissions granted                                             | Flow access                                                                                                                              |
+| ------------------------------ | --------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `Animal360_Admin`              | Administrative access for Love 4 Animals operational and welfare workflows. | Full CRUD plus broad admin access across the application metadata and runtime objects.                                                  | `A360_Manage_Assessment_Templates`, `A360_Welfare_Escalation_Override` | All application flows                                                                                                                    |
+| `Animal360_Care_Manager`       | Operational access for care, welfare, and intervention workflows.           | CRUD on core operational, welfare, care-plan, and interaction records; read-only on template/config and clinical event objects.         | `A360_Welfare_Escalation_Override`                                     | Intake, move, close, rollup, welfare assessment, risk evaluation, care plan, auto-create, reminder                                       |
+| `Animal360_Clinical_User`      | Clinical-event and follow-up access for clinical workflows.                 | Edit access focused on `Clinical_Event__c` and `Care_Plan_Action__c`; most other app records are read-only.                             | None                                                                   | `A360_Assessment_Risk_Evaluation_Flow`, `A360_Create_Care_Plan_Flow`, `A360_Care_Plan_Auto_Create_Flow`, `A360_Review_Due_Reminder_Flow` |
+| `Animal360_Assessor`           | Assessment-entry access for welfare evidence capture.                       | Create and edit access for welfare assessments, domain summaries, observations, and interactions; most other app records are read-only. | None                                                                   | `A360_Welfare_Assessment_Flow`, `A360_Assessment_Risk_Evaluation_Flow`                                                                   |
+| `Animal360_Read_Only`          | Read-only reporting and lookup access for Love 4 Animals data.              | Read-only and reporting-focused access across Love 4 Animals operational and welfare records.                                           | None                                                                   | None                                                                                                                                     |
+| `Animal360_Estate_Map_Manager` | Estate-map administration for operational managers.                         | Edit access to estate maps and mapped areas, plus animal movement permissions for board operations.                                     | `A360_Manage_Estate_Maps`, `A360_Move_Animals`                         | None                                                                                                                                     |
+| `Animal360_Estate_Map_Viewer`  | Read-only estate-map access.                                                | Read-only access to estate maps, mapped areas, and live animal placement context.                                                       | None                                                                   | None                                                                                                                                     |
 
 ## Custom Permissions
 
@@ -120,6 +126,8 @@ Source: `force-app/main/default/customPermissions`
 | API name                           | Purpose                                                                                      |
 | ---------------------------------- | -------------------------------------------------------------------------------------------- |
 | `A360_Manage_Assessment_Templates` | Allows management of assessment template runtime records and seeding-related administration. |
+| `A360_Manage_Estate_Maps`          | Allows editing and publishing Animal360 estate map layouts.                                  |
+| `A360_Move_Animals`                | Allows moving or adding animals into mapped estate areas.                                    |
 | `A360_Welfare_Escalation_Override` | Allows override of default welfare escalation and care-plan automation behavior.             |
 
 ## Flows
@@ -228,6 +236,25 @@ Custom tabs present:
 - `Clinical_Event__c`
 - `Human_Animal_Interaction__c`
 
+## Lightning Pages
+
+Source: `force-app/main/default/flexipages`
+
+| API name                      | Type       | Purpose                                                                 |
+| ----------------------------- | ---------- | ----------------------------------------------------------------------- |
+| `Animal360_Estate_Whiteboard` | App Page   | Full-screen operational estate whiteboard for mapped areas and animals. |
+| `A360_Animal_Record_Page`     | RecordPage | Animal record page with a visual right-side snapshot panel.             |
+
+## Lightning Web Components
+
+Source: `force-app/main/default/lwc`
+
+| Bundle name                  | Purpose                                                                                                                                                              |
+| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `a360EstateMap`              | Estate whiteboard UI with visual map areas, animal tokens, image-backed animal tags, drilldown details, drag-to-move, area status updates, and add-animal placement. |
+| `a360AnimalVisualPanel`      | Animal record-page sidebar card with profile image, welfare risk color, star rating, status chips, demographics, and housing signal.                                 |
+| `a360WelfareAssessmentEntry` | Screen component for metadata-driven welfare assessment capture.                                                                                                     |
+
 ## Layouts
 
 Source: `force-app/main/default/layouts`
@@ -269,25 +296,30 @@ Welfare and intervention layouts:
 - Workstream: `Core Operations`
 - Source: `force-app/main/default/objects/Animal__c`
 
-| API name                  | Label                  | Type     | Description                                                         |
-| ------------------------- | ---------------------- | -------- | ------------------------------------------------------------------- |
-| `Breed_Primary__c`        | Primary Breed          | Text     | Primary breed or type description.                                  |
-| `Breed_Secondary__c`      | Secondary Breed        | Text     | Secondary breed or type description when known.                     |
-| `Current_Care_Status__c`  | Current Care Status    | Picklist | System-maintained summary of the active episode status.             |
-| `Current_Episode__c`      | Current Episode        | Lookup   | System-maintained pointer to the active episode.                    |
-| `Current_Housing_Unit__c` | Current Housing Unit   | Lookup   | System-maintained pointer to the active housing unit.               |
-| `Current_Status__c`       | Current Status         | Picklist | System-maintained lifecycle status summary.                         |
-| `Current_Welfare_Risk__c` | Current Welfare Risk   | Picklist | Current welfare risk flag for operational reporting.                |
-| `Date_of_Birth__c`        | Date of Birth          | Date     | Confirmed or best-known date of birth.                              |
-| `Date_of_Death__c`        | Date of Death          | Date     | Known date of death.                                                |
-| `Display_Name__c`         | Display Name           | Text     | User-facing display name for the animal.                            |
-| `Estimated_Age_Months__c` | Estimated Age (Months) | Number   | Estimated age in whole months when the exact birth date is unknown. |
-| `Is_Deceased__c`          | Is Deceased            | Checkbox | Marks the animal as deceased.                                       |
-| `Reproductive_Status__c`  | Reproductive Status    | Picklist | Current reproductive status of the animal.                          |
-| `Responsible_Account__c`  | Responsible Account    | Lookup   | Organisation currently responsible for the animal.                  |
-| `Responsible_Contact__c`  | Responsible Contact    | Lookup   | Primary contact responsible for the animal.                         |
-| `Sex__c`                  | Sex                    | Picklist | Recorded sex for the animal.                                        |
-| `Species__c`              | Species                | Picklist | Primary species classification.                                     |
+| API name                     | Label                  | Type     | Description                                                         |
+| ---------------------------- | ---------------------- | -------- | ------------------------------------------------------------------- |
+| `Breed_Primary__c`           | Primary Breed          | Text     | Primary breed or type description.                                  |
+| `Breed_Secondary__c`         | Secondary Breed        | Text     | Secondary breed or type description when known.                     |
+| `Care_Visual_Status__c`      | Care Signal            | Text     | Visual care-plan signal derived from current care status.           |
+| `Current_Care_Status__c`     | Current Care Status    | Picklist | System-maintained summary of the active episode status.             |
+| `Current_Episode__c`         | Current Episode        | Lookup   | System-maintained pointer to the active episode.                    |
+| `Current_Housing_Unit__c`    | Current Housing Unit   | Lookup   | System-maintained pointer to the active housing unit.               |
+| `Current_Status__c`          | Current Status         | Picklist | System-maintained lifecycle status summary.                         |
+| `Current_Welfare_Risk__c`    | Current Welfare Risk   | Picklist | Current welfare risk flag for operational reporting.                |
+| `Date_of_Birth__c`           | Date of Birth          | Date     | Confirmed or best-known date of birth.                              |
+| `Date_of_Death__c`           | Date of Death          | Date     | Known date of death.                                                |
+| `Display_Name__c`            | Display Name           | Text     | User-facing display name for the animal.                            |
+| `Estimated_Age_Months__c`    | Estimated Age (Months) | Number   | Estimated age in whole months when the exact birth date is unknown. |
+| `Is_Deceased__c`             | Is Deceased            | Checkbox | Marks the animal as deceased.                                       |
+| `Lifecycle_Visual_Status__c` | Lifecycle Signal       | Text     | Visual lifecycle indicator derived from current status.             |
+| `Profile_Image__c`           | Profile Image          | Text     | Formula-rendered image card sourced from Primary Image URL.         |
+| `Primary_Image_URL__c`       | Primary Image URL      | Url      | Primary image URL used in animal cards, tags, and care workflows.   |
+| `Reproductive_Status__c`     | Reproductive Status    | Picklist | Current reproductive status of the animal.                          |
+| `Responsible_Account__c`     | Responsible Account    | Lookup   | Organisation currently responsible for the animal.                  |
+| `Responsible_Contact__c`     | Responsible Contact    | Lookup   | Primary contact responsible for the animal.                         |
+| `Sex__c`                     | Sex                    | Picklist | Recorded sex for the animal.                                        |
+| `Species__c`                 | Species                | Picklist | Primary species classification.                                     |
+| `Welfare_Visual_Rating__c`   | Welfare Rating         | Text     | Star-style welfare risk rating with visual flag indicator.          |
 
 Validation rules:
 
@@ -958,4 +990,5 @@ Source: `force-app/main/default/customMetadata`
 - Runtime behavior should be cross-checked against:
   - the Apex services in `force-app/main/default/classes`
   - the flows in `force-app/main/default/flows`
-  - the LWC bundle `force-app/main/default/lwc/a360WelfareAssessmentEntry`
+  - the LWC bundles in `force-app/main/default/lwc`
+  - the FlexiPages in `force-app/main/default/flexipages`

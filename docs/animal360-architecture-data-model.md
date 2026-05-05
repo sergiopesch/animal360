@@ -37,14 +37,15 @@ The connected `animal360` org was inspected with Salesforce CLI against API vers
 
 | Area                      | Status  | Evidence                                                                                                                                                                                       |
 | ------------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Core runtime objects      | Present | 18 expected Phase I and Phase II runtime custom objects exist in the org.                                                                                                                      |
+| Core runtime objects      | Present | 21 runtime custom objects exist in the org, including Phase I/II care objects and estate whiteboard objects.                                                                                   |
 | Phase I operations        | Present | `Animal__c`, `Animal_Episode__c`, `Animal_Location_Stay__c`, `Housing_Unit__c`, `Intake_Event__c`, and `Outcome_Event__c` are deployed.                                                        |
 | Phase II welfare evidence | Present | `Welfare_Assessment__c`, `Welfare_Observation__c`, `Welfare_Domain_Summary__c`, `Assessment_Template__c`, `Care_Plan__c`, `Clinical_Event__c`, and `Human_Animal_Interaction__c` are deployed. |
 | Active automation         | Present | 11 `A360_*` flows have active versions in the org.                                                                                                                                             |
-| Apex service layer        | Present | 14 `A360*` Apex classes are deployed: 11 runtime service/handler classes plus 3 Apex test classes covering Phase I and Phase II behavior.                                                      |
-| Security model            | Present | 5 role permission sets are deployed: admin, care manager, assessor, clinical user, and read-only.                                                                                              |
+| Apex service layer        | Present | 16 `A360*` Apex classes are deployed: 12 runtime service/handler classes plus 4 Apex test classes covering Phase I, Phase II, and estate whiteboard behavior.                                  |
+| Security model            | Present | 7 permission sets are deployed: admin, care manager, assessor, clinical user, read-only, estate map manager, and estate map viewer.                                                            |
 | Runtime template seed     | Present | The org has 1 runtime assessment template, 5 domain definitions, and 6 indicator assignments.                                                                                                  |
 | Packaged configuration    | Present | Custom metadata includes 5 domain definitions, 6 indicator definitions, and 6 risk rules.                                                                                                      |
+| Estate whiteboard         | Present | Estate map metadata, mapped housing areas, visual animal cards, drag-to-move, and add-animal placement are deployed.                                                                           |
 
 ## Architecture Principles
 
@@ -70,7 +71,23 @@ Animal360 uses this CRM layer as follows:
 - Person Accounts are Account records with a Salesforce-managed linked Contact through `Account.PersonContactId`.
 - `Contact` remains part of the model for business contacts, clinicians, interaction participants, and responsible contacts.
 - `Animal__c.Responsible_Account__c` and `Animal__c.Responsible_Contact__c` keep animal responsibility explicit.
+- `Animal__c.Primary_Image_URL__c` stores the primary image reference used by visual animal tags and detail cards.
+- Animal visual formula fields render the profile image, welfare rating, lifecycle signal, and care signal on the record page from existing operational data.
 - `Intake_Event__c`, `Animal_Episode__c`, `Clinical_Event__c`, and `Human_Animal_Interaction__c` use Account and Contact lookups where the operational event needs responsible, outcome, clinician, or interaction context.
+
+## Estate Whiteboard And Visual Placement
+
+The estate whiteboard is an operational view layered on top of the core episode and location-stay model. It does not replace the canonical placement history. Instead, it maps active `Animal_Location_Stay__c` records to visual areas through each area's linked `Housing_Unit__c`.
+
+Key implementation points:
+
+- `A360_Estate_Map__c` stores the board canvas, default/published state, and background style.
+- `A360_Map_Area__c` stores each visible area, its geometry, label, operational status, and optional housing-unit mapping.
+- `A360_Map_Connection__c` stores optional visual relationships between areas.
+- `A360EstateMapService.moveAnimal()` closes any current stay and creates the destination stay for the selected housing unit.
+- `A360EstateMapService.searchAnimalsForArea()` finds current-care animals that can be added to the selected area, including animals not currently visible on the board.
+- `c:a360EstateMap` renders visual animal tokens, image-backed animal tags, detail drilldown, area status controls, drag-to-move, and the add-animal picker.
+- `c:a360AnimalVisualPanel` renders the Animal record-page visual summary from `Animal__c` current-state fields and `Primary_Image_URL__c`.
 
 ## Entity Relationship Overview
 

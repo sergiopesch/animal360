@@ -73,9 +73,15 @@
                   onpointerdown={handleAreaPointerDown}
                   title={area.label}
                 >
+                  <span class={area.sceneClass} aria-hidden="true">
+                    <span class="area-scene-icon"></span>
+                    <span class="area-scene-detail"></span>
+                  </span>
                   <span class="area-label">{area.label}</span>
                   <span class="area-zone">{area.zone}</span>
-                  <span class={area.statusClass}>{area.statusLabel}</span>
+                  <span class={area.statusClass} style={area.statusStyle}
+                    >{area.statusLabel}</span
+                  >
                   <span class={area.occupancyClass}>{area.occupancyLabel}</span>
                   <template if:true={editMode}>
                     <span
@@ -94,14 +100,19 @@
                   style={animal.style}
                   title={animal.title}
                   aria-label={animal.title}
+                  aria-pressed={animal.isSelected}
                   data-animal-id={animal.animalId}
                   onpointerdown={handleAnimalPointerDown}
                 >
-                  <span class="pet-avatar" aria-hidden="true">
+                  <span
+                    class="pet-avatar"
+                    style={animal.avatarStyle}
+                    aria-hidden="true"
+                  >
                     <span class="pet-shadow"></span>
                     <span class="pet-tail"></span>
-                    <span class="pet-body"></span>
-                    <span class="pet-head">
+                    <span class="pet-body" style={animal.bodyStyle}></span>
+                    <span class="pet-head" style={animal.headStyle}>
                       <span class="pet-ear pet-ear-left"></span>
                       <span class="pet-ear pet-ear-right"></span>
                       <span class="pet-face">
@@ -118,13 +129,17 @@
                     <span class="pet-leg pet-leg-left"></span>
                     <span class="pet-leg pet-leg-right"></span>
                   </span>
-                  <span class="animal-name">{animal.animalName}</span>
+                  <span class="animal-name" style={animal.nameStyle}
+                    >{animal.animalName}</span
+                  >
                   <span class="move-label">{animal.moveLabel}</span>
                 </button>
               </template>
 
-              <template if:true={isSaving}>
-                <div class="canvas-saving" role="status">Updating</div>
+              <template if:true={isCanvasUpdating}>
+                <div class="canvas-saving" role="status">
+                  {canvasSavingLabel}
+                </div>
               </template>
             </div>
           </section>
@@ -297,7 +312,15 @@
             <aside class="editor operations-panel">
               <div class="editor-header">
                 <h3>{selectedAreaName}</h3>
-                <lightning-badge label={selectedAreaStatus}></lightning-badge>
+                <div class="operations-header-actions">
+                  <lightning-badge label={selectedAreaStatus}></lightning-badge>
+                  <lightning-button
+                    label={addAnimalToggleLabel}
+                    icon-name="utility:add"
+                    disabled={addAnimalToggleDisabled}
+                    onclick={handleToggleAddAnimal}
+                  ></lightning-button>
+                </div>
               </div>
 
               <template if:true={hasSelectedArea}>
@@ -322,6 +345,155 @@
                     </span>
                   </template>
                 </div>
+
+                <template if:true={addAnimalPanelOpen}>
+                  <section class="add-animal-panel" aria-label="Add animal">
+                    <div class="add-animal-search">
+                      <lightning-input
+                        type="search"
+                        label="Find Animal"
+                        value={animalSearchTerm}
+                        disabled={addAnimalSearchDisabled}
+                        onchange={handleAnimalSearchTermChange}
+                        onkeyup={handleAnimalSearchKeyUp}
+                      ></lightning-input>
+                      <lightning-button
+                        label="Search"
+                        disabled={addAnimalSearchDisabled}
+                        onclick={handleAnimalSearch}
+                      ></lightning-button>
+                    </div>
+
+                    <template if:true={isSearchingAnimals}>
+                      <div class="add-animal-status" role="status">
+                        Searching animals
+                      </div>
+                    </template>
+
+                    <template if:true={addAnimalPanelMessage}>
+                      <p class="add-animal-message">{addAnimalPanelMessage}</p>
+                    </template>
+
+                    <template if:true={hasAnimalSearchResults}>
+                      <div class="animal-add-list">
+                        <template for:each={addAnimalResults} for:item="animal">
+                          <button
+                            key={animal.animalId}
+                            class={animal.className}
+                            data-animal-id={animal.animalId}
+                            onclick={handleSelectAddAnimal}
+                          >
+                            <template if:true={animal.primaryImageUrl}>
+                              <img
+                                src={animal.primaryImageUrl}
+                                alt={animal.imageAlt}
+                              />
+                            </template>
+                            <template if:false={animal.primaryImageUrl}>
+                              <span class="animal-add-placeholder">
+                                {animal.animalName}
+                              </span>
+                            </template>
+                            <span class="animal-add-copy">
+                              <strong>{animal.animalName}</strong>
+                              <span>{animal.detailLabel}</span>
+                              <em>{animal.locationLabel}</em>
+                            </span>
+                          </button>
+                        </template>
+                      </div>
+                      <lightning-button
+                        label="Add to Area"
+                        variant="brand"
+                        disabled={addAnimalActionDisabled}
+                        onclick={handleAddAnimalToArea}
+                      ></lightning-button>
+                    </template>
+                  </section>
+                </template>
+              </template>
+
+              <template if:true={hasSelectedAnimal}>
+                <section class="animal-tag" aria-label={selectedAnimalTagLabel}>
+                  <div class="animal-tag-hole" aria-hidden="true"></div>
+                  <div class="animal-tag-topline">
+                    <p class="panel-kicker">Animal Tag</p>
+                    <span class={selectedAnimalRiskClass}
+                      >{selectedAnimal.welfareRisk}</span
+                    >
+                  </div>
+
+                  <div class="animal-tag-identity">
+                    <a
+                      class="animal-tag-image"
+                      href={selectedAnimalRecordUrl}
+                      aria-label={selectedAnimalRecordLabel}
+                    >
+                      <template if:true={hasSelectedAnimalImage}>
+                        <img
+                          class="animal-tag-photo"
+                          src={selectedAnimalImageUrl}
+                          alt={selectedAnimalImageLabel}
+                        />
+                      </template>
+                      <template if:false={hasSelectedAnimalImage}>
+                        <div class="animal-tag-photo-placeholder" role="img">
+                          <span>{selectedAnimalName}</span>
+                        </div>
+                      </template>
+                    </a>
+
+                    <div class="animal-tag-nameplate">
+                      <span class="animal-tag-number"
+                        >{selectedAnimal.animalRecordName}</span
+                      >
+                      <h3>{selectedAnimalName}</h3>
+                      <p>{selectedAnimalPrimaryLine}</p>
+                    </div>
+                  </div>
+
+                  <div class="animal-tag-actions">
+                    <lightning-button
+                      label={selectedAnimalDetailsToggleLabel}
+                      onclick={handleToggleAnimalDetails}
+                    ></lightning-button>
+                  </div>
+
+                  <template if:true={selectedAnimalDetailsOpen}>
+                    <section
+                      class="animal-detail-drilldown"
+                      aria-label="Animal detail drilldown"
+                    >
+                      <div class="animal-photo-card">
+                        <template if:true={hasSelectedAnimalImage}>
+                          <img
+                            class="animal-photo"
+                            src={selectedAnimalImageUrl}
+                            alt={selectedAnimalImageLabel}
+                          />
+                        </template>
+                        <template if:false={hasSelectedAnimalImage}>
+                          <div class="animal-photo-placeholder" role="img">
+                            <span>{selectedAnimalName}</span>
+                          </div>
+                        </template>
+                        <p>{selectedAnimalImageCaption}</p>
+                      </div>
+
+                      <div class="animal-summary">
+                        <template
+                          for:each={selectedAnimalFacts}
+                          for:item="fact"
+                        >
+                          <div key={fact.label} class="animal-fact">
+                            <span>{fact.label}</span>
+                            <strong>{fact.value}</strong>
+                          </div>
+                        </template>
+                      </div>
+                    </section>
+                  </template>
+                </section>
               </template>
             </aside>
           </template>

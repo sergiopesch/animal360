@@ -1,0 +1,56 @@
+<template>
+  <template if:true={hasRecord}>
+    <section class={panelClass} aria-label="Animal visual snapshot">
+      <div class="hero">
+        <template if:true={hasImage}>
+          <img class="hero-image" src={imageUrl} alt={imageAlt} />
+        </template>
+        <template if:false={hasImage}>
+          <div class="hero-placeholder">{animalName}</div>
+        </template>
+        <div class="hero-overlay">
+          <span class="animal-number">{animalNumber}</span>
+          <h2>{animalName}</h2>
+        </div>
+      </div>
+
+      <div class="risk-card">
+        <div>
+          <span class="kicker">Welfare</span>
+          <strong>{riskLabel}</strong>
+        </div>
+        <span class="stars" aria-label={riskLabel}>{riskStars}</span>
+        <div class="risk-meter" aria-hidden="true">
+          <span style={riskScoreStyle}></span>
+        </div>
+      </div>
+
+      <div class="signal-row">
+        <span class={statusClass}>{statusLabel}</span>
+        <span class={careClass}>{careLabel}</span>
+      </div>
+
+      <div class="fact-grid">
+        <template for:each={quickFacts} for:item="fact">
+          <div key={fact.label} class="fact">
+            <span>{fact.label}</span>
+            <strong>{fact.value}</strong>
+          </div>
+        </template>
+      </div>
+
+      <div class="housing-strip">
+        <lightning-icon
+          icon-name="utility:home"
+          size="x-small"
+          alternative-text="Housing"
+        ></lightning-icon>
+        <span>{housingLabel}</span>
+      </div>
+    </section>
+  </template>
+
+  <template if:false={hasRecord}>
+    <div class="panel is-loading">Loading animal snapshot</div>
+  </template>
+</template>
