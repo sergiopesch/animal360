@@ -1,0 +1,25 @@
+config_root: null
+log_folder: null
+log_level: 3
+
+ignores:
+  files:
+    - "**/node_modules/**"
+    - "**/.sfdx/**"
+    - "**/.sf/**"
+    - "**/coverage/**"
+    - "**/artifacts/**"
+    - "**/__tests__/**"
+    - "**/*.test.js"
+    - "**/jest-mocks/**"
+    - "**/code-analyzer-results-*.json"
+    - "**/code-analyzer-results-*.log"
+
+rules:
+  eslint:
+    "jest/no-deprecated-functions":
+      disabled: true
+
+engines:
+  eslint:
+    eslint_config_file: eslint.config.js

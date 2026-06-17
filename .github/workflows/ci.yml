@@ -1,5 +1,10 @@
 name: CI
 
+# Required repository secret:
+# - SF_AUTH_URL: SFDX auth URL for the validation org. Generate it with
+#   `sf org display --target-org <org-alias> --verbose --json` and copy
+#   the `result.sfdxAuthUrl` value into the GitHub secret.
+
 on:
   push:
     branches:
@@ -16,6 +21,11 @@ concurrency:
 jobs:
   validate:
     runs-on: ubuntu-latest
+    env:
+      SF_TARGET_ORG: ci-validation-org
+      SF_DISABLE_TELEMETRY: true
+      SF_AUTOUPDATE_DISABLE: true
+      SF_USE_GENERIC_UNIX_KEYCHAIN: true
 
     steps:
       - name: Checkout repository
@@ -30,6 +40,35 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Install Salesforce CLI
+        run: npm install --global @salesforce/cli@latest
+
+      - name: Install Salesforce Code Analyzer
+        run: yes | sf plugins install @salesforce/plugin-code-analyzer@latest
+
+      - name: Authenticate validation org
+        env:
+          SF_AUTH_URL: ${{ secrets.SF_AUTH_URL }}
+        run: |
+          if [ -z "$SF_AUTH_URL" ]; then
+            echo "::error::Missing required repository secret SF_AUTH_URL."
+            exit 1
+          fi
+
+          AUTH_FILE="$(mktemp)"
+          trap 'rm -f "$AUTH_FILE"' EXIT
+          printf '%s' "$SF_AUTH_URL" > "$AUTH_FILE"
+          sf org login sfdx-url \
+            --sfdx-url-file "$AUTH_FILE" \
+            --alias "$SF_TARGET_ORG" \
+            --set-default
+
       - name: Verify formatting
         run: npm run prettier:verify
 
@@ -38,3 +77,47 @@ jobs:
 
       - name: Run LWC unit tests
         run: npm test
+
+      - name: Prepare quality artifacts
+        run: mkdir -p artifacts/code-analyzer artifacts/apex-tests artifacts/deploy
+
+      - name: Run Salesforce Code Analyzer
+        run: |
+          set -o pipefail
+          sf code-analyzer run \
+            --config-file code-analyzer.yml \
+            --rule-selector Recommended \
+            --workspace . \
+            --target force-app \
+            --severity-threshold 2 \
+            --output-file artifacts/code-analyzer/code-analyzer-results.json \
+            2>&1 | tee artifacts/code-analyzer/code-analyzer.log
+
+      - name: Run Apex tests with coverage
+        run: |
+          sf apex run test \
+            --target-org "$SF_TARGET_ORG" \
+            --test-level RunLocalTests \
+            --code-coverage \
+            --result-format json \
+            --wait 30 \
+            > artifacts/apex-tests/apex-test-results.json
+
+      - name: Validate manifest deploy
+        run: |
+          sf project deploy start \
+            --target-org "$SF_TARGET_ORG" \
+            --manifest manifest/package.xml \
+            --dry-run \
+            --test-level RunLocalTests \
+            --wait 30 \
+            --json \
+            > artifacts/deploy/manifest-dry-run.json
+
+      - name: Upload Salesforce quality artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salesforce-quality-artifacts
+          path: artifacts/**
+          if-no-files-found: warn
