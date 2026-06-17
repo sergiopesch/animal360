@@ -6,7 +6,7 @@
     <interviewLabel>Welfare Assessment {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Welfare Assessment Flow</label>
     <processType>Flow</processType>
-    <runInMode>SystemModeWithSharing</runInMode>
+    <runInMode>DefaultMode</runInMode>
     <screens>
         <name>Enter_Assessment</name>
         <label>Enter Assessment</label>

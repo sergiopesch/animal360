@@ -4,7 +4,71 @@
     <interviewLabel>Move Animal {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Move Animal Flow</label>
     <processType>Flow</processType>
-    <runInMode>SystemModeWithSharing</runInMode>
+    <runInMode>DefaultMode</runInMode>
+    <choices>
+        <name>Move_Reason_Routine_Move</name>
+        <choiceText>Routine Move</choiceText>
+        <dataType>String</dataType>
+        <value><stringValue>Routine Move</stringValue></value>
+    </choices>
+    <choices>
+        <name>Move_Reason_Outcome_Processing</name>
+        <choiceText>Outcome Processing</choiceText>
+        <dataType>String</dataType>
+        <value><stringValue>Outcome Processing</stringValue></value>
+    </choices>
+    <choices>
+        <name>Move_Reason_Behavioural_Management</name>
+        <choiceText>Behavioural Management</choiceText>
+        <dataType>String</dataType>
+        <value><stringValue>Behavioural Management</stringValue></value>
+    </choices>
+    <choices>
+        <name>Move_Reason_Foster_Transfer</name>
+        <choiceText>Foster Transfer</choiceText>
+        <dataType>String</dataType>
+        <value><stringValue>Foster Transfer</stringValue></value>
+    </choices>
+    <choices>
+        <name>Move_Reason_Medical_Isolation</name>
+        <choiceText>Medical Isolation</choiceText>
+        <dataType>String</dataType>
+        <value><stringValue>Medical Isolation</stringValue></value>
+    </choices>
+    <choices>
+        <name>Move_Reason_Other</name>
+        <choiceText>Other</choiceText>
+        <dataType>String</dataType>
+        <value><stringValue>Other</stringValue></value>
+    </choices>
+    <dynamicChoiceSets>
+        <name>Open_Episode_Choices</name>
+        <dataType>String</dataType>
+        <displayField>Name</displayField>
+        <filters>
+            <field>Episode_Status__c</field>
+            <operator>EqualTo</operator>
+            <value><stringValue>Open</stringValue></value>
+        </filters>
+        <filters>
+            <field>Is_Current__c</field>
+            <operator>EqualTo</operator>
+            <value><booleanValue>true</booleanValue></value>
+        </filters>
+        <object>Animal_Episode__c</object>
+        <sortField>Name</sortField>
+        <sortOrder>Asc</sortOrder>
+        <valueField>Id</valueField>
+    </dynamicChoiceSets>
+    <dynamicChoiceSets>
+        <name>Housing_Unit_Choices</name>
+        <dataType>String</dataType>
+        <displayField>Name</displayField>
+        <object>Housing_Unit__c</object>
+        <sortField>Name</sortField>
+        <sortOrder>Asc</sortOrder>
+        <valueField>Id</valueField>
+    </dynamicChoiceSets>
     <screens>
         <name>Enter_Move_Details</name>
         <label>Enter Move Details</label>
@@ -20,21 +84,23 @@
             <fieldType>DisplayText</fieldType>
             <isVisible>true</isVisible>
             <fieldText
-      >Enter the Episode ID, destination Housing Unit ID, and move details. For picklist values, use configured labels.</fieldText>
+      >Select the open episode, destination housing unit, and move details.</fieldText>
         </fields>
                 <fields>
             <name>Episode_Id_Value</name>
-            <fieldType>InputField</fieldType>
+            <choiceReferences>Open_Episode_Choices</choiceReferences>
+            <fieldType>DropdownBox</fieldType>
             <dataType>String</dataType>
-            <fieldText>Episode ID</fieldText>
+            <fieldText>Episode</fieldText>
             <isRequired>true</isRequired>
             <isVisible>true</isVisible>
         </fields>
                 <fields>
             <name>New_Housing_Unit_Id_Value</name>
-            <fieldType>InputField</fieldType>
+            <choiceReferences>Housing_Unit_Choices</choiceReferences>
+            <fieldType>DropdownBox</fieldType>
             <dataType>String</dataType>
-            <fieldText>New Housing Unit ID</fieldText>
+            <fieldText>New Housing Unit</fieldText>
             <isRequired>true</isRequired>
             <isVisible>true</isVisible>
         </fields>
@@ -52,11 +118,16 @@
         </fields>
                 <fields>
             <name>Move_Reason_Value</name>
-            <fieldType>InputField</fieldType>
+            <choiceReferences>Move_Reason_Routine_Move</choiceReferences>
+            <choiceReferences>Move_Reason_Medical_Isolation</choiceReferences>
+            <choiceReferences
+      >Move_Reason_Behavioural_Management</choiceReferences>
+            <choiceReferences>Move_Reason_Foster_Transfer</choiceReferences>
+            <choiceReferences>Move_Reason_Outcome_Processing</choiceReferences>
+            <choiceReferences>Move_Reason_Other</choiceReferences>
+            <fieldType>DropdownBox</fieldType>
             <dataType>String</dataType>
             <fieldText>Move Reason</fieldText>
-            <helpText
-      >Use one of the configured values, for example Routine Move or Medical Isolation.</helpText>
             <isRequired>true</isRequired>
             <isVisible>true</isVisible>
         </fields>

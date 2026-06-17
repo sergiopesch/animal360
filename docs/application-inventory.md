@@ -43,6 +43,7 @@ Current repository inventory at a glance:
 - 9 custom metadata type definitions
 - 53 custom metadata records
 - 7 permission sets
+- 5 permission set groups
 - 4 custom permissions
 - 11 flows
 - 6 triggers
@@ -51,8 +52,8 @@ Current repository inventory at a glance:
 - 14 global value sets
 - 8 report types
 - 10 reports in the `Animal_360` folder
-- 10 custom tabs
-- 18 layouts
+- 12 custom tabs
+- 21 layouts
 - 12 validation rules
 
 ## Metadata Categories
@@ -101,6 +102,7 @@ Welfare, template, and intervention objects:
 ### Security And Automation
 
 - Permission sets in `force-app/main/default/permissionsets`
+- Permission set groups in `force-app/main/default/permissionsetgroups`
 - Custom permissions in `force-app/main/default/customPermissions`
 - Flows in `force-app/main/default/flows`
 - Triggers in `force-app/main/default/triggers`
@@ -118,6 +120,18 @@ Source: `force-app/main/default/permissionsets`
 | `Animal360_Read_Only`          | Read-only reporting and lookup access for Love 4 Animals data.              | Read-only and reporting-focused access across Love 4 Animals operational and welfare records.                                           | None                                                                   | None                                                                                                                                     |
 | `Animal360_Estate_Map_Manager` | Estate-map administration for operational managers.                         | Edit access to estate maps and mapped areas, plus animal movement permissions for board operations.                                     | `A360_Manage_Estate_Maps`, `A360_Move_Animals`                         | None                                                                                                                                     |
 | `Animal360_Estate_Map_Viewer`  | Read-only estate-map access.                                                | Read-only access to estate maps, mapped areas, and live animal placement context.                                                       | None                                                                   | None                                                                                                                                     |
+
+## Permission Set Groups
+
+Source: `force-app/main/default/permissionsetgroups`
+
+| API name                        | Included permission sets  | Intended persona                    |
+| ------------------------------- | ------------------------- | ----------------------------------- |
+| `Animal360_Admin_Group`         | `Animal360_Admin`         | Application administrator           |
+| `Animal360_Care_Manager_Group`  | `Animal360_Care_Manager`  | Care and welfare operations manager |
+| `Animal360_Assessor_Group`      | `Animal360_Assessor`      | Welfare assessment user             |
+| `Animal360_Clinical_User_Group` | `Animal360_Clinical_User` | Clinical follow-up user             |
+| `Animal360_Read_Only_Group`     | `Animal360_Read_Only`     | Reporting and lookup-only user      |
 
 ## Custom Permissions
 
@@ -235,6 +249,8 @@ Custom tabs present:
 - `Care_Plan__c`
 - `Clinical_Event__c`
 - `Human_Animal_Interaction__c`
+- `A360_Estate_Map__c`
+- `Animal360_Estate_Whiteboard`
 
 ## Lightning Pages
 
@@ -270,6 +286,12 @@ Operational layouts:
 - `Intake_Event__c-Intake Event Layout`
 - `Outcome_Event__c-Outcome Event Layout`
 
+Estate-map layouts:
+
+- `A360_Estate_Map__c-Estate Map Layout`
+- `A360_Map_Area__c-Map Area Layout`
+- `A360_Map_Connection__c-Map Connection Layout`
+
 Template and runtime-config layouts:
 
 - `Assessment_Template__c-Assessment Template Layout`
@@ -285,6 +307,8 @@ Welfare and intervention layouts:
 - `Care_Plan_Action__c-Care Plan Action Layout`
 - `Clinical_Event__c-Clinical Event Layout`
 - `Human_Animal_Interaction__c-Human Animal Interaction Layout`
+
+Custom metadata type layouts are intentionally not source-controlled. They are generated/admin-maintenance surfaces in the connected org rather than runtime user experience metadata.
 
 ## Runtime Custom Objects And Fields
 

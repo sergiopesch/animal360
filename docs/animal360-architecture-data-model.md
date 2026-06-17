@@ -42,7 +42,7 @@ The connected `animal360` org was inspected with Salesforce CLI against API vers
 | Phase II welfare evidence | Present | `Welfare_Assessment__c`, `Welfare_Observation__c`, `Welfare_Domain_Summary__c`, `Assessment_Template__c`, `Care_Plan__c`, `Clinical_Event__c`, and `Human_Animal_Interaction__c` are deployed. |
 | Active automation         | Present | 11 `A360_*` flows have active versions in the org.                                                                                                                                             |
 | Apex service layer        | Present | 16 `A360*` Apex classes are deployed: 12 runtime service/handler classes plus 4 Apex test classes covering Phase I, Phase II, and estate whiteboard behavior.                                  |
-| Security model            | Present | 7 permission sets are deployed: admin, care manager, assessor, clinical user, read-only, estate map manager, and estate map viewer.                                                            |
+| Security model            | Present | 7 permission sets, 5 permission set groups, and 4 custom permissions are deployed, covering operational, welfare, clinical, read-only, and estate-map access.                                  |
 | Runtime template seed     | Present | The org has 1 runtime assessment template, 5 domain definitions, and 6 indicator assignments.                                                                                                  |
 | Packaged configuration    | Present | Custom metadata includes 5 domain definitions, 6 indicator definitions, and 6 risk rules.                                                                                                      |
 | Estate whiteboard         | Present | Estate map metadata, mapped housing areas, visual animal cards, drag-to-move, and add-animal placement are deployed.                                                                           |
@@ -340,11 +340,25 @@ Packaged permission sets:
 - `Animal360_Assessor`
 - `Animal360_Clinical_User`
 - `Animal360_Read_Only`
+- `Animal360_Estate_Map_Manager`
+- `Animal360_Estate_Map_Viewer`
+
+Packaged permission set groups:
+
+- `Animal360_Admin_Group`
+- `Animal360_Care_Manager_Group`
+- `Animal360_Assessor_Group`
+- `Animal360_Clinical_User_Group`
+- `Animal360_Read_Only_Group`
 
 Custom permissions:
 
 - `A360_Manage_Assessment_Templates`
+- `A360_Manage_Estate_Maps`
+- `A360_Move_Animals`
 - `A360_Welfare_Escalation_Override`
+
+Estate-map access is split from the core welfare personas. `Animal360_Estate_Map_Manager` grants map administration and animal movement permissions, while `Animal360_Estate_Map_Viewer` grants read-only access to estate maps, mapped areas, and current animal placement context.
 
 ## Notes
 

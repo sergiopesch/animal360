@@ -4,7 +4,74 @@
     <interviewLabel>Close Episode {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Close Episode Flow</label>
     <processType>Flow</processType>
-    <runInMode>SystemModeWithSharing</runInMode>
+    <runInMode>DefaultMode</runInMode>
+    <choices>
+        <name>Outcome_Type_Adopted</name>
+        <choiceText>Adopted</choiceText>
+        <dataType>String</dataType>
+        <value><stringValue>Adopted</stringValue></value>
+    </choices>
+    <choices>
+        <name>Outcome_Type_Returned_to_Owner</name>
+        <choiceText>Returned to Owner</choiceText>
+        <dataType>String</dataType>
+        <value><stringValue>Returned to Owner</stringValue></value>
+    </choices>
+    <choices>
+        <name>Outcome_Type_Transferred</name>
+        <choiceText>Transferred</choiceText>
+        <dataType>String</dataType>
+        <value><stringValue>Transferred</stringValue></value>
+    </choices>
+    <choices>
+        <name>Outcome_Type_Foster_Placement</name>
+        <choiceText>Foster Placement</choiceText>
+        <dataType>String</dataType>
+        <value><stringValue>Foster Placement</stringValue></value>
+    </choices>
+    <choices>
+        <name>Outcome_Type_Released</name>
+        <choiceText>Released</choiceText>
+        <dataType>String</dataType>
+        <value><stringValue>Released</stringValue></value>
+    </choices>
+    <choices>
+        <name>Outcome_Type_Euthanised</name>
+        <choiceText>Euthanised</choiceText>
+        <dataType>String</dataType>
+        <value><stringValue>Euthanised</stringValue></value>
+    </choices>
+    <choices>
+        <name>Outcome_Type_Deceased</name>
+        <choiceText>Deceased</choiceText>
+        <dataType>String</dataType>
+        <value><stringValue>Deceased</stringValue></value>
+    </choices>
+    <choices>
+        <name>Outcome_Type_Other</name>
+        <choiceText>Other</choiceText>
+        <dataType>String</dataType>
+        <value><stringValue>Other</stringValue></value>
+    </choices>
+    <dynamicChoiceSets>
+        <name>Open_Episode_Choices</name>
+        <dataType>String</dataType>
+        <displayField>Name</displayField>
+        <filters>
+            <field>Episode_Status__c</field>
+            <operator>EqualTo</operator>
+            <value><stringValue>Open</stringValue></value>
+        </filters>
+        <filters>
+            <field>Is_Current__c</field>
+            <operator>EqualTo</operator>
+            <value><booleanValue>true</booleanValue></value>
+        </filters>
+        <object>Animal_Episode__c</object>
+        <sortField>Name</sortField>
+        <sortOrder>Asc</sortOrder>
+        <valueField>Id</valueField>
+    </dynamicChoiceSets>
     <screens>
         <name>Enter_Close_Details</name>
         <label>Enter Close Details</label>
@@ -20,19 +87,28 @@
             <fieldType>DisplayText</fieldType>
             <isVisible>true</isVisible>
             <fieldText
-      >Enter the Episode ID and closeout details. Outcome Type must use configured labels, such as Adopted or Returned to Owner.</fieldText>
+      >Select the open episode and enter closeout details.</fieldText>
         </fields>
                 <fields>
             <name>Episode_Id_Value</name>
-            <fieldType>InputField</fieldType>
+            <choiceReferences>Open_Episode_Choices</choiceReferences>
+            <fieldType>DropdownBox</fieldType>
             <dataType>String</dataType>
-            <fieldText>Episode ID</fieldText>
+            <fieldText>Episode</fieldText>
             <isRequired>true</isRequired>
             <isVisible>true</isVisible>
         </fields>
                 <fields>
             <name>Outcome_Type_Value</name>
-            <fieldType>InputField</fieldType>
+            <choiceReferences>Outcome_Type_Adopted</choiceReferences>
+            <choiceReferences>Outcome_Type_Returned_to_Owner</choiceReferences>
+            <choiceReferences>Outcome_Type_Transferred</choiceReferences>
+            <choiceReferences>Outcome_Type_Foster_Placement</choiceReferences>
+            <choiceReferences>Outcome_Type_Released</choiceReferences>
+            <choiceReferences>Outcome_Type_Euthanised</choiceReferences>
+            <choiceReferences>Outcome_Type_Deceased</choiceReferences>
+            <choiceReferences>Outcome_Type_Other</choiceReferences>
+            <fieldType>DropdownBox</fieldType>
             <dataType>String</dataType>
             <fieldText>Outcome Type</fieldText>
             <isRequired>true</isRequired>

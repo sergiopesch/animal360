@@ -4,7 +4,136 @@
     <interviewLabel>Animal Intake {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Animal Intake Flow</label>
     <processType>Flow</processType>
-    <runInMode>SystemModeWithSharing</runInMode>
+    <runInMode>DefaultMode</runInMode>
+    <choices>
+        <name>Species_Dog</name>
+        <choiceText>Dog</choiceText>
+        <dataType>String</dataType>
+        <value><stringValue>Dog</stringValue></value>
+    </choices>
+    <choices>
+        <name>Species_Cat</name>
+        <choiceText>Cat</choiceText>
+        <dataType>String</dataType>
+        <value><stringValue>Cat</stringValue></value>
+    </choices>
+    <choices>
+        <name>Species_Rabbit</name>
+        <choiceText>Rabbit</choiceText>
+        <dataType>String</dataType>
+        <value><stringValue>Rabbit</stringValue></value>
+    </choices>
+    <choices>
+        <name>Species_Bird</name>
+        <choiceText>Bird</choiceText>
+        <dataType>String</dataType>
+        <value><stringValue>Bird</stringValue></value>
+    </choices>
+    <choices>
+        <name>Species_Small_Mammal</name>
+        <choiceText>Small Mammal</choiceText>
+        <dataType>String</dataType>
+        <value><stringValue>Small Mammal</stringValue></value>
+    </choices>
+    <choices>
+        <name>Species_Reptile</name>
+        <choiceText>Reptile</choiceText>
+        <dataType>String</dataType>
+        <value><stringValue>Reptile</stringValue></value>
+    </choices>
+    <choices>
+        <name>Species_Livestock</name>
+        <choiceText>Livestock</choiceText>
+        <dataType>String</dataType>
+        <value><stringValue>Livestock</stringValue></value>
+    </choices>
+    <choices>
+        <name>Species_Wildlife</name>
+        <choiceText>Wildlife</choiceText>
+        <dataType>String</dataType>
+        <value><stringValue>Wildlife</stringValue></value>
+    </choices>
+    <choices>
+        <name>Species_Other</name>
+        <choiceText>Other</choiceText>
+        <dataType>String</dataType>
+        <value><stringValue>Other</stringValue></value>
+    </choices>
+    <choices>
+        <name>Sex_Female</name>
+        <choiceText>Female</choiceText>
+        <dataType>String</dataType>
+        <value><stringValue>Female</stringValue></value>
+    </choices>
+    <choices>
+        <name>Sex_Male</name>
+        <choiceText>Male</choiceText>
+        <dataType>String</dataType>
+        <value><stringValue>Male</stringValue></value>
+    </choices>
+    <choices>
+        <name>Sex_Intersex</name>
+        <choiceText>Intersex</choiceText>
+        <dataType>String</dataType>
+        <value><stringValue>Intersex</stringValue></value>
+    </choices>
+    <choices>
+        <name>Sex_Unknown</name>
+        <choiceText>Unknown</choiceText>
+        <dataType>String</dataType>
+        <value><stringValue>Unknown</stringValue></value>
+    </choices>
+    <choices>
+        <name>Intake_Source_Stray</name>
+        <choiceText>Stray</choiceText>
+        <dataType>String</dataType>
+        <value><stringValue>Stray</stringValue></value>
+    </choices>
+    <choices>
+        <name>Intake_Source_Owner_Surrender</name>
+        <choiceText>Owner Surrender</choiceText>
+        <dataType>String</dataType>
+        <value><stringValue>Owner Surrender</stringValue></value>
+    </choices>
+    <choices>
+        <name>Intake_Source_Transfer_In</name>
+        <choiceText>Transfer In</choiceText>
+        <dataType>String</dataType>
+        <value><stringValue>Transfer In</stringValue></value>
+    </choices>
+    <choices>
+        <name>Intake_Source_Seizure</name>
+        <choiceText>Seizure</choiceText>
+        <dataType>String</dataType>
+        <value><stringValue>Seizure</stringValue></value>
+    </choices>
+    <choices>
+        <name>Intake_Source_Return</name>
+        <choiceText>Return</choiceText>
+        <dataType>String</dataType>
+        <value><stringValue>Return</stringValue></value>
+    </choices>
+    <choices>
+        <name>Intake_Source_Born_In_Care</name>
+        <choiceText>Born In Care</choiceText>
+        <dataType>String</dataType>
+        <value><stringValue>Born In Care</stringValue></value>
+    </choices>
+    <choices>
+        <name>Intake_Source_Other</name>
+        <choiceText>Other</choiceText>
+        <dataType>String</dataType>
+        <value><stringValue>Other</stringValue></value>
+    </choices>
+    <dynamicChoiceSets>
+        <name>Housing_Unit_Choices</name>
+        <dataType>String</dataType>
+        <displayField>Name</displayField>
+        <object>Housing_Unit__c</object>
+        <sortField>Name</sortField>
+        <sortOrder>Asc</sortOrder>
+        <valueField>Id</valueField>
+    </dynamicChoiceSets>
     <screens>
         <name>Enter_Intake_Details</name>
         <label>Enter Intake Details</label>
@@ -20,7 +149,7 @@
             <fieldType>DisplayText</fieldType>
             <isVisible>true</isVisible>
             <fieldText
-      >Enter the required intake details. For picklist values, use configured labels. Housing Unit ID must be the Salesforce record ID for the destination housing unit.</fieldText>
+      >Enter the required intake details and select the destination housing unit.</fieldText>
         </fields>
                 <fields>
             <name>Animal_Display_Name</name>
@@ -42,31 +171,45 @@
         </fields>
                 <fields>
             <name>Species_Value</name>
-            <fieldType>InputField</fieldType>
+            <choiceReferences>Species_Dog</choiceReferences>
+            <choiceReferences>Species_Cat</choiceReferences>
+            <choiceReferences>Species_Rabbit</choiceReferences>
+            <choiceReferences>Species_Bird</choiceReferences>
+            <choiceReferences>Species_Small_Mammal</choiceReferences>
+            <choiceReferences>Species_Reptile</choiceReferences>
+            <choiceReferences>Species_Livestock</choiceReferences>
+            <choiceReferences>Species_Wildlife</choiceReferences>
+            <choiceReferences>Species_Other</choiceReferences>
+            <fieldType>DropdownBox</fieldType>
             <dataType>String</dataType>
             <fieldText>Species</fieldText>
-            <helpText
-      >Use one of the configured values, for example Dog or Cat.</helpText>
             <isRequired>true</isRequired>
             <isVisible>true</isVisible>
         </fields>
                 <fields>
             <name>Sex_Value</name>
-            <fieldType>InputField</fieldType>
+            <choiceReferences>Sex_Female</choiceReferences>
+            <choiceReferences>Sex_Male</choiceReferences>
+            <choiceReferences>Sex_Intersex</choiceReferences>
+            <choiceReferences>Sex_Unknown</choiceReferences>
+            <fieldType>DropdownBox</fieldType>
             <dataType>String</dataType>
             <fieldText>Sex</fieldText>
-            <helpText
-      >Use one of the configured values, for example Female, Male, Intersex, or Unknown.</helpText>
             <isRequired>false</isRequired>
             <isVisible>true</isVisible>
         </fields>
                 <fields>
             <name>Intake_Source_Value</name>
-            <fieldType>InputField</fieldType>
+            <choiceReferences>Intake_Source_Stray</choiceReferences>
+            <choiceReferences>Intake_Source_Owner_Surrender</choiceReferences>
+            <choiceReferences>Intake_Source_Transfer_In</choiceReferences>
+            <choiceReferences>Intake_Source_Seizure</choiceReferences>
+            <choiceReferences>Intake_Source_Return</choiceReferences>
+            <choiceReferences>Intake_Source_Born_In_Care</choiceReferences>
+            <choiceReferences>Intake_Source_Other</choiceReferences>
+            <fieldType>DropdownBox</fieldType>
             <dataType>String</dataType>
             <fieldText>Intake Source</fieldText>
-            <helpText
-      >Use one of the configured values, for example Stray or Owner Surrender.</helpText>
             <isRequired>true</isRequired>
             <isVisible>true</isVisible>
         </fields>
@@ -84,9 +227,10 @@
         </fields>
                 <fields>
             <name>Housing_Unit_Id_Value</name>
-            <fieldType>InputField</fieldType>
+            <choiceReferences>Housing_Unit_Choices</choiceReferences>
+            <fieldType>DropdownBox</fieldType>
             <dataType>String</dataType>
-            <fieldText>Housing Unit ID</fieldText>
+            <fieldText>Housing Unit</fieldText>
             <isRequired>true</isRequired>
             <isVisible>true</isVisible>
         </fields>
