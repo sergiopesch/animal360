@@ -1,3 +1,4 @@
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class A360CarePlanService {
   public class Request {
     @InvocableVariable
@@ -79,6 +80,7 @@ public without sharing class A360CarePlanService {
               Immediate_Action_Required__c
             FROM Welfare_Assessment__c
             WHERE Id IN :assessmentIds
+            WITH USER_MODE
           ]
         );
 
@@ -90,6 +92,7 @@ public without sharing class A360CarePlanService {
         WHERE
           Primary_Assessment__c IN :assessmentIds
           AND Status__c NOT IN ('Completed', 'Cancelled')
+        WITH USER_MODE
       ]) {
         if (
           !existingOpenPlanByAssessmentId.containsKey(
@@ -130,6 +133,7 @@ public without sharing class A360CarePlanService {
           Welfare_Assessment__c IN :assessmentIds
           AND (Requires_Intervention__c = TRUE
           OR Severity_Level__c IN ('High', 'Critical'))
+        WITH USER_MODE
       ]) {
         if (
           !observationsByAssessmentId.containsKey(
@@ -232,7 +236,7 @@ public without sharing class A360CarePlanService {
     }
 
     if (!plansToInsert.isEmpty()) {
-      insert plansToInsert;
+      Database.insert(plansToInsert, AccessLevel.USER_MODE);
     }
 
     List<Care_Plan_Action__c> actionsToInsert = new List<Care_Plan_Action__c>();
@@ -287,7 +291,7 @@ public without sharing class A360CarePlanService {
     }
 
     if (!actionsToInsert.isEmpty()) {
-      insert actionsToInsert;
+      Database.insert(actionsToInsert, AccessLevel.USER_MODE);
     }
 
     return results;

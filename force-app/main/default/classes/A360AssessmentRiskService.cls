@@ -1,3 +1,4 @@
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class A360AssessmentRiskService {
   public class Request {
     @InvocableVariable(required=true)

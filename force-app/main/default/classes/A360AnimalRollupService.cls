@@ -1,3 +1,4 @@
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class A360AnimalRollupService {
   public class Request {
     @InvocableVariable

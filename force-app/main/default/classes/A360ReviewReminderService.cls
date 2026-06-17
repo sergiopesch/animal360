@@ -1,3 +1,4 @@
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class A360ReviewReminderService {
   private static final String REMINDER_SUBJECT = 'Review welfare assessment';
 

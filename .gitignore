@@ -15,6 +15,14 @@ tmp-retrieve/
 # Local generated data-seeding assets
 generated/animal-profile-images/
 
+# Local agent/tool artifacts
+.agents/
+skills-lock.json
+code-analyzer-results-*.json
+code-analyzer-results-*.log
+apex-test-results-*.json
+deploy-dry-run-*.json
+
 # LWC Jest coverage reports
 coverage/
 

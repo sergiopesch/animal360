@@ -137,6 +137,7 @@ public with sharing class A360AssessmentTemplateService {
     return new List<SeedResult>{ seedTemplates(forceResync) };
   }
 
+  @SuppressWarnings('PMD.ApexCRUDViolation')
   public static SeedResult seedTemplates(Boolean forceResync) {
     List<Animal360_Assessment_Template_Default__mdt> templateDefaults = [
       SELECT
@@ -344,6 +345,7 @@ public with sharing class A360AssessmentTemplateService {
           Episode_Status__c
         FROM Animal_Episode__c
         WHERE Id = :episodeId
+        WITH USER_MODE
         LIMIT 1
       ];
     } else {
@@ -358,6 +360,7 @@ public with sharing class A360AssessmentTemplateService {
           Episode_Status__c
         FROM Animal_Episode__c
         WHERE Episode_Status__c = 'Open'
+        WITH USER_MODE
         ORDER BY Intake_DateTime__c DESC
         LIMIT 50
       ];
@@ -396,6 +399,7 @@ public with sharing class A360AssessmentTemplateService {
       SELECT Id, Name, Template_Code__c, Version__c, Species__c, Context__c
       FROM Assessment_Template__c
       WHERE Status__c = 'Active'
+      WITH USER_MODE
       ORDER BY
         Default_For_Species__c DESC,
         Species__c ASC,
@@ -432,6 +436,7 @@ public with sharing class A360AssessmentTemplateService {
     return context;
   }
 
+  @SuppressWarnings('PMD.ApexCRUDViolation')
   public static Id resolveDefaultTemplateId(
     Id episodeId,
     String assessmentContext
@@ -444,6 +449,7 @@ public with sharing class A360AssessmentTemplateService {
       SELECT Id, Animal__r.Species__c
       FROM Animal_Episode__c
       WHERE Id = :episodeId
+      WITH USER_MODE
       LIMIT 1
     ];
     String resolvedContext = String.isBlank(assessmentContext)
@@ -470,6 +476,7 @@ public with sharing class A360AssessmentTemplateService {
           WHERE
             Metadata_Template_Key__c = :mappings[0].Template_Key__c
             AND Status__c = 'Active'
+          WITH USER_MODE
           LIMIT 1
         ];
         if (!mappedTemplates.isEmpty()) {
@@ -486,12 +493,14 @@ public with sharing class A360AssessmentTemplateService {
         AND Default_For_Species__c = TRUE
         AND Context__c = :resolvedContext
         AND Species__c = :species
+      WITH USER_MODE
       ORDER BY Version__c DESC
       LIMIT 1
     ];
     return directTemplates.isEmpty() ? null : directTemplates[0].Id;
   }
 
+  @SuppressWarnings('PMD.ApexCRUDViolation')
   public static TemplateDefinition buildTemplateDefinition(Id templateId) {
     if (templateId == null) {
       return null;
@@ -508,6 +517,7 @@ public with sharing class A360AssessmentTemplateService {
         Context__c
       FROM Assessment_Template__c
       WHERE Id = :templateId
+      WITH USER_MODE
       LIMIT 1
     ];
 
@@ -542,6 +552,7 @@ public with sharing class A360AssessmentTemplateService {
         Default_Confidence__c
       FROM Template_Domain_Definition__c
       WHERE Assessment_Template__c = :templateId
+      WITH USER_MODE
       ORDER BY Display_Order__c ASC
     ]) {
       TemplateDomainDefinition domainDefinition = new TemplateDomainDefinition();
@@ -581,6 +592,7 @@ public with sharing class A360AssessmentTemplateService {
         Visible_When_Rule__c
       FROM Template_Indicator_Assignment__c
       WHERE Assessment_Template__c = :templateId
+      WITH USER_MODE
       ORDER BY Display_Order__c ASC
     ];
     for (

@@ -108,6 +108,7 @@ public without sharing class A360AssessmentPersistenceService {
         SELECT Id, Animal__c
         FROM Animal_Episode__c
         WHERE Id IN :episodeIds
+        WITH USER_MODE
       ]
     );
 
@@ -130,6 +131,7 @@ public without sharing class A360AssessmentPersistenceService {
             SELECT Id, Template_Code__c, Metadata_Template_Key__c, Version__c
             FROM Assessment_Template__c
             WHERE Id IN :templateIds
+            WITH USER_MODE
           ]
         );
 
@@ -139,6 +141,7 @@ public without sharing class A360AssessmentPersistenceService {
         SELECT Assessment_Template__c, Indicator_Key__c
         FROM Template_Indicator_Assignment__c
         WHERE Assessment_Template__c IN :templateIds AND Is_Required__c = TRUE
+        WITH USER_MODE
       ]) {
         if (
           !requiredIndicatorKeysByTemplateId.containsKey(
@@ -238,7 +241,7 @@ public without sharing class A360AssessmentPersistenceService {
     }
 
     if (!assessmentsToInsert.isEmpty()) {
-      insert assessmentsToInsert;
+      Database.insert(assessmentsToInsert, AccessLevel.USER_MODE);
     }
 
     List<Welfare_Domain_Summary__c> domainSummariesToInsert = new List<Welfare_Domain_Summary__c>();
@@ -332,10 +335,10 @@ public without sharing class A360AssessmentPersistenceService {
     }
 
     if (!domainSummariesToInsert.isEmpty()) {
-      insert domainSummariesToInsert;
+      Database.insert(domainSummariesToInsert, AccessLevel.USER_MODE);
     }
     if (!observationsToInsert.isEmpty()) {
-      insert observationsToInsert;
+      Database.insert(observationsToInsert, AccessLevel.USER_MODE);
     }
 
     return results;

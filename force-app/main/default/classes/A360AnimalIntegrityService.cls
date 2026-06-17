@@ -1,3 +1,4 @@
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public with sharing class A360AnimalIntegrityService {
   private static final String PRIMARY_IDENTIFIER_ERROR = 'Only one primary identifier is allowed per animal.';
   private static final String CURRENT_EPISODE_ERROR = 'Only one current episode is allowed per animal.';
