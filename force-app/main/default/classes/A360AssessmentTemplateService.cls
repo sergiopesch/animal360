@@ -459,32 +459,52 @@ public with sharing class A360AssessmentTemplateService {
       ? null
       : episodeRecord.Animal__r.Species__c;
 
-    if (!String.isBlank(species)) {
-      List<Animal360_Species_Template__mdt> mappings = [
-        SELECT Template_Key__c
-        FROM Animal360_Species_Template__mdt
-        WHERE
-          Species__c = :species
-          AND Assessment_Context__c = :resolvedContext
-          AND Is_Active__c = TRUE
-        ORDER BY Priority__c ASC
-      ];
-      if (!mappings.isEmpty()) {
-        List<Assessment_Template__c> mappedTemplates = [
-          SELECT Id
-          FROM Assessment_Template__c
-          WHERE
-            Metadata_Template_Key__c = :mappings[0].Template_Key__c
-            AND Status__c = 'Active'
-          WITH USER_MODE
-          LIMIT 1
-        ];
-        if (!mappedTemplates.isEmpty()) {
-          return mappedTemplates[0].Id;
-        }
-      }
+    if (String.isBlank(species)) {
+      return findDirectSpeciesTemplateId(null, resolvedContext);
     }
 
+    Id mappedTemplateId = findMappedSpeciesTemplateId(species, resolvedContext);
+    if (mappedTemplateId != null) {
+      return mappedTemplateId;
+    }
+
+    return findDirectSpeciesTemplateId(species, resolvedContext);
+  }
+
+  @SuppressWarnings('PMD.ApexCRUDViolation')
+  private static Id findMappedSpeciesTemplateId(
+    String species,
+    String resolvedContext
+  ) {
+    List<Animal360_Species_Template__mdt> mappings = [
+      SELECT Template_Key__c
+      FROM Animal360_Species_Template__mdt
+      WHERE
+        Species__c = :species
+        AND Assessment_Context__c = :resolvedContext
+        AND Is_Active__c = TRUE
+      ORDER BY Priority__c ASC
+    ];
+    if (mappings.isEmpty()) {
+      return null;
+    }
+
+    List<Assessment_Template__c> mappedTemplates = [
+      SELECT Id
+      FROM Assessment_Template__c
+      WHERE
+        Metadata_Template_Key__c = :mappings[0].Template_Key__c
+        AND Status__c = 'Active'
+      WITH USER_MODE
+      LIMIT 1
+    ];
+    return mappedTemplates.isEmpty() ? null : mappedTemplates[0].Id;
+  }
+
+  private static Id findDirectSpeciesTemplateId(
+    String species,
+    String resolvedContext
+  ) {
     List<Assessment_Template__c> directTemplates = [
       SELECT Id
       FROM Assessment_Template__c
